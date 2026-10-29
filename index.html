@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Linear Algebra and Geometry: interactive animations · IE University</title>
+<meta name="description" content="Interactive animations for the Linear Algebra and Geometry courses at IE University. Open one in your browser: nothing to install.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=PT+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+/* ---------- IE University base tokens ---------- */
+:root {
+  --typography-fontfamilies-primary: "Montserrat", Arial, Helvetica, sans-serif;
+  --typography-fontfamilies-secondary: "PT Serif", Georgia, "Times New Roman", serif;
+
+  --color-primary-oceanblue: #000066;
+  --color-primary-seablue: #47BFFF;
+  --color-secondary-marineblue: #0032A0;
+  --color-secondary-electricblue: #0000DB;
+  --color-secondary-lightblue: #BDE8FF;
+  --color-grey-ieblack: #0F0F0F;
+  --color-grey-darkgrey: #434445;
+  --color-grey-middlegrey: #888A8C;
+  --color-grey-lightgrey: #BFC1C3;
+  --color-grey-iewhite: #F4F4F4;
+  --color-grey-white: #FFFFFF;
+  --color-school-law: #D90011;
+  --color-school-archdesign: #921AD4;
+  --color-school-humanities: #FF5C00;
+  --color-semantic-iceblue: #E6F7FF;
+  --color-semantic-alumniblue: #1B1A43;
+
+  /* ---------- semantic tokens (light) ---------- */
+  --page-bg: var(--color-grey-iewhite);
+  --surface: var(--color-grey-white);
+  --text: var(--color-grey-ieblack);
+  --text-muted: var(--color-grey-darkgrey);
+  --heading: var(--color-primary-oceanblue);
+  --link: var(--color-secondary-electricblue);
+  --rule: var(--color-grey-lightgrey);
+  --input-border: var(--color-grey-middlegrey);
+  --btn-bg: var(--color-primary-oceanblue);
+  --btn-text: var(--color-grey-white);
+  --btn-bg-hover: var(--color-secondary-marineblue);
+  --focus: var(--color-secondary-electricblue);
+  --info-bg: var(--color-semantic-iceblue);
+
+  /* masthead (Ocean Blue in both themes) */
+  --mast-bg: var(--color-primary-oceanblue);
+  --mast-text: var(--color-grey-white);
+  --mast-sub: var(--color-secondary-lightblue);
+  --mast-grid: rgba(71, 191, 255, 0.34);
+  --mast-axis: rgba(189, 232, 255, 0.7);
+  --mast-focus: var(--color-primary-seablue);
+
+  /* little plane drawings on each entry */
+  --fig-bg: var(--color-grey-white);
+  --fig-grid: #E4E5E6;
+  --fig-axis: var(--color-grey-middlegrey);
+  --fig-ghost: var(--color-grey-middlegrey);
+  --fig-stroke: var(--color-secondary-electricblue);
+  --fig-fill: rgba(71, 191, 255, 0.32);
+  --fig-red: var(--color-school-law);
+  --fig-purple: var(--color-school-archdesign);
+  --fig-orange: var(--color-school-humanities);
+  --fig-navy: var(--color-primary-oceanblue);
+
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --page-bg: var(--color-grey-ieblack);
+    --surface: var(--color-semantic-alumniblue);
+    --text: var(--color-grey-iewhite);
+    --text-muted: var(--color-grey-lightgrey);
+    --heading: var(--color-secondary-lightblue);
+    --link: var(--color-secondary-lightblue);
+    --rule: #3A3970;
+    --input-border: var(--color-grey-middlegrey);
+    --btn-bg: var(--color-primary-seablue);
+    --btn-text: var(--color-primary-oceanblue);
+    --btn-bg-hover: var(--color-secondary-lightblue);
+    --focus: var(--color-primary-seablue);
+    --info-bg: #23225A;
+    --fig-bg: #121133;
+    --fig-grid: #2A2960;
+    --fig-axis: var(--color-grey-middlegrey);
+    --fig-ghost: var(--color-grey-lightgrey);
+    --fig-stroke: var(--color-primary-seablue);
+    --fig-fill: rgba(71, 191, 255, 0.22);
+    --fig-red: #FF6B76;
+    --fig-purple: #D19BFF;
+    --fig-orange: var(--color-semantic-tangerine, #FF7B31);
+    --fig-navy: var(--color-secondary-lightblue);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --page-bg: var(--color-grey-ieblack);
+  --surface: var(--color-semantic-alumniblue);
+  --text: var(--color-grey-iewhite);
+  --text-muted: var(--color-grey-lightgrey);
+  --heading: var(--color-secondary-lightblue);
+  --link: var(--color-secondary-lightblue);
+  --rule: #3A3970;
+  --btn-bg: var(--color-primary-seablue);
+  --btn-text: var(--color-primary-oceanblue);
+  --btn-bg-hover: var(--color-secondary-lightblue);
+  --focus: var(--color-primary-seablue);
+  --info-bg: #23225A;
+  --fig-bg: #121133;
+  --fig-grid: #2A2960;
+  --fig-ghost: var(--color-grey-lightgrey);
+  --fig-stroke: var(--color-primary-seablue);
+  --fig-fill: rgba(71, 191, 255, 0.22);
+  --fig-red: #FF6B76;
+  --fig-purple: #D19BFF;
+  --fig-orange: #FF7B31;
+  --fig-navy: var(--color-secondary-lightblue);
+  color-scheme: dark;
+}
+
+/* ---------- base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  font-family: var(--typography-fontfamilies-primary);
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--text);
+  background: var(--page-bg);
+}
+a { color: var(--link); }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+.skip {
+  position: absolute; left: 12px; top: -80px; z-index: 10;
+  background: var(--color-grey-white); color: var(--color-primary-oceanblue);
+  padding: 10px 14px; border-radius: 6px; font-weight: 700;
+}
+.skip:focus { top: calc(12px + env(safe-area-inset-top, 0px)); }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 48px); }
+
+/* ---------- masthead with the live plane ---------- */
+.masthead {
+  position: relative;
+  overflow: hidden;
+  background: var(--mast-bg);
+  color: var(--mast-text);
+  padding-top: env(safe-area-inset-top, 0px);
+}
+.masthead :focus-visible { outline-color: var(--mast-focus); }
+.plane {
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  width: min(62%, 760px);
+  pointer-events: none;
+}
+.plane svg { width: 100%; height: 100%; display: block; }
+.plane .g { stroke: var(--mast-grid); stroke-width: 1; fill: none; }
+.plane .ax { stroke: var(--mast-axis); stroke-width: 1.6; fill: none; }
+.plane .e1 { stroke: var(--color-primary-seablue); fill: var(--color-primary-seablue); }
+.plane .e2 { stroke: var(--color-grey-white); fill: var(--color-grey-white); }
+.plane .sq { fill: rgba(71, 191, 255, 0.22); stroke: none; }
+/* fade the plane into the title side so text always sits on solid Ocean Blue */
+.plane::before {
+  content: "";
+  position: absolute; inset: 0 auto 0 0; width: 45%;
+  background: linear-gradient(90deg, var(--mast-bg), rgba(0, 0, 102, 0));
+  z-index: 1;
+}
+.masthead-inner {
+  position: relative; z-index: 2;
+  padding-top: 28px; padding-bottom: 40px;
+  display: grid;
+  grid-template-columns: minmax(0, 34rem) minmax(0, 1fr);
+  gap: 0 32px;
+}
+.logo { display: block; height: 64px; width: auto; }
+.masthead h1 {
+  margin: 44px 0 0;
+  font-weight: 500;
+  font-size: clamp(34px, 5.2vw, 64px);
+  line-height: 1.04;
+  letter-spacing: -0.015em;
+}
+.masthead h1 .line2 { display: block; color: var(--mast-sub); }
+.masthead .sub {
+  font-family: var(--typography-fontfamilies-secondary);
+  font-size: 20px; line-height: 30px;
+  color: var(--mast-sub);
+  margin: 18px 0 0;
+  max-width: 34ch;
+}
+
+/* the live matrix readout */
+.readout {
+  align-self: end;
+  justify-self: end;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 12px 14px;
+  margin-top: 28px;
+  padding: 10px 12px 10px 16px;
+  background: var(--mast-bg);
+  border-radius: 14px;
+  white-space: nowrap;
+}
+.matrix {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-weight: 600; font-size: 18px;
+  font-variant-numeric: tabular-nums;
+  color: var(--mast-text);
+}
+.matrix .eq { font-family: var(--typography-fontfamilies-secondary); font-style: italic; font-weight: 400; font-size: 22px; }
+.matrix .m {
+  display: grid; grid-template-columns: repeat(2, 3.4em); gap: 2px 6px;
+  padding: 4px 10px; text-align: right;
+  border-left: 2px solid var(--mast-text); border-right: 2px solid var(--mast-text);
+  border-radius: 6px;
+}
+.pause {
+  appearance: none;
+  display: inline-flex; align-items: center; gap: 8px;
+  min-height: 40px; padding: 8px 14px;
+  border: 1.5px solid var(--mast-sub); border-radius: 20px;
+  background: transparent; color: var(--mast-text);
+  font: 700 13px/1 var(--typography-fontfamilies-primary);
+  cursor: pointer;
+}
+.pause:hover { background: rgba(255, 255, 255, 0.1); }
+.pause svg { width: 12px; height: 12px; fill: currentColor; }
+
+@media (max-width: 760px) {
+  .masthead { display: flex; flex-direction: column; }
+  .masthead-inner { grid-template-columns: 1fr; padding-bottom: 0; }
+  .readout { justify-self: start; padding-left: 0; margin-top: 20px; }
+  .plane { position: relative; order: 2; width: 100%; height: 180px; }
+  .plane::before { display: none; }
+  .logo { height: 60px; }
+  .masthead h1 { margin-top: 32px; }
+}
+
+/* ---------- toolbar ---------- */
+.toolbar {
+  display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between;
+  gap: 16px 24px;
+  padding: 32px 0 8px;
+}
+.search label {
+  display: block; font-weight: 700; font-size: 14px; line-height: 20px;
+  color: var(--text); margin-bottom: 6px;
+}
+.search-row { display: flex; gap: 8px; }
+.search input {
+  width: min(26rem, 72vw);
+  min-height: 44px; padding: 10px 14px;
+  font: 400 16px/24px var(--typography-fontfamilies-primary);
+  color: var(--text); background: var(--surface);
+  border: 1.5px solid var(--input-border); border-radius: 8px;
+}
+.search input::-webkit-search-cancel-button { display: none; }
+.count { margin: 0; color: var(--text-muted); font-size: 16px; }
+
+/* ---------- catalogue ---------- */
+main { padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px)); }
+.course { margin-top: 32px; }
+.course > h2 {
+  font-weight: 500; font-size: clamp(28px, 3.4vw, 36px); line-height: 1.15;
+  color: var(--heading);
+  margin: 0 0 6px;
+}
+.course > .course-note {
+  font-family: var(--typography-fontfamilies-secondary);
+  color: var(--text-muted); margin: 0 0 20px; max-width: 70ch;
+}
+.entries { list-style: none; margin: 0; padding: 0; display: grid; gap: 20px; }
+.entry {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 24px 28px;
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  position: relative;
+}
+.entry .fig {
+  aspect-ratio: 1 / 1;
+  border-radius: 8px;
+  background: var(--fig-bg);
+  border: 1px solid var(--rule);
+  overflow: hidden;
+}
+.entry .fig svg { width: 100%; height: 100%; display: block; }
+.entry h3 {
+  margin: 0;
+  font-weight: 600; font-size: 24px; line-height: 30px;
+  color: var(--heading);
+}
+.entry h3 a { color: inherit; text-decoration: none; }
+.entry h3 a:hover { text-decoration: underline; text-underline-offset: 4px; }
+/* the whole card is clickable through the title link */
+.entry h3 a::after { content: ""; position: absolute; inset: 0; border-radius: 12px; }
+.entry h3 a:focus-visible { outline: none; }
+.entry:has(h3 a:focus-visible) { outline: 3px solid var(--focus); outline-offset: 2px; }
+.entry .summary {
+  font-family: var(--typography-fontfamilies-secondary);
+  font-size: 18px; line-height: 28px;
+  margin: 10px 0 0; max-width: 64ch;
+}
+.entry .meta { margin: 14px 0 0; color: var(--text-muted); font-size: 14px; line-height: 20px; }
+.entry .parts { margin: 16px 0 0; }
+.entry .parts h4 { margin: 0 0 6px; font-size: 14px; line-height: 20px; font-weight: 700; color: var(--text); }
+.entry .parts ol { margin: 0; padding-left: 1.4em; display: grid; gap: 2px; font-size: 16px; }
+.entry .parts li::marker { color: var(--text-muted); font-weight: 600; }
+.entry .parts .ref { color: var(--text-muted); font-size: 14px; }
+.entry .actions { margin-top: 20px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.btn {
+  position: relative; z-index: 1;   /* sits above the card-wide link */
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 44px; padding: 10px 20px;
+  border-radius: 8px;
+  background: var(--btn-bg); color: var(--btn-text);
+  font: 800 15px/1 var(--typography-fontfamilies-primary);
+  text-decoration: none;
+}
+.btn:hover { background: var(--btn-bg-hover); }
+.btn-quiet {
+  background: transparent; color: var(--link);
+  border: 1.5px solid var(--input-border);
+  font-weight: 700; font-size: 13px;
+}
+.btn-quiet:hover { background: var(--info-bg); }
+@media (max-width: 700px) {
+  .entry { grid-template-columns: 1fr; padding: 18px; }
+  .entry .fig { aspect-ratio: 16 / 9; }
+}
+
+.empty {
+  margin-top: 32px; padding: 24px;
+  background: var(--info-bg); border-radius: 12px;
+}
+.empty p { margin: 0 0 12px; }
+
+footer {
+  border-top: 1px solid var(--rule);
+  padding: 24px 0 calc(32px + env(safe-area-inset-bottom, 0px));
+  color: var(--text-muted); font-size: 14px; line-height: 20px;
+}
+footer p { margin: 0 0 6px; max-width: 80ch; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { scroll-behavior: auto !important; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#catalogue">Skip to the animations</a>
+
+<header class="masthead">
+  <div class="plane" aria-hidden="true">
+    <svg id="plane" viewBox="0 0 760 420" preserveAspectRatio="xMidYMid slice"></svg>
+  </div>
+  <div class="wrap masthead-inner">
+    <div>
+      <img class="logo" src="https://static.ie.edu/IT/logos/Corporate/Logo_Corporate_Full_White_Filled.svg" alt="IE University" height="64">
+      <h1>Linear Algebra and Geometry<span class="line2">interactive animations</span></h1>
+      <p class="sub">Move vectors, change matrices and watch the plane respond. Every animation runs in your browser, with nothing to install.</p>
+    </div>
+    <div class="readout">
+      <div class="matrix" aria-hidden="true">
+        <span class="eq">A =</span>
+        <span class="m"><span id="a11">1.00</span><span id="a12">0.00</span><span id="a21">0.00</span><span id="a22">1.00</span></span>
+      </div>
+      <button class="pause" id="pause" type="button" aria-pressed="false">
+        <svg viewBox="0 0 12 12" aria-hidden="true" id="pause-icon"><rect x="1" y="1" width="3.5" height="10"/><rect x="7.5" y="1" width="3.5" height="10"/></svg>
+        <span id="pause-label">Pause animation</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="catalogue" tabindex="-1">
+  <div class="wrap">
+    <div class="toolbar">
+      <div class="search" role="search">
+        <label for="q">Find an animation</label>
+        <div class="search-row">
+          <input id="q" type="search" autocomplete="off" spellcheck="false"
+                 placeholder="e.g. determinant, projection" aria-describedby="count">
+        </div>
+      </div>
+      <p class="count" id="count" aria-live="polite"></p>
+    </div>
+
+    <div id="list"></div>
+
+    <div class="empty" id="empty" hidden>
+      <p id="empty-text"></p>
+      <button class="btn" id="clear" type="button">Clear search</button>
+    </div>
+
+    <noscript>
+      <section class="course">
+        <h2>All animations</h2>
+        <ul>
+          <li><a href="linear_transformations_activity.html">Linear transformations of the plane</a></li>
+          <li><a href="euclidean_spaces_interactive.html">Euclidean spaces: inner products, orthogonality and projections</a></li>
+        </ul>
+      </section>
+    </noscript>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Made for the Linear Algebra and Geometry courses, School of Science &amp; Technology, IE University.</p>
+    <p>Works best in a recent version of Chrome, Edge, Firefox or Safari, on a computer or a tablet. An internet connection is needed for fonts and formulas.</p>
+    <p id="repo-line" hidden><a id="repo-link" href="#">Source code on GitHub</a></p>
+  </div>
+</footer>
+
+<script>
+/* =====================================================================
+   THE CATALOGUE
+   To add an animation: put its .html file in the repository and add one
+   object to this list. Entries appear grouped by course, in this order.
+   ===================================================================== */
+const COURSES = [
+  { id: "linear-algebra", name: "Linear Algebra",
+    note: "Matrices as maps of the plane: what they do to shapes, areas and the basis vectors." },
+  { id: "geometry", name: "Geometry",
+    note: "Euclidean spaces: inner products, lengths, angles and orthogonal projections." }
+];
+
+const ANIMATIONS = [
+  {
+    file: "linear_transformations_activity.html",
+    title: "Linear transformations of the plane",
+    course: "linear-algebra",
+    summary: "Pick a 2 × 2 matrix A and a figure, or draw your own or upload a picture, then watch every point x move to Ax. Read off the determinant, the area change and the inverse as you go.",
+    parts: [
+      { name: "Explore transformations" },
+      { name: "Mystery matrix challenge", ref: "find a hidden matrix from where it sends the dots" }
+    ],
+    keywords: "matrix determinant area rotation reflection shear projection scaling inverse basis vectors e1 e2 figure",
+    figure: "transform"
+  },
+  {
+    file: "euclidean_spaces_interactive.html",
+    title: "Euclidean spaces, seen",
+    course: "geometry",
+    summary: "An interactive companion to Chapter 2 of the Geometry notes. Change the Gram matrix and see what “orthogonal” and “unit length” mean for a new inner product, then project vectors onto lines and planes.",
+    parts: [
+      { name: "Inner products on the plane", ref: "Notes §2.1 and §2.3.1" },
+      { name: "Orthogonal decomposition", ref: "Notes §2.4.1 and §2.4.3" },
+      { name: "Frobenius inner product", ref: "Notes §2.1, Example 2.1.1" },
+      { name: "Projection onto a plane", ref: "Notes §2.4.4" }
+    ],
+    keywords: "inner product gram matrix norm distance angle orthogonal orthogonality projection frobenius trace plane 3d chapter 2",
+    figure: "projection"
+  }
+];
+
+/* Optional: paste the repository address here to show a link in the footer. */
+const REPO_URL = "";
+
+/* =====================================================================
+   Small drawings for each entry (decorative). Add a new key here, or
+   leave "figure" out of an entry to get the plain grid.
+   ===================================================================== */
+const FIGURES = {
+  grid: () => "",
+  transform: () => `
+    <polygon points="70,130 130,130 130,70 70,70" fill="none" stroke="var(--fig-ghost)" stroke-width="1.5" stroke-dasharray="4 3"/>
+    <polygon points="70,130 142,112 178,34 106,52" fill="var(--fig-fill)" stroke="var(--fig-stroke)" stroke-width="2.5" stroke-linejoin="round"/>
+    <line x1="70" y1="130" x2="132" y2="114.5" stroke="var(--fig-red)" stroke-width="3.5" stroke-linecap="round"/>
+    <polygon points="142,112 130,108 133,120" fill="var(--fig-red)"/>
+    <line x1="70" y1="130" x2="101.5" y2="61.5" stroke="var(--fig-purple)" stroke-width="3.5" stroke-linecap="round"/>
+    <polygon points="106,52 96,59 107,64" fill="var(--fig-purple)"/>
+    <text x="144" y="132" font-size="14" font-family="PT Serif, Georgia, serif" font-style="italic" fill="var(--fig-red)">Ae₁</text>
+    <text x="76" y="48" font-size="14" font-family="PT Serif, Georgia, serif" font-style="italic" fill="var(--fig-purple)">Ae₂</text>`,
+  projection: () => `
+    <line x1="24" y1="160" x2="190" y2="50" stroke="var(--fig-stroke)" stroke-width="2"/>
+    <text x="172" y="46" font-size="13" font-family="PT Serif, Georgia, serif" font-style="italic" fill="var(--fig-stroke)">L</text>
+    <line x1="70" y1="129.5" x2="136" y2="86" stroke="var(--fig-purple)" stroke-width="3.5" stroke-linecap="round"/>
+    <line x1="70" y1="129.5" x2="108" y2="42" stroke="var(--fig-red)" stroke-width="2.5" stroke-linecap="round"/>
+    <polygon points="110,37 101,44 111,48" fill="var(--fig-red)"/>
+    <line x1="108" y1="42" x2="136" y2="86" stroke="var(--fig-orange)" stroke-width="2.5" stroke-dasharray="5 4"/>
+    <polyline points="127.7,91.5 122.3,83.2 130.6,77.7" fill="none" stroke="var(--fig-navy)" stroke-width="1.5"/>
+    <circle cx="70" cy="129.5" r="3.5" fill="var(--fig-navy)"/>
+    <text x="90" y="40" font-size="13" font-family="PT Serif, Georgia, serif" font-style="italic" fill="var(--fig-red)">v</text>
+    <text x="134" y="108" font-size="13" font-family="PT Serif, Georgia, serif" font-style="italic" fill="var(--fig-purple)">p</text>`
+};
+
+function figureSVG(kind) {
+  let grid = "";
+  for (let i = 10; i <= 200; i += 20) {
+    grid += `<line x1="${i}" y1="0" x2="${i}" y2="200" stroke="var(--fig-grid)" stroke-width="1"/>`;
+    grid += `<line x1="0" y1="${i}" x2="200" y2="${i}" stroke="var(--fig-grid)" stroke-width="1"/>`;
+  }
+  const axes = `<line x1="0" y1="130" x2="200" y2="130" stroke="var(--fig-axis)" stroke-width="1.2"/><line x1="70" y1="0" x2="70" y2="200" stroke="var(--fig-axis)" stroke-width="1.2"/>`;
+  const draw = (FIGURES[kind] || FIGURES.grid)();
+  return `<svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">${grid}${axes}${draw}</svg>`;
+}
+
+/* ---------- rendering ---------- */
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const listEl = document.getElementById("list");
+const countEl = document.getElementById("count");
+const emptyEl = document.getElementById("empty");
+const emptyText = document.getElementById("empty-text");
+const q = document.getElementById("q");
+
+function entryHTML(a) {
+  const parts = (a.parts || []).length > 1 || (a.parts || []).some(p => p.ref)
+    ? `<div class="parts"><h4>Inside</h4><ol>${a.parts.map(p =>
+        `<li>${esc(p.name)}${p.ref ? ` <span class="ref">(${esc(p.ref)})</span>` : ""}</li>`).join("")}</ol></div>`
+    : "";
+  return `<li class="entry" data-file="${esc(a.file)}">
+    <div class="fig">${figureSVG(a.figure || "grid")}</div>
+    <div>
+      <h3><a href="${esc(a.file)}">${esc(a.title)}</a></h3>
+      <p class="summary">${esc(a.summary)}</p>
+      ${parts}
+      <div class="actions">
+        <a class="btn" href="${esc(a.file)}" tabindex="-1" aria-hidden="true">Open animation</a>
+        <a class="btn btn-quiet" href="${esc(a.file)}" target="_blank" rel="noopener">Open in a new tab<span class="sr-only">: ${esc(a.title)}</span></a>
+      </div>
+    </div>
+  </li>`;
+}
+
+function haystack(a) {
+  return [a.title, a.summary, a.keywords || "", ...(a.parts || []).map(p => p.name + " " + (p.ref || ""))]
+    .join(" ").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
+function render() {
+  const terms = q.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").split(/\s+/).filter(Boolean);
+  const match = a => terms.every(t => haystack(a).includes(t));
+  let html = "", shown = 0;
+  const known = new Set(COURSES.map(c => c.id));
+  const groups = [...COURSES, { id: "_other", name: "More animations", note: "" }];
+  for (const c of groups) {
+    const items = ANIMATIONS.filter(a => (c.id === "_other" ? !known.has(a.course) : a.course === c.id) && match(a));
+    if (!items.length) continue;
+    shown += items.length;
+    html += `<section class="course" aria-labelledby="h-${c.id}">
+      <h2 id="h-${c.id}">${esc(c.name)}</h2>
+      ${c.note ? `<p class="course-note">${esc(c.note)}</p>` : ""}
+      <ul class="entries">${items.map(entryHTML).join("")}</ul>
+    </section>`;
+  }
+  listEl.innerHTML = html;
+  const total = ANIMATIONS.length;
+  countEl.textContent = terms.length
+    ? `${shown} of ${total} ${total === 1 ? "animation" : "animations"} match`
+    : `${total} ${total === 1 ? "animation" : "animations"}`;
+  emptyEl.hidden = shown > 0;
+  if (!shown) emptyText.textContent = `No animation matches “${q.value.trim()}”. Try a broader word, such as “matrix” or “projection”.`;
+}
+q.addEventListener("input", render);
+document.getElementById("clear").addEventListener("click", () => { q.value = ""; render(); q.focus(); });
+if (REPO_URL) {
+  document.getElementById("repo-link").href = REPO_URL;
+  document.getElementById("repo-line").hidden = false;
+}
+render();
+
+/* =====================================================================
+   The masthead plane: a grid moved by a matrix that drifts between
+   a few familiar transformations.
+   ===================================================================== */
+(function () {
+  const svg = document.getElementById("plane");
+  const NS = "http://www.w3.org/2000/svg";
+  const W = 760, H = 420, cx = 470, cy = 230, unit = 54, N = 12;
+  const r = Math.SQRT1_2;
+  // shear, rotation by 30°, stretch, rotation-scaling, back to identity
+  const KEYS = [
+    [1, 0, 0, 1],
+    [1, 0.8, 0, 1],
+    [0.866, -0.5, 0.5, 0.866],
+    [1.4, 0, 0, 0.6],
+    [1.1 * r, -1.1 * r, 1.1 * r, 1.1 * r],
+    [1, 0.5, 0.3, 1.2]
+  ];
+  const HOLD = 1800, MOVE = 2200;
+
+  const mk = (tag, cls) => { const el = document.createElementNS(NS, tag); if (cls) el.setAttribute("class", cls); svg.appendChild(el); return el; };
+  const sq = mk("polygon", "sq");
+  const lines = [];
+  for (let i = -N; i <= N; i++) {
+    lines.push({ el: mk("line", i === 0 ? "ax" : "g"), dir: "v", k: i });
+    lines.push({ el: mk("line", i === 0 ? "ax" : "g"), dir: "h", k: i });
+  }
+  const arrow = cls => ({ line: mk("line", cls), head: mk("polygon", cls) });
+  const e1 = arrow("e1"), e2 = arrow("e2");
+  e1.line.setAttribute("stroke-width", "3.5"); e2.line.setAttribute("stroke-width", "3.5");
+
+  const cells = ["a11", "a12", "a21", "a22"].map(id => document.getElementById(id));
+  const fmt = v => (Math.abs(v) < 0.005 ? 0 : v).toFixed(2).replace("-", "−");
+
+  function P(A, x, y) { return [cx + unit * (A[0] * x + A[1] * y), cy - unit * (A[2] * x + A[3] * y)]; }
+  function setArrow(a, A, x, y) {
+    const [x1, y1] = P(A, 0, 0), [x2, y2] = P(A, x, y);
+    const dx = x2 - x1, dy = y2 - y1, L = Math.hypot(dx, dy) || 1, ux = dx / L, uy = dy / L, s = 12;
+    a.line.setAttribute("x1", x1); a.line.setAttribute("y1", y1);
+    a.line.setAttribute("x2", x2 - ux * s * 0.8); a.line.setAttribute("y2", y2 - uy * s * 0.8);
+    a.head.setAttribute("points", `${x2},${y2} ${x2 - ux * s - uy * s * 0.5},${y2 - uy * s + ux * s * 0.5} ${x2 - ux * s + uy * s * 0.5},${y2 - uy * s - ux * s * 0.5}`);
+  }
+  function draw(A) {
+    for (const l of lines) {
+      const [x1, y1] = l.dir === "v" ? P(A, l.k, -N) : P(A, -N, l.k);
+      const [x2, y2] = l.dir === "v" ? P(A, l.k, N) : P(A, N, l.k);
+      l.el.setAttribute("x1", x1); l.el.setAttribute("y1", y1);
+      l.el.setAttribute("x2", x2); l.el.setAttribute("y2", y2);
+    }
+    sq.setAttribute("points", [[0, 0], [1, 0], [1, 1], [0, 1]].map(([x, y]) => P(A, x, y).join(",")).join(" "));
+    setArrow(e1, A, 1, 0); setArrow(e2, A, 0, 1);
+    A.forEach((v, i) => { cells[i].textContent = fmt(v); });
+  }
+  const ease = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  function matrixAt(ms) {
+    const cycle = HOLD + MOVE, n = KEYS.length;
+    const k = Math.floor(ms / cycle) % n, local = ms % cycle;
+    const t = local < HOLD ? 0 : ease((local - HOLD) / MOVE);
+    const A = KEYS[k], B = KEYS[(k + 1) % n];
+    return A.map((a, i) => a + (B[i] - a) * t);
+  }
+
+  const btn = document.getElementById("pause");
+  const label = document.getElementById("pause-label");
+  const icon = document.getElementById("pause-icon");
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+  let playing = !reduce.matches, elapsed = playing ? 0 : (HOLD + MOVE) * 1 + HOLD, last = null, raf = null;
+
+  function setButton() {
+    btn.setAttribute("aria-pressed", String(!playing));
+    label.textContent = playing ? "Pause animation" : "Play animation";
+    icon.innerHTML = playing
+      ? '<rect x="1" y="1" width="3.5" height="10"/><rect x="7.5" y="1" width="3.5" height="10"/>'
+      : '<polygon points="2,1 11,6 2,11"/>';
+  }
+  function frame(now) {
+    if (last !== null) elapsed += Math.min(now - last, 100);
+    last = now;
+    draw(matrixAt(elapsed));
+    raf = playing ? requestAnimationFrame(frame) : null;
+  }
+  btn.addEventListener("click", () => {
+    playing = !playing; last = null; setButton();
+    if (playing && !raf) raf = requestAnimationFrame(frame);
+  });
+  document.addEventListener("visibilitychange", () => { last = null; });
+  setButton();
+  draw(matrixAt(elapsed));
+  if (playing) raf = requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
