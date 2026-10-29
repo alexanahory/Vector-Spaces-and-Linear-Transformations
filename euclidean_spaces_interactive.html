@@ -1,0 +1,1837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Euclidean spaces: an interactive companion (Geometry, IE University)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<style>
+:root{
+  /* IE University design tokens */
+  --color-primary-oceanblue:#000066;
+  --color-primary-seablue:#47BFFF;
+  --color-secondary-marineblue:#0032A0;
+  --color-secondary-electricblue:#0000DB;
+  --color-secondary-lightblue:#BDE8FF;
+  --color-semantic-iceblue:#E6F7FF;
+  --color-grey-ieblack:#0F0F0F;
+  --color-grey-darkgrey:#434445;
+  --color-grey-middlegrey:#888A8C;
+  --color-grey-lightgrey:#BFC1C3;
+  --color-grey-softgrey:#F8F8F8;
+  --color-grey-iewhite:#F4F4F4;
+  --color-grey-white:#FFFFFF;
+  --color-semantic-accept:#23CE6B;
+  --color-semantic-alert:#F31233;
+  --color-semantic-tangerine:#FF7B31;
+  --font-ui:"Montserrat", Arial, Helvetica, sans-serif;
+  --font-ed:"PT Serif", Georgia, "Times New Roman", serif;
+
+  /* semantic tokens for this page */
+  --ink:var(--color-grey-ieblack);
+  --ink-2:var(--color-grey-darkgrey);
+  --border:var(--color-grey-lightgrey);
+  --border-strong:var(--color-grey-middlegrey);
+  --page:var(--color-grey-iewhite);
+  --surface:var(--color-grey-white);
+  --heading:var(--color-primary-oceanblue);
+  --ok-ink:#0E6B36;
+  --err-ink:#A00A1F;
+  --ok-bg:#E9FAF0;
+  --err-bg:#FEECEE;
+  --hairline:#E4E5E6;
+
+  /* the meaning of each colour in the drawings */
+  --c-e:#000066;     /* canonical basis e1, e2 */
+  --c-u:#0000DB;     /* direction u, matrix A, basis of W */
+  --c-v:#D90011;     /* the vector v, matrix B */
+  --c-p:#921AD4;     /* orthogonal projection */
+  --c-q:#FF5C00;     /* orthogonal component (stroke) */
+  --c-q-ink:#B03E00; /* orthogonal component (text) */
+  --c-w:#0097DC;     /* other point w (stroke) */
+  --c-w-ink:#00648F; /* other point w (text) */
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:var(--font-ui);font-size:16px;line-height:24px;color:var(--ink);background:var(--page)}
+:focus-visible{outline:3px solid var(--color-secondary-electricblue);outline-offset:2px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.skip{position:absolute;left:12px;top:-60px;background:var(--surface);color:var(--heading);padding:10px 14px;border-radius:6px;z-index:10;font-weight:700}
+.skip:focus{top:12px}
+
+/* ---------- masthead ---------- */
+.masthead{background:var(--color-primary-oceanblue);color:var(--color-grey-white)}
+.masthead-inner{max-width:1440px;margin:0 auto;padding:22px clamp(16px,3vw,40px) 0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px 36px;align-items:center}
+.masthead img{height:64px;width:auto;display:block}
+.masthead h1{font-weight:500;font-size:clamp(26px,3.2vw,40px);line-height:1.12;margin:0;letter-spacing:-.01em}
+.masthead .sub{font-family:var(--font-ed);font-size:17px;line-height:1.5;margin:6px 0 0;color:var(--color-secondary-lightblue);max-width:66ch}
+@media (max-width:700px){.masthead-inner{grid-template-columns:1fr}.masthead img{height:60px}}
+.tabs{grid-column:1/-1;display:flex;gap:4px;margin-top:20px;overflow-x:auto}
+.tab{appearance:none;border:0;background:transparent;color:var(--color-grey-white);font:700 14px/1.25 var(--font-ui);padding:12px 18px 13px;border-radius:8px 8px 0 0;cursor:pointer;text-align:left;white-space:nowrap;min-height:52px}
+.tab small{display:block;font:500 12px/1.2 var(--font-ui);color:var(--color-secondary-lightblue);margin-top:3px}
+.tab:hover{background:rgba(255,255,255,.09)}
+.tab[aria-selected="true"]{background:var(--page);color:var(--heading)}
+.tab[aria-selected="true"] small{color:var(--ink-2)}
+.tab:focus-visible{outline:3px solid var(--color-grey-white);outline-offset:-4px}
+.tab[aria-selected="true"]:focus-visible{outline-color:var(--color-secondary-electricblue)}
+
+/* ---------- panels ---------- */
+.panel{max-width:1440px;margin:0 auto;padding:30px clamp(16px,3vw,40px) 56px}
+.panel[hidden]{display:none}
+.panel-head{margin-bottom:24px}
+.panel-head h2{font-weight:500;font-size:clamp(26px,2.6vw,34px);line-height:1.15;color:var(--heading);margin:0 0 10px}
+.lede{font-family:var(--font-ed);font-size:18px;line-height:1.6;color:var(--ink-2);margin:0;max-width:74ch}
+.lede .ref{font-family:var(--font-ui);font-size:14px;font-weight:600;color:var(--heading);white-space:nowrap}
+.workspace{display:grid;grid-template-columns:minmax(300px,372px) minmax(0,1fr);gap:24px;align-items:start}
+@media (max-width:980px){.workspace{grid-template-columns:minmax(0,1fr)}}
+
+.controls{background:var(--surface);border:1px solid var(--border);border-radius:8px}
+.ctl{padding:16px 18px;border-top:1px solid var(--hairline)}
+.ctl:first-child{border-top:0}
+.ctl h3{font-size:16px;font-weight:700;line-height:1.3;color:var(--heading);margin:0 0 10px}
+.note{font-size:14px;line-height:20px;color:var(--ink-2);margin:10px 0 0}
+.note.ed{font-family:var(--font-ed);font-size:15px;line-height:22px}
+
+/* matrices */
+.matrix-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.mname{font:italic 700 21px/1 var(--font-ed);color:var(--ink)}
+.matrix{display:inline-flex;align-items:stretch;gap:6px}
+.matrix .br{width:9px;border:2px solid var(--ink);border-right:0;border-radius:3px 0 0 3px}
+.matrix .br.r{border:2px solid var(--ink);border-left:0;border-radius:0 3px 3px 0}
+.mgrid{display:grid;gap:6px;padding:5px 0}
+.mcell input{width:62px;height:40px;text-align:center;font:500 16px var(--font-ui);border:1px solid var(--border-strong);border-radius:4px;background:var(--surface);color:var(--ink)}
+.mcell input[aria-invalid="true"]{border:2px solid var(--color-semantic-alert);background:var(--err-bg)}
+.matrix.three .mcell input{width:54px}
+.heat .mcell{width:74px;height:62px;border-radius:5px;display:flex;align-items:center;justify-content:center;transition:background-color .15s}
+.heat .mcell input{background:rgba(255,255,255,.55);border:1px solid rgba(15,15,15,.4);width:60px;height:38px}
+
+/* chips, buttons, segmented */
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.chip{appearance:none;border:1px solid var(--color-secondary-marineblue);background:var(--surface);color:var(--color-secondary-marineblue);font:600 13px/1.1 var(--font-ui);padding:8px 11px;border-radius:999px;cursor:pointer;min-height:34px}
+.chip:hover{background:var(--color-semantic-iceblue)}
+.chip[aria-pressed="true"]{background:var(--heading);color:var(--color-grey-white);border-color:var(--heading)}
+.btnrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.btn{appearance:none;border:1px solid var(--heading);background:var(--heading);color:var(--color-grey-white);font:800 13px/1.1 var(--font-ui);padding:10px 14px;border-radius:6px;cursor:pointer;min-height:38px}
+.btn.ghost{background:var(--surface);color:var(--heading)}
+.btn.ghost:hover{background:var(--color-semantic-iceblue)}
+.seg{display:inline-flex;border:1px solid var(--color-secondary-marineblue);border-radius:6px;overflow:hidden;flex-wrap:wrap}
+.seg button{appearance:none;border:0;background:var(--surface);color:var(--color-secondary-marineblue);font:600 13px/1.1 var(--font-ui);padding:9px 12px;cursor:pointer;min-height:36px}
+.seg button+button{border-left:1px solid var(--color-secondary-marineblue)}
+.seg button[aria-pressed="true"]{background:var(--heading);color:var(--color-grey-white)}
+
+/* toggles, sliders, vector inputs */
+.toggle{display:flex;gap:10px;align-items:flex-start;font-size:15px;line-height:21px;padding:5px 0;cursor:pointer}
+.toggle input{width:18px;height:18px;margin:2px 0 0;accent-color:var(--heading);flex:none}
+.vec{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:8px 0}
+.vec .vname{font:italic 700 19px/1 var(--font-ed);min-width:1.4em}
+.vec .punct{font-size:20px;color:var(--ink-2)}
+.vec input,.slider input[type=text]{width:58px;height:36px;text-align:center;font:500 16px var(--font-ui);border:1px solid var(--border-strong);border-radius:4px;color:var(--ink);background:var(--surface)}
+.vec input[aria-invalid="true"],.slider input[aria-invalid="true"]{border:2px solid var(--color-semantic-alert);background:var(--err-bg)}
+.slider{display:grid;grid-template-columns:34px minmax(0,1fr) 62px;gap:10px;align-items:center;margin:6px 0}
+.slider label{font:italic 700 17px/1 var(--font-ed)}
+.slider input[type=range]{width:100%;accent-color:var(--heading);height:26px;margin:0}
+.slider.wide{grid-template-columns:120px minmax(0,1fr) 62px}
+.slider.wide label{font:600 14px/1.3 var(--font-ui);font-style:normal}
+
+/* status */
+.checks{list-style:none;margin:12px 0 0;padding:0;font-size:14px;line-height:20px}
+.checks li{display:flex;gap:8px;align-items:flex-start;padding:3px 0}
+.checks svg{flex:none;width:18px;height:18px;margin-top:1px}
+.checks li.ok svg{color:var(--ok-ink)}
+.checks li.bad svg{color:var(--err-ink)}
+.status{display:flex;gap:10px;align-items:flex-start;margin-top:12px;padding:10px 12px;border-radius:6px;font-size:15px;line-height:21px;border-left:5px solid}
+.status svg{flex:none;width:20px;height:20px;margin-top:1px}
+.status.ok{background:var(--ok-bg);border-color:var(--color-semantic-accept)}
+.status.ok svg{color:var(--ok-ink)}
+.status.err{background:var(--err-bg);border-color:var(--color-semantic-alert)}
+.status.err svg{color:var(--err-ink)}
+.status b{font-weight:700}
+
+/* stage */
+.stage{min-width:0}
+.canvas-wrap{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;height:clamp(400px,64vh,660px)}
+.canvas-wrap.short{height:clamp(320px,46vh,460px)}
+.canvas-wrap canvas{display:block;width:100%;height:100%;touch-action:none}
+.canvas-wrap canvas:focus-visible{outline:3px solid var(--color-secondary-electricblue);outline-offset:-3px}
+.zoombar{position:absolute;top:12px;right:12px;display:flex;flex-direction:column;gap:6px}
+.iconbtn{appearance:none;min-width:38px;height:38px;padding:0 10px;border-radius:6px;border:1px solid var(--border-strong);background:var(--surface);color:var(--heading);font:700 18px/1 var(--font-ui);cursor:pointer;display:grid;place-items:center}
+.iconbtn.text{font-size:13px;font-weight:700}
+.iconbtn:hover{background:var(--color-semantic-iceblue)}
+.viewbar{position:absolute;left:12px;top:12px;display:flex;flex-wrap:wrap;gap:6px;max-width:calc(100% - 80px)}
+.stage-foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px;margin-top:10px;font-size:14px;line-height:20px;color:var(--ink-2)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:20px;height:4px;border-radius:2px;display:inline-block}
+.legend i.dash{background:repeating-linear-gradient(90deg,currentColor 0 6px,transparent 6px 10px)!important;height:3px}
+.cap{font-size:15px;font-weight:600;color:var(--heading);margin:0 0 8px}
+.cap small{display:block;font:400 14px/1.4 var(--font-ed);color:var(--ink-2)}
+.duo{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px}
+@media (max-width:1180px){.duo{grid-template-columns:minmax(0,1fr)}}
+
+/* derivation sheet */
+.sheet{margin-top:22px;background:var(--surface);border:1px solid var(--border);border-radius:8px}
+.sheet-title{font-size:16px;font-weight:700;color:var(--heading);margin:0;padding:14px 22px;border-bottom:1px solid var(--hairline)}
+.row{display:grid;grid-template-columns:210px minmax(0,1fr);gap:6px 22px;padding:14px 20px 14px 24px;border-top:1px solid var(--hairline);position:relative}
+.sheet-title+div .row:first-child{border-top:0}
+.row::before{content:"";position:absolute;left:0;top:12px;bottom:12px;width:4px;border-radius:0 2px 2px 0;background:var(--rule-color,transparent)}
+.row-label{font-weight:600;font-size:15px;line-height:21px;color:var(--heading)}
+.row-label small{display:block;font:400 14px/1.4 var(--font-ed);color:var(--ink-2);margin-top:2px}
+.row-body{min-width:0}
+.row-math{overflow-x:auto;overflow-y:hidden;padding:2px 0 4px;font-size:16px}
+.row-math+.row-math{margin-top:6px}
+.row-math .katex{font-size:1.1em}
+.row-text{font-family:var(--font-ed);font-size:16px;line-height:1.55;color:var(--ink-2);margin:6px 0 0;max-width:72ch}
+.sheet-empty{padding:18px 24px;margin:0;font-family:var(--font-ed);color:var(--ink-2)}
+@media (max-width:640px){.row{grid-template-columns:minmax(0,1fr)}}
+.badge{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:600;padding:3px 10px;border-radius:999px;border:1px solid}
+.badge.ok{color:var(--ok-ink);border-color:var(--color-semantic-accept);background:var(--ok-bg)}
+.badge.err{color:var(--err-ink);border-color:var(--color-semantic-alert);background:var(--err-bg)}
+.badge svg{width:16px;height:16px}
+
+/* Frobenius tiles */
+.tiles-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.tiles{display:grid;grid-template-columns:repeat(2,58px);gap:4px}
+.tile{height:44px;border-radius:4px;display:grid;place-items:center;font:600 15px var(--font-ui);color:var(--ink);border:1px solid rgba(15,15,15,.12)}
+.tiles-cap{font-size:13px;color:var(--ink-2);text-align:center;margin-top:4px;font-weight:500}
+.op{font:400 24px var(--font-ui);color:var(--ink-2)}
+.sum-big{font:500 28px var(--font-ui);color:var(--heading)}
+
+footer{max-width:1440px;margin:0 auto;padding:0 clamp(16px,3vw,40px) 40px;color:var(--ink-2);font-size:14px;line-height:20px}
+footer p{margin:0;max-width:90ch}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the visualisations</a>
+<header class="masthead">
+  <div class="masthead-inner">
+    <img src="https://static.ie.edu/IT/logos/Corporate/Logo_Corporate_Full_White_Filled.svg" alt="IE University">
+    <div>
+      <h1>Euclidean spaces, seen</h1>
+      <p class="sub">An interactive companion to Chapter 2 of the Geometry notes: inner products, orthogonality and orthogonal projections.</p>
+    </div>
+    <div class="tabs" role="tablist" aria-label="Topics">
+      <button class="tab" role="tab" id="tab-ip" aria-controls="panel-ip">Inner products on the plane<small>Notes §2.1 and §2.3.1</small></button>
+      <button class="tab" role="tab" id="tab-dec" aria-controls="panel-dec">Orthogonal decomposition<small>Notes §2.4.1 and §2.4.3</small></button>
+      <button class="tab" role="tab" id="tab-frob" aria-controls="panel-frob">Frobenius inner product<small>Notes §2.1, Example 2.1.1</small></button>
+      <button class="tab" role="tab" id="tab-proj" aria-controls="panel-proj">Projection onto a plane<small>Notes §2.4.4</small></button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+<!-- ===================================================== TAB 1 -->
+<section class="panel" role="tabpanel" id="panel-ip" aria-labelledby="tab-ip" tabindex="0">
+  <div class="panel-head">
+    <h2>Inner products on the plane</h2>
+    <p class="lede">Every inner product on ℝ² has the form ⟨u, v⟩ = uᵀG v, where the Gram matrix G = [⟨e<sub>i</sub>, e<sub>j</sub>⟩] is symmetric and positive definite. Change G and the grid redraws itself so that every cell is a unit square for the new inner product. <span class="ref">Proposition 2.3.5</span></p>
+  </div>
+  <div class="workspace">
+    <div class="controls">
+      <div class="ctl">
+        <h3>Gram matrix</h3>
+        <div class="matrix-row"><span class="mname">G =</span><div id="t1-matrix"></div></div>
+        <div class="chips" id="t1-presets" aria-label="Example Gram matrices"></div>
+        <div id="t1-status" aria-live="polite"></div>
+      </div>
+      <div class="ctl">
+        <h3>Slide the off-diagonal entry</h3>
+        <div class="slider wide"><label for="t1-k">G₁₂ = G₂₁ = k</label><input type="range" id="t1-k" min="-3" max="3" step="0.05"><input type="text" id="t1-k-txt" inputmode="decimal" aria-label="Value of k"></div>
+        <p class="note ed">Lecture 7, Activity 2: for which k is u₁v₁ + k(u₁v₂ + u₂v₁) + 4u₂v₂ an inner product? Set G₁₁ = 1, G₂₂ = 4 and watch the grid as k moves.</p>
+      </div>
+      <div class="ctl">
+        <h3>Show</h3>
+        <label class="toggle"><input type="checkbox" id="t1-std" checked> The standard (dot product) grid, faintly</label>
+        <label class="toggle"><input type="checkbox" id="t1-circle" checked> The unit circle ‖x‖ = 1 of this inner product</label>
+        <label class="toggle"><input type="checkbox" id="t1-measure"> Two vectors u, v to measure</label>
+        <div id="t1-uv" hidden>
+          <div id="t1-u"></div><div id="t1-v"></div>
+          <p class="note ed">Lecture 4, Activity 1: with u = (1, 0) and v = (1, 1), find G so that both have norm 1 and are orthogonal.</p>
+        </div>
+      </div>
+    </div>
+    <div class="stage">
+      <div class="canvas-wrap">
+        <canvas id="t1-canvas" tabindex="0" role="img" aria-label="The plane with the grid of the chosen inner product and the vectors e1 and e2. Use arrow keys to pan and plus or minus to zoom."></canvas>
+        <div class="zoombar"><button class="iconbtn" data-zoom="in" aria-label="Zoom in">+</button><button class="iconbtn" data-zoom="out" aria-label="Zoom out">−</button><button class="iconbtn text" data-zoom="reset" aria-label="Reset view">1:1</button></div>
+      </div>
+      <div class="stage-foot">
+        <div class="legend">
+          <span><i style="background:var(--c-e)"></i>e₁, e₂</span>
+          <span><i style="background:#0032A0;opacity:.55"></i>grid of ⟨·,·⟩</span>
+          <span><i style="background:var(--color-primary-seablue)"></i>unit circle</span>
+          <span id="t1-leg-uv" hidden><i style="background:var(--c-u)"></i>u <i style="background:var(--c-v);margin-left:6px"></i>v</span>
+        </div>
+        <span>Drag the background to pan, scroll or pinch to zoom<span id="t1-drag-hint" hidden>, drag the tips of u and v</span>.</span>
+      </div>
+      <div class="sheet"><h3 class="sheet-title">What this G gives you</h3><div id="t1-rows"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================================== TAB 2 -->
+<section class="panel" role="tabpanel" id="panel-dec" aria-labelledby="tab-dec" tabindex="0" hidden>
+  <div class="panel-head">
+    <h2>Orthogonal decomposition in the plane</h2>
+    <p class="lede">The projection of v on the line L = span{u} is the unique p = λu with ⟨u, v − p⟩ = 0. What is left over, v − p, lies on the orthogonal line L<sup>⊥</sup>. Both pieces, and the very meaning of “orthogonal”, depend on G. <span class="ref">Definition 2.4.2</span></p>
+  </div>
+  <div class="workspace">
+    <div class="controls">
+      <div class="ctl">
+        <h3>Gram matrix</h3>
+        <div class="matrix-row"><span class="mname">G =</span><div id="t2-matrix"></div></div>
+        <div class="chips" id="t2-presets" aria-label="Example Gram matrices"></div>
+        <div id="t2-status" aria-live="polite"></div>
+      </div>
+      <div class="ctl">
+        <h3>Vector and line</h3>
+        <div id="t2-v"></div>
+        <div id="t2-u"></div>
+        <p class="note">L is the line through the origin with direction u. You can also drag the tips of v and u in the picture.</p>
+      </div>
+      <div class="ctl">
+        <h3>Show</h3>
+        <label class="toggle"><input type="checkbox" id="t2-grid" checked> The grid of ⟨·,·⟩</label>
+        <label class="toggle"><input type="checkbox" id="t2-marker" checked> The right angle at p (a unit square of ⟨·,·⟩, shrunk)</label>
+        <label class="toggle"><input type="checkbox" id="t2-ball"> The disc of radius d(v, L) around v</label>
+        <label class="toggle"><input type="checkbox" id="t2-dot"> The dot-product projection, for comparison</label>
+      </div>
+    </div>
+    <div class="stage">
+      <div class="canvas-wrap">
+        <canvas id="t2-canvas" tabindex="0" role="img" aria-label="Orthogonal decomposition of v along the line L and the orthogonal line. The numbers are listed below the picture."></canvas>
+        <div class="zoombar"><button class="iconbtn" data-zoom="in" aria-label="Zoom in">+</button><button class="iconbtn" data-zoom="out" aria-label="Zoom out">−</button><button class="iconbtn text" data-zoom="reset" aria-label="Reset view">1:1</button></div>
+      </div>
+      <div class="stage-foot">
+        <div class="legend">
+          <span><i style="background:var(--c-v)"></i>v</span>
+          <span><i style="background:var(--c-u)"></i>u and L</span>
+          <span><i style="background:var(--c-p)"></i>p = proj<sub>u</sub> v</span>
+          <span style="color:var(--c-q)"><i class="dash"></i><span style="color:var(--ink-2)">L<sup>⊥</sup> and v − p</span></span>
+        </div>
+        <span>Drag the tips of v and u. Drag the background to pan, scroll to zoom.</span>
+      </div>
+      <div class="sheet"><h3 class="sheet-title">The decomposition, step by step</h3><div id="t2-rows"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================================== TAB 3 -->
+<section class="panel" role="tabpanel" id="panel-frob" aria-labelledby="tab-frob" tabindex="0" hidden>
+  <div class="panel-head">
+    <h2>The Frobenius inner product on 2 × 2 matrices</h2>
+    <p class="lede">On 𝓜<sub>2×2</sub>(ℝ), ⟨A, B⟩ = tr(AᵀB) = Σ a<sub>ij</sub>b<sub>ij</sub>: multiply the entries in matching positions and add. The same number appears three ways below: entry by entry, as a trace, and as dot products of columns. <span class="ref">Example 2.1.1 (4)</span></p>
+  </div>
+  <div class="workspace">
+    <div class="controls">
+      <div class="ctl">
+        <h3>Matrices</h3>
+        <div class="matrix-row"><span class="mname" style="color:var(--c-u)">A =</span><div id="t3-A"></div></div>
+        <div class="matrix-row" style="margin-top:10px"><span class="mname" style="color:var(--c-v)">B =</span><div id="t3-B"></div></div>
+        <p class="note">Cells are tinted blue when positive and orange when negative, stronger for larger values.</p>
+        <div class="chips" id="t3-presets" aria-label="Example pairs of matrices"></div>
+      </div>
+      <div class="ctl">
+        <h3>Lecture 7, Activity 1</h3>
+        <p class="note ed" style="margin-top:0">Produce two non-zero orthogonal matrices. Can you choose them with no zero entries? Edit B (or drag its columns) until the check below turns green.</p>
+        <div id="t3-challenge" aria-live="polite"></div>
+      </div>
+    </div>
+    <div class="stage">
+      <div class="duo">
+        <div>
+          <p class="cap">Columns as arrows<small>a₁, a₂ are the columns of A, and b₁, b₂ those of B. Drag their tips.</small></p>
+          <div class="canvas-wrap short">
+            <canvas id="t3-cols" tabindex="0" role="img" aria-label="The columns of A and B drawn as vectors in the plane, with the parallelograms they span."></canvas>
+            <div class="zoombar"><button class="iconbtn" data-zoom="in" aria-label="Zoom in">+</button><button class="iconbtn" data-zoom="out" aria-label="Zoom out">−</button><button class="iconbtn text" data-zoom="reset" aria-label="Reset view">1:1</button></div>
+          </div>
+        </div>
+        <div>
+          <p class="cap">The plane span{A, B}, drawn to scale<small>A flat slice of the 4-dimensional space 𝓜<sub>2×2</sub>: lengths and the angle are the Frobenius ones.</small></p>
+          <div class="canvas-wrap short"><canvas id="t3-span" role="img" aria-label="A and B drawn with their Frobenius lengths and the angle between them, with the projection of B onto A."></canvas></div>
+        </div>
+      </div>
+      <div class="stage-foot">
+        <div class="legend">
+          <span><i style="background:var(--c-u)"></i>A, its columns</span>
+          <span><i style="background:var(--c-v)"></i>B, its columns</span>
+          <span><i style="background:var(--c-p)"></i>proj<sub>A</sub> B</span>
+          <span>solid: first column, dashed: second column</span>
+        </div>
+      </div>
+      <div class="sheet"><h3 class="sheet-title">Three ways to the same number</h3><div id="t3-rows"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================================== TAB 4 -->
+<section class="panel" role="tabpanel" id="panel-proj" aria-labelledby="tab-proj" tabindex="0" hidden>
+  <div class="panel-head">
+    <h2>Orthogonal projection onto a plane</h2>
+    <p class="lede">For a plane W through the origin, u = proj<sub>W</sub> v is the unique vector of W with v − u ∈ W<sup>⊥</sup>. It is the point of W closest to v, so the distance from v to W is ‖v − u‖. <span class="ref">Theorem 2.4.7</span></p>
+  </div>
+  <div class="workspace">
+    <div class="controls">
+      <div class="ctl">
+        <h3>The vector v</h3>
+        <div id="t4-v"></div>
+      </div>
+      <div class="ctl">
+        <h3>The plane W</h3>
+        <div class="seg" role="group" aria-label="How to give the plane"><button type="button" id="t4-mode-span" aria-pressed="true">Spanned by w₁, w₂</button><button type="button" id="t4-mode-eq" aria-pressed="false">By an equation</button></div>
+        <div id="t4-span-in"><div id="t4-w1"></div><div id="t4-w2"></div></div>
+        <div id="t4-eq-in" hidden>
+          <div class="vec" role="group" aria-label="Plane equation coefficients"><input id="t4-a" inputmode="decimal" aria-label="coefficient a"><span class="vname" style="font-style:italic">x</span><span class="punct">+</span><input id="t4-b" inputmode="decimal" aria-label="coefficient b"><span class="vname">y</span><span class="punct">+</span><input id="t4-c" inputmode="decimal" aria-label="coefficient c"><span class="vname">z</span><span class="punct">= 0</span></div>
+        </div>
+        <div id="t4-plane-status" aria-live="polite"></div>
+        <div class="chips" id="t4-presets" aria-label="Example planes"></div>
+      </div>
+      <div class="ctl">
+        <h3>Another point w of W</h3>
+        <div class="slider"><label for="t4-s">s</label><input type="range" id="t4-s" min="-4" max="4" step="0.1"><input type="text" id="t4-s-txt" inputmode="decimal" aria-label="Value of s"></div>
+        <div class="slider"><label for="t4-t">t</label><input type="range" id="t4-t" min="-4" max="4" step="0.1"><input type="text" id="t4-t-txt" inputmode="decimal" aria-label="Value of t"></div>
+        <p class="note">w = s w₁ + t w₂. Compare ‖v − w‖ with the distance ‖v − u‖.</p>
+        <div class="btnrow"><button class="btn ghost" type="button" id="t4-w-to-u">Move w onto u</button><button class="btn ghost" type="button" id="t4-w-rand">Random w</button></div>
+      </div>
+      <div class="ctl">
+        <h3>Inner product</h3>
+        <div class="seg" role="group" aria-label="Inner product on R3"><button type="button" id="t4-ip-dot" aria-pressed="true">Dot product</button><button type="button" id="t4-ip-gram" aria-pressed="false">Gram matrix G</button></div>
+        <div id="t4-gram" hidden>
+          <div class="matrix-row" style="margin-top:12px"><span class="mname">G =</span><div id="t4-matrix"></div></div>
+          <div id="t4-gstatus" aria-live="polite"></div>
+          <p class="note">With another inner product the projection is still the closest point, but v − u no longer looks perpendicular to W on screen.</p>
+        </div>
+      </div>
+      <div class="ctl">
+        <h3>Show</h3>
+        <label class="toggle"><input type="checkbox" id="t4-showw" checked> The point w and its distances</label>
+        <label class="toggle"><input type="checkbox" id="t4-rings" checked> Distance rings on W around u</label>
+        <label class="toggle"><input type="checkbox" id="t4-basis" checked> The orthogonal basis v₁, v₂ of W</label>
+        <label class="toggle"><input type="checkbox" id="t4-perp"> The line W<sup>⊥</sup></label>
+        <label class="toggle"><input type="checkbox" id="t4-dec"> v = u + (v − u) drawn from the origin</label>
+        <label class="toggle"><input type="checkbox" id="t4-axes" checked> Coordinate axes</label>
+      </div>
+    </div>
+    <div class="stage">
+      <div class="canvas-wrap">
+        <canvas id="t4-canvas" tabindex="0" role="img" aria-label="Three-dimensional view of the plane W, the vector v, its orthogonal projection u and a point w of the plane. Drag or use the arrow keys to rotate."></canvas>
+        <div class="viewbar"><button class="btn ghost" type="button" id="t4-view-tri">Face the triangle 0, u, v</button><button class="btn ghost" type="button" id="t4-view-perp">Look along W<sup>⊥</sup></button></div>
+        <div class="zoombar"><button class="iconbtn" data-zoom="in" aria-label="Zoom in">+</button><button class="iconbtn" data-zoom="out" aria-label="Zoom out">−</button><button class="iconbtn text" data-zoom="reset" aria-label="Reset view">1:1</button></div>
+      </div>
+      <div class="stage-foot">
+        <div class="legend">
+          <span><i style="background:var(--c-v)"></i>v</span>
+          <span><i style="background:var(--c-p)"></i>u = proj<sub>W</sub> v</span>
+          <span style="color:var(--c-q)"><i class="dash"></i><span style="color:var(--ink-2)">v − u and W<sup>⊥</sup></span></span>
+          <span><i style="background:var(--c-u)"></i>v₁, v₂</span>
+          <span><i style="background:var(--c-w)"></i>w</span>
+        </div>
+        <span>Drag to rotate, scroll or pinch to zoom. Arrow keys rotate too.</span>
+      </div>
+      <div class="sheet"><h3 class="sheet-title">Computing proj<sub>W</sub> v</h3><div id="t4-rows"></div></div>
+    </div>
+  </div>
+</section>
+</main>
+<footer><p>Built for the Geometry course, School of Science &amp; Technology, IE University. Notation follows the course notes: ⟨u, v⟩ = uᵀG v, ‖u‖ = √⟨u, u⟩, d(u, v) = ‖u − v‖, and proj for orthogonal projections. Values are shown as fractions when they are simple, otherwise rounded to three decimals.</p></footer>
+
+<script>
+'use strict';
+/* =====================================================================
+   Shared helpers
+   ===================================================================== */
+const VIEWS = [];
+const REDUCED = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+const C = {
+  e:'#000066', u:'#0000DB', v:'#D90011', p:'#921AD4', q:'#FF5C00', qInk:'#B03E00',
+  w:'#0097DC', wInk:'#00648F', sea:'#47BFFF', marine:'#0032A0', ink:'#0F0F0F', ink2:'#434445'
+};
+const $ = (s, r = document) => r.querySelector(s);
+function el(tag, attrs = {}, ...kids) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (v === null || v === undefined) continue;
+    if (k === 'class') e.className = v; else if (k === 'text') e.textContent = v; else e.setAttribute(k, v);
+  }
+  for (const k of kids) if (k !== null && k !== undefined) e.append(k);
+  return e;
+}
+const ICON_OK = '<svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="currentColor"/><path d="M5.5 10.5l3 3 6-7" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const ICON_ERR = '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.5l9 16.5H1z" fill="currentColor"/><path d="M10 7.5v5" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/><circle cx="10" cy="15.3" r="1.25" fill="#fff"/></svg>';
+
+/* ---------- numbers ---------- */
+function clean(x) { return Math.abs(x) < 1e-10 ? 0 : x; }
+function fmt(x, d = 3) {
+  if (!isFinite(x)) return '—';
+  x = clean(x);
+  let s = x.toFixed(d);
+  if (s.includes('.')) s = s.replace(/0+$/, '').replace(/\.$/, '');
+  if (s === '-0') s = '0';
+  return s;
+}
+function isShortDecimal(x) { return Math.abs(x * 100 - Math.round(x * 100)) < 1e-7; }
+function toFrac(x, maxQ = 64) {
+  if (!isFinite(x)) return null;
+  for (let q = 1; q <= maxQ; q++) {
+    const p = Math.round(x * q);
+    if (Math.abs(p / q - x) < 1e-9 * Math.max(1, Math.abs(x))) return [p, q];
+  }
+  return null;
+}
+/* TeX for a number: integers and short decimals as they are, other simple rationals as fractions */
+function tn(x) {
+  x = clean(x);
+  if (!isFinite(x)) return '\\text{—}';
+  if (isShortDecimal(x)) return fmt(x, 2);
+  const f = toFrac(x);
+  if (f) return (f[0] < 0 ? '-' : '') + `\\tfrac{${Math.abs(f[0])}}{${f[1]}}`;
+  return fmt(x);
+}
+function isNice(x) { return isShortDecimal(x) || !!toFrac(x); }
+/* TeX for sqrt(s), s >= 0 */
+function sqrtTex(s) {
+  s = clean(s);
+  if (s < 0) return '\\text{undefined}';
+  const r = Math.sqrt(s);
+  if (isNice(r)) return tn(r);
+  if (isNice(s)) return `\\sqrt{${tn(s)}}\\approx ${fmt(r)}`;
+  return fmt(r);
+}
+const par = x => (clean(x) < 0 ? `(${tn(x)})` : tn(x));
+const vt = a => `(${a.map(tn).join(',\\ ')})`;
+const mt = M => `\\begin{bmatrix}${M.map(r => r.map(tn).join('&')).join('\\\\')}\\end{bmatrix}`;
+/* signed linear combination: terms = [[coef, symbol], ...] */
+function linComb(terms) {
+  let s = '';
+  for (const [c0, sym] of terms) {
+    const c = clean(c0);
+    if (c === 0) continue;
+    const a = Math.abs(c);
+    const coef = (Math.abs(a - 1) < 1e-12 && sym) ? '' : tn(a);
+    s += (s === '' ? (c < 0 ? '-' : '') : (c < 0 ? ' - ' : ' + ')) + coef + sym;
+  }
+  return s || '0';
+}
+function parseNum(str) {
+  const s = String(str).trim().replace(/,/g, '.').replace(/−/g, '-');
+  if (s === '') return NaN;
+  const m = s.match(/^([-+]?\d*\.?\d+)\s*\/\s*([-+]?\d*\.?\d+)$/);
+  if (m) return Number(m[1]) / Number(m[2]);
+  return Number(s);
+}
+const fmtIn = x => (isFinite(x) ? fmt(x, 4) : '');
+const deg = r => r * 180 / Math.PI;
+
+/* ---------- linear algebra ---------- */
+const dot = (a, b) => a.reduce((s, x, i) => s + x * b[i], 0);
+const add = (a, b) => a.map((x, i) => x + b[i]);
+const sub = (a, b) => a.map((x, i) => x - b[i]);
+const mul = (k, a) => a.map(x => k * x);
+const matVec = (G, x) => G.map(r => dot(r, x));
+const ip = (G, a, b) => dot(a, matVec(G, b));
+const cross = (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
+const norm = a => Math.hypot(...a);
+const unit = a => { const n = norm(a); return n < 1e-12 ? a.map(() => 0) : mul(1 / n, a); };
+const det2 = M => M[0][0] * M[1][1] - M[0][1] * M[1][0];
+const det3 = M => M[0][0] * (M[1][1] * M[2][2] - M[1][2] * M[2][1]) - M[0][1] * (M[1][0] * M[2][2] - M[1][2] * M[2][0]) + M[0][2] * (M[1][0] * M[2][1] - M[1][1] * M[2][0]);
+function solve3(M, b) {
+  const D = det3(M);
+  return [0, 1, 2].map(k => det3(M.map((r, i) => r.map((x, j) => (j === k ? b[i] : x)))) / D);
+}
+const I2 = () => [[1, 0], [0, 1]];
+const I3 = () => [[1, 0, 0], [0, 1, 0], [0, 0, 1]];
+const copyM = M => M.map(r => r.slice());
+const sameM = (A, B) => A.length === B.length && A.every((r, i) => r.every((x, j) => Math.abs(x - B[i][j]) < 1e-9));
+
+function analyzeGram(G) {
+  const n = G.length;
+  if (G.flat().some(x => !isFinite(x))) return { nan: true, valid: false, sym: false, pd: false, minors: [] };
+  const asym = [];
+  for (let i = 0; i < n; i++) for (let j = i + 1; j < n; j++) if (Math.abs(G[i][j] - G[j][i]) > 1e-9) asym.push([i, j]);
+  const minors = [G[0][0], det2(G)];
+  if (n === 3) minors.push(det3(G));
+  const sym = asym.length === 0;
+  const pd = sym && minors.every(m => m > 1e-12);
+  let witness = null;
+  if (sym && !pd && n === 2) {
+    if (G[0][0] <= 1e-12) witness = [1, 0];
+    else if (G[1][1] <= 1e-12) witness = [0, 1];
+    else witness = [-G[0][1], G[0][0]];
+  }
+  return { nan: false, sym, asym, minors, pd, valid: sym && pd, witness };
+}
+const SUB = ['₁', '₂', '₃'];
+function gramStatusHTML(G, an) { return minus(gramStatusHTML0(G, an)); }
+function gramStatusHTML0(G, an) {
+  if (an.nan) return `<div class="status err">${ICON_ERR}<div>Every entry of G needs a number. Fractions such as 1/2 and decimal commas are fine.</div></div>`;
+  const n = G.length, items = [];
+  if (an.sym) items.push(['ok', 'Symmetric: G<sub>ij</sub> = G<sub>ji</sub>, so ⟨e<sub>i</sub>, e<sub>j</sub>⟩ = ⟨e<sub>j</sub>, e<sub>i</sub>⟩']);
+  else {
+    const [i, j] = an.asym[0];
+    items.push(['bad', `Not symmetric: G${SUB[i]}${SUB[j]} = ${fmt(G[i][j])} but G${SUB[j]}${SUB[i]} = ${fmt(G[j][i])}`]);
+  }
+  const names = ['Δ₁ = G₁₁', 'Δ₂ = det of the top-left 2 × 2 block', 'Δ₃ = det G'];
+  if (n === 2) names[1] = 'Δ₂ = det G';
+  an.minors.forEach((m, k) => items.push([m > 1e-12 ? 'ok' : 'bad', `${names[k]} = ${fmt(m)} ${m > 1e-12 ? '> 0' : '≤ 0'}`]));
+  let html = '<ul class="checks">' + items.map(([k, t]) => `<li class="${k}">${k === 'ok' ? ICON_OK : ICON_ERR}<span>${t}</span></li>`).join('') + '</ul>';
+  if (an.valid) html += `<div class="status ok">${ICON_OK}<div><b>G defines an inner product.</b> It is symmetric and positive definite.</div></div>`;
+  else if (!an.sym) html += `<div class="status err">${ICON_ERR}<div><b>Not an inner product.</b> G must be symmetric, because the inner product is: ⟨u, v⟩ = ⟨v, u⟩. Make the entries mirrored across the diagonal equal.</div></div>`;
+  else {
+    let extra = '';
+    if (an.witness) {
+      const x = an.witness, q = ip(G, x, x);
+      extra = ` For example x = (${fmt(x[0])}, ${fmt(x[1])}) gives ⟨x, x⟩ = ${fmt(q)} ≤ 0. The shaded region shows every such x.`;
+    }
+    html += `<div class="status err">${ICON_ERR}<div><b>Not positive definite.</b> Positivity requires ⟨x, x⟩ &gt; 0 for every x ≠ 0, and by Proposition 2.3.5 that needs all Δ<sub>k</sub> &gt; 0.${extra}</div></div>`;
+  }
+  return html;
+}
+
+/* ---------- KaTeX ---------- */
+function tex(node, s) {
+  if (window.katex) {
+    try { katex.render('\\displaystyle ' + s, node, { throwOnError: false, displayMode: false }); return; } catch (e) { /* fall through */ }
+  }
+  node.textContent = s;
+}
+function renderRows(host, rows, emptyMsg) {
+  host.innerHTML = '';
+  if (!rows.length) { host.append(el('p', { class: 'sheet-empty', text: emptyMsg })); return; }
+  for (const r of rows) {
+    const row = el('div', { class: 'row' });
+    if (r.color) row.style.setProperty('--rule-color', r.color);
+    const lab = el('div', { class: 'row-label' }, r.label);
+    if (r.sub) lab.append(el('small', { text: r.sub }));
+    const body = el('div', { class: 'row-body' });
+    for (const t of [].concat(r.tex || [])) { const m = el('div', { class: 'row-math' }); tex(m, t); body.append(m); }
+    if (r.html) { const h = el('div'); h.innerHTML = r.html; body.append(h); }
+    if (r.text) body.append(el('p', { class: 'row-text', text: minus(r.text) }));
+    row.append(lab, body);
+    host.append(row);
+  }
+}
+function rafThrottle(fn) {
+  let id = 0;
+  return () => { if (!id) id = requestAnimationFrame(() => { id = 0; fn(); }); };
+}
+
+/* ---------- form widgets ---------- */
+function createMatrix(host, { n = 2, values, name = 'G', heat = false, onChange }) {
+  host.innerHTML = '';
+  const wrap = el('div', { class: 'matrix' + (heat ? ' heat' : '') + (n === 3 ? ' three' : ''), role: 'group', 'aria-label': `Matrix ${name}` });
+  const grid = el('div', { class: 'mgrid', style: `grid-template-columns:repeat(${n},auto)` });
+  const inputs = [], cells = [];
+  for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) {
+    const inp = el('input', { type: 'text', inputmode: 'decimal', autocomplete: 'off', spellcheck: 'false', 'aria-label': `${name} entry in row ${i + 1}, column ${j + 1}` });
+    inp.value = fmtIn(values[i][j]);
+    inp.addEventListener('input', emit);
+    const cell = el('div', { class: 'mcell' }, inp);
+    grid.append(cell); inputs.push(inp); cells.push(cell);
+  }
+  wrap.append(el('span', { class: 'br', 'aria-hidden': 'true' }), grid, el('span', { class: 'br r', 'aria-hidden': 'true' }));
+  host.append(wrap);
+  function read() {
+    const M = [];
+    for (let i = 0; i < n; i++) {
+      M.push([]);
+      for (let j = 0; j < n; j++) {
+        const inp = inputs[i * n + j], x = parseNum(inp.value);
+        inp.setAttribute('aria-invalid', isFinite(x) ? 'false' : 'true');
+        M[i].push(x);
+      }
+    }
+    return M;
+  }
+  function paint(M) {
+    if (!heat) return;
+    const vals = M.flat();
+    const m = Math.max(2, ...vals.filter(isFinite).map(Math.abs));
+    cells.forEach((c, k) => { c.style.background = isFinite(vals[k]) ? heatColor(vals[k] / m) : '#fff'; });
+  }
+  function emit() { const M = read(); paint(M); onChange(M); }
+  paint(values);
+  return {
+    set(M) { inputs.forEach((inp, k) => { inp.value = fmtIn(M[Math.floor(k / n)][k % n]); inp.setAttribute('aria-invalid', 'false'); }); paint(M); }
+  };
+}
+function mix(h1, h2, t) {
+  const a = [1, 3, 5].map(i => parseInt(h1.slice(i, i + 2), 16)), b = [1, 3, 5].map(i => parseInt(h2.slice(i, i + 2), 16));
+  return `rgb(${a.map((x, i) => Math.round(x + (b[i] - x) * t)).join(',')})`;
+}
+function heatColor(t) {
+  t = Math.max(-1, Math.min(1, t));
+  return t >= 0 ? mix('#FFFFFF', '#47BFFF', t) : mix('#FFFFFF', '#FF7B31', -t);
+}
+function createVec(host, { name, values, onChange, color = C.ink }) {
+  host.innerHTML = '';
+  const wrap = el('div', { class: 'vec', role: 'group', 'aria-label': `Vector ${name}` });
+  wrap.append(el('span', { class: 'vname', style: `color:${color}`, text: name }), el('span', { class: 'punct', text: '= (' }));
+  const inputs = values.map((x, i) => {
+    const inp = el('input', { type: 'text', inputmode: 'decimal', autocomplete: 'off', 'aria-label': `${name} component ${i + 1}` });
+    inp.value = fmtIn(x);
+    inp.addEventListener('input', () => {
+      const vals = inputs.map(q => parseNum(q.value));
+      inputs.forEach((q, k) => q.setAttribute('aria-invalid', isFinite(vals[k]) ? 'false' : 'true'));
+      if (vals.every(isFinite)) onChange(vals);
+    });
+    return inp;
+  });
+  inputs.forEach((inp, i) => { wrap.append(inp); if (i < inputs.length - 1) wrap.append(el('span', { class: 'punct', text: ',' })); });
+  wrap.append(el('span', { class: 'punct', text: ')' }));
+  host.append(wrap);
+  return { set(vals) { inputs.forEach((q, k) => { if (document.activeElement !== q) q.value = fmtIn(vals[k]); q.setAttribute('aria-invalid', 'false'); }); } };
+}
+function bindSlider(range, txt, { value, onChange }) {
+  const set = x => { range.value = String(x); if (document.activeElement !== txt) txt.value = fmtIn(x); txt.setAttribute('aria-invalid', 'false'); };
+  range.addEventListener('input', () => { const x = Number(range.value); txt.value = fmtIn(x); onChange(x); });
+  txt.addEventListener('input', () => {
+    const x = parseNum(txt.value);
+    txt.setAttribute('aria-invalid', isFinite(x) ? 'false' : 'true');
+    if (isFinite(x)) { range.value = String(x); onChange(x); }
+  });
+  set(value);
+  return { set };
+}
+function presetChips(host, list, onPick) {
+  host.innerHTML = '';
+  const btns = list.map(p => {
+    const b = el('button', { type: 'button', class: 'chip', 'aria-pressed': 'false', text: p.name });
+    b.addEventListener('click', () => onPick(p));
+    host.append(b);
+    return b;
+  });
+  return { mark(test) { btns.forEach((b, i) => b.setAttribute('aria-pressed', test(list[i]) ? 'true' : 'false')); } };
+}
+
+/* =====================================================================
+   2D view with pan, zoom and draggable handles
+   ===================================================================== */
+class PlaneView {
+  constructor(canvas, { scale = 60, draw, minScale = 6, maxScale = 600 } = {}) {
+    this.c = canvas; this.ctx = canvas.getContext('2d');
+    this.scale = this.scale0 = scale; this.cx = 0; this.cy = 0;
+    this.minScale = minScale; this.maxScale = maxScale;
+    this.draw = draw; this.handles = []; this.ptrs = new Map(); this.drag = null; this.w = 0; this.h = 0;
+    new ResizeObserver(() => this.resize()).observe(canvas);
+    canvas.addEventListener('pointerdown', e => this.down(e));
+    canvas.addEventListener('pointermove', e => this.move(e));
+    canvas.addEventListener('pointerup', e => this.up(e));
+    canvas.addEventListener('pointercancel', e => this.up(e));
+    canvas.addEventListener('pointerleave', () => { if (!this.drag) this.c.style.cursor = 'default'; });
+    canvas.addEventListener('wheel', e => { e.preventDefault(); const p = this.local(e); this.zoomTo(this.scale * Math.exp(-e.deltaY * 0.0015), p); }, { passive: false });
+    canvas.addEventListener('keydown', e => this.key(e));
+    const bar = canvas.parentElement.querySelector('.zoombar');
+    if (bar) bar.addEventListener('click', e => {
+      const b = e.target.closest('[data-zoom]'); if (!b) return;
+      const mid = [this.w / 2, this.h / 2];
+      if (b.dataset.zoom === 'in') this.zoomTo(this.scale * 1.4, mid);
+      else if (b.dataset.zoom === 'out') this.zoomTo(this.scale / 1.4, mid);
+      else this.reset();
+    });
+    this.request = rafThrottle(() => this.render());
+    VIEWS.push(this);
+  }
+  resize() {
+    const r = this.c.getBoundingClientRect();
+    if (r.width < 2 || r.height < 2) return;
+    this.w = r.width; this.h = r.height; this.dpr = window.devicePixelRatio || 1;
+    this.c.width = Math.round(r.width * this.dpr); this.c.height = Math.round(r.height * this.dpr);
+    this.render();
+  }
+  toS(x, y) { return [this.w / 2 + (x - this.cx) * this.scale, this.h / 2 - (y - this.cy) * this.scale]; }
+  toW(px, py) { return [(px - this.w / 2) / this.scale + this.cx, -(py - this.h / 2) / this.scale + this.cy]; }
+  local(e) { const r = this.c.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; }
+  render() {
+    if (!this.w) return;
+    const ctx = this.ctx;
+    ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
+    ctx.clearRect(0, 0, this.w, this.h);
+    this.draw(ctx, this);
+  }
+  zoomTo(s, [px, py]) {
+    const before = this.toW(px, py);
+    this.scale = Math.max(this.minScale, Math.min(this.maxScale, s));
+    const after = this.toW(px, py);
+    this.cx += before[0] - after[0]; this.cy += before[1] - after[1];
+    this.request();
+  }
+  reset() { this.scale = this.scale0; this.cx = 0; this.cy = 0; this.request(); }
+  hit(px, py) {
+    for (let i = this.handles.length - 1; i >= 0; i--) {
+      const h = this.handles[i];
+      if (h.enabled && !h.enabled()) continue;
+      const [sx, sy] = this.toS(...h.get());
+      if (Math.hypot(sx - px, sy - py) <= 18) return h;
+    }
+    return null;
+  }
+  down(e) {
+    this.c.setPointerCapture(e.pointerId);
+    const p = this.local(e);
+    this.ptrs.set(e.pointerId, p);
+    if (this.ptrs.size === 2) {
+      const [a, b] = [...this.ptrs.values()];
+      this.drag = { type: 'pinch', d0: Math.hypot(a[0] - b[0], a[1] - b[1]) || 1, s0: this.scale };
+      return;
+    }
+    const h = this.hit(...p);
+    this.drag = h ? { type: 'handle', h } : { type: 'pan', last: p };
+    this.c.style.cursor = h ? 'grabbing' : 'move';
+  }
+  move(e) {
+    const p = this.local(e);
+    if (!this.drag) { this.c.style.cursor = this.hit(...p) ? 'grab' : 'default'; return; }
+    if (this.ptrs.has(e.pointerId)) this.ptrs.set(e.pointerId, p);
+    if (this.drag.type === 'pinch') {
+      if (this.ptrs.size < 2) return;
+      const [a, b] = [...this.ptrs.values()];
+      this.zoomTo(this.drag.s0 * Math.hypot(a[0] - b[0], a[1] - b[1]) / this.drag.d0, [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2]);
+    } else if (this.drag.type === 'handle') {
+      const st = this.drag.h.snap || 0.1;
+      let [x, y] = this.toW(...p);
+      x = Number((Math.round(x / st) * st).toFixed(6)); y = Number((Math.round(y / st) * st).toFixed(6));
+      this.drag.h.set(clean(x), clean(y));
+    } else {
+      const [lx, ly] = this.drag.last;
+      this.cx -= (p[0] - lx) / this.scale; this.cy += (p[1] - ly) / this.scale;
+      this.drag.last = p; this.request();
+    }
+  }
+  up(e) {
+    this.ptrs.delete(e.pointerId);
+    if (this.ptrs.size === 0) { this.drag = null; this.c.style.cursor = 'default'; }
+    else if (this.drag && this.drag.type === 'pinch') this.drag = { type: 'pan', last: [...this.ptrs.values()][0] };
+  }
+  key(e) {
+    const step = 40 / this.scale;
+    const k = e.key;
+    if (k === 'ArrowLeft') this.cx -= step; else if (k === 'ArrowRight') this.cx += step;
+    else if (k === 'ArrowUp') this.cy += step; else if (k === 'ArrowDown') this.cy -= step;
+    else if (k === '+' || k === '=') return this.zoomTo(this.scale * 1.25, [this.w / 2, this.h / 2]), e.preventDefault();
+    else if (k === '-' || k === '_') return this.zoomTo(this.scale / 1.25, [this.w / 2, this.h / 2]), e.preventDefault();
+    else if (k === '0') return this.reset(), e.preventDefault();
+    else return;
+    e.preventDefault(); this.request();
+  }
+  viewRadius() { return Math.hypot(this.w, this.h) / this.scale / 2 + Math.hypot(this.cx, this.cy); }
+}
+
+/* ---------- 2D drawing primitives ---------- */
+function niceStep(raw) {
+  const p = 10 ** Math.floor(Math.log10(raw)), m = raw / p;
+  return (m <= 1 ? 1 : m <= 2 ? 2 : m <= 5 ? 5 : 10) * p;
+}
+const minus = t => String(t).replace(/(^|[\s(=,:;>])-(?=\d|\.\d)/g, '$1−');
+function canvasLabel(ctx, x, y, text, color, { font = "italic 700 17px 'PT Serif', Georgia, serif", align = 'center', baseline = 'middle' } = {}) {
+  text = minus(text);
+  ctx.save();
+  ctx.font = font; ctx.textAlign = align; ctx.textBaseline = baseline;
+  ctx.lineJoin = 'round'; ctx.lineWidth = 4.5; ctx.strokeStyle = 'rgba(255,255,255,0.94)';
+  ctx.strokeText(text, x, y);
+  ctx.fillStyle = color; ctx.fillText(text, x, y);
+  ctx.restore();
+}
+const UI_FONT = "600 13px Montserrat, Arial, sans-serif";
+const DIST_FONT = "700 15px 'PT Serif', Georgia, serif";
+function segW(ctx, V, a, b) { const A = V.toS(...a), B = V.toS(...b); ctx.beginPath(); ctx.moveTo(...A); ctx.lineTo(...B); ctx.stroke(); }
+function lineThrough(ctx, V, p, d) {
+  const n = Math.hypot(...d); if (n < 1e-12) return;
+  const L = (V.viewRadius() + Math.hypot(...p)) * 1.2 / n;
+  segW(ctx, V, [p[0] - L * d[0], p[1] - L * d[1]], [p[0] + L * d[0], p[1] + L * d[1]]);
+}
+function arrow2(ctx, V, from, to, o = {}) {
+  const [x1, y1] = V.toS(...from), [x2, y2] = V.toS(...to);
+  const dx = x2 - x1, dy = y2 - y1, L = Math.hypot(dx, dy);
+  const color = o.color || C.ink;
+  ctx.save();
+  ctx.globalAlpha = o.alpha ?? 1; ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = o.width || 2.6; ctx.lineCap = 'round';
+  if (L > 1) {
+    const ux = dx / L, uy = dy / L, hl = Math.min(o.head || 13, L * 0.45), hw = hl * 0.5;
+    if (o.dash) ctx.setLineDash(o.dash);
+    ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2 - ux * hl * 0.85, y2 - uy * hl * 0.85); ctx.stroke(); ctx.setLineDash([]);
+    ctx.beginPath(); ctx.moveTo(x2, y2); ctx.lineTo(x2 - ux * hl - uy * hw, y2 - uy * hl + ux * hw); ctx.lineTo(x2 - ux * hl + uy * hw, y2 - uy * hl - ux * hw); ctx.closePath(); ctx.fill();
+    if (o.label) {
+      const off = o.labelOffset ?? 17;
+      ctx.restore();
+      canvasLabel(ctx, x2 + ux * off + (o.lx || 0), y2 + uy * off + (o.ly || 0), o.label, o.labelColor || color, o.labelFont ? { font: o.labelFont } : {});
+      return;
+    }
+  }
+  ctx.restore();
+}
+function grabHalo(ctx, V, p, color) {
+  const [x, y] = V.toS(...p);
+  ctx.save(); ctx.globalAlpha = 0.16; ctx.fillStyle = color; ctx.beginPath(); ctx.arc(x, y, 13, 0, 2 * Math.PI); ctx.fill(); ctx.restore();
+}
+function originDot(ctx, V) { const [x, y] = V.toS(0, 0); ctx.save(); ctx.fillStyle = C.ink; ctx.beginPath(); ctx.arc(x, y, 3.2, 0, 7); ctx.fill(); ctx.restore(); }
+function drawStdGrid(ctx, V, { faint = false, ticks = true } = {}) {
+  const [x0, y1] = V.toW(0, 0), [x1, y0] = V.toW(V.w, V.h);
+  const step = Math.max(1, niceStep(16 / V.scale));
+  ctx.save();
+  ctx.lineWidth = 1; ctx.strokeStyle = faint ? 'rgba(136,138,140,0.16)' : 'rgba(136,138,140,0.28)';
+  ctx.beginPath();
+  for (let x = Math.ceil(x0 / step) * step; x <= x1; x += step) { const [sx] = V.toS(x, 0); ctx.moveTo(Math.round(sx) + 0.5, 0); ctx.lineTo(Math.round(sx) + 0.5, V.h); }
+  for (let y = Math.ceil(y0 / step) * step; y <= y1; y += step) { const [, sy] = V.toS(0, y); ctx.moveTo(0, Math.round(sy) + 0.5); ctx.lineTo(V.w, Math.round(sy) + 0.5); }
+  ctx.stroke();
+  ctx.strokeStyle = 'rgba(67,68,69,0.55)'; ctx.lineWidth = 1.2;
+  const [ox, oy] = V.toS(0, 0);
+  ctx.beginPath(); ctx.moveTo(0, oy); ctx.lineTo(V.w, oy); ctx.moveTo(ox, 0); ctx.lineTo(ox, V.h); ctx.stroke();
+  if (ticks) {
+    const ls = Math.max(1, niceStep(56 / V.scale));
+    ctx.font = "500 11px Montserrat, Arial, sans-serif"; ctx.fillStyle = C.ink2; ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+    const ty = Math.min(Math.max(oy + 4, 4), V.h - 16);
+    for (let x = Math.ceil(x0 / ls) * ls; x <= x1; x += ls) { if (Math.abs(x) < 1e-9) continue; ctx.fillText(minus(fmt(x)), V.toS(x, 0)[0], ty); }
+    ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+    const tx = Math.min(Math.max(ox - 5, 26), V.w - 4);
+    for (let y = Math.ceil(y0 / ls) * ls; y <= y1; y += ls) { if (Math.abs(y) < 1e-9) continue; ctx.fillText(minus(fmt(y)), tx, V.toS(0, y)[1]); }
+  }
+  ctx.restore();
+}
+/* grid of lines a f1 + b f2 (a, b integers) */
+function drawFrameGrid(ctx, V, f1, f2, { color = 'rgba(0,50,160,0.30)', axisColor = 'rgba(0,50,160,0.85)' } = {}) {
+  const det = f1[0] * f2[1] - f2[0] * f1[1];
+  if (Math.abs(det) < 1e-12) return;
+  const coords = (x, y) => [(x * f2[1] - f2[0] * y) / det, (f1[0] * y - x * f1[1]) / det];
+  const cs = [[0, 0], [V.w, 0], [0, V.h], [V.w, V.h]].map(([px, py]) => coords(...V.toW(px, py)));
+  const amin = Math.floor(Math.min(...cs.map(c => c[0]))) - 1, amax = Math.ceil(Math.max(...cs.map(c => c[0]))) + 1;
+  const bmin = Math.floor(Math.min(...cs.map(c => c[1]))) - 1, bmax = Math.ceil(Math.max(...cs.map(c => c[1]))) + 1;
+  const spB = Math.abs(det) / Math.hypot(...f1) * V.scale, spA = Math.abs(det) / Math.hypot(...f2) * V.scale;
+  const stepFor = sp => { let k = 1; for (const c of [1, 2, 5, 10, 20, 50, 100, 200, 500]) { k = c; if (sp * c >= 7) break; } return k; };
+  const kA = stepFor(spA), kB = stepFor(spB);
+  if ((amax - amin) / kA > 3000 || (bmax - bmin) / kB > 3000) return;
+  const P = (a, b) => [a * f1[0] + b * f2[0], a * f1[1] + b * f2[1]];
+  ctx.save(); ctx.lineWidth = 1; ctx.strokeStyle = color;
+  ctx.beginPath();
+  for (let b = Math.ceil(bmin / kB) * kB; b <= bmax; b += kB) { if (b === 0) continue; const A = V.toS(...P(amin, b)), B = V.toS(...P(amax, b)); ctx.moveTo(...A); ctx.lineTo(...B); }
+  for (let a = Math.ceil(amin / kA) * kA; a <= amax; a += kA) { if (a === 0) continue; const A = V.toS(...P(a, bmin)), B = V.toS(...P(a, bmax)); ctx.moveTo(...A); ctx.lineTo(...B); }
+  ctx.stroke();
+  ctx.strokeStyle = axisColor; ctx.lineWidth = 1.6;
+  ctx.beginPath();
+  let A = V.toS(...P(amin, 0)), B = V.toS(...P(amax, 0)); ctx.moveTo(...A); ctx.lineTo(...B);
+  A = V.toS(...P(0, bmin)); B = V.toS(...P(0, bmax)); ctx.moveTo(...A); ctx.lineTo(...B);
+  ctx.stroke(); ctx.restore();
+}
+/* G-orthonormal basis: f1 along e1, f2 along the G-orthogonal direction (-G12, G11) */
+function gramBasis(G) {
+  const n1 = Math.sqrt(G[0][0]);
+  const w = [-G[0][1], G[0][0]], nw = Math.sqrt(ip(G, w, w));
+  return [[1 / n1, 0], [w[0] / nw, w[1] / nw]];
+}
+function drawEllipse(ctx, V, c, f1, f2, r, { stroke, fill, width = 2, dash = null } = {}) {
+  ctx.save(); ctx.beginPath();
+  for (let i = 0; i <= 200; i++) {
+    const t = 2 * Math.PI * i / 200;
+    const p = V.toS(c[0] + r * (Math.cos(t) * f1[0] + Math.sin(t) * f2[0]), c[1] + r * (Math.cos(t) * f1[1] + Math.sin(t) * f2[1]));
+    i ? ctx.lineTo(...p) : ctx.moveTo(...p);
+  }
+  ctx.closePath();
+  if (fill) { ctx.fillStyle = fill; ctx.fill(); }
+  if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = width; if (dash) ctx.setLineDash(dash); ctx.stroke(); }
+  ctx.restore();
+}
+/* where a line p + t d leaves the canvas (inset), for placing a label */
+function lineLabelPoint(V, p, d, inset = 30) {
+  const P0 = V.toS(...p), P1 = V.toS(p[0] + d[0], p[1] + d[1]);
+  const D = [P1[0] - P0[0], P1[1] - P0[1]];
+  let lo = -Infinity, hi = Infinity;
+  for (const [k, minv, maxv] of [[0, inset, V.w - inset - 50], [1, inset, V.h - inset]]) {
+    if (Math.abs(D[k]) < 1e-9) { if (P0[k] < minv || P0[k] > maxv) return null; continue; }
+    let t1 = (minv - P0[k]) / D[k], t2 = (maxv - P0[k]) / D[k];
+    if (t1 > t2) [t1, t2] = [t2, t1];
+    lo = Math.max(lo, t1); hi = Math.min(hi, t2);
+  }
+  if (lo > hi) return null;
+  const t = (D[1] < 0 || (Math.abs(D[1]) < 1e-9 && D[0] > 0)) ? hi : lo; // prefer the upper/right end
+  return [P0[0] + t * D[0], P0[1] + t * D[1]];
+}
+
+/* =====================================================================
+   Tab routing
+   ===================================================================== */
+function initTabs() {
+  const tabs = [...document.querySelectorAll('[role=tab]')];
+  function select(t, focus, initial) {
+    tabs.forEach(x => {
+      const on = x === t;
+      x.setAttribute('aria-selected', on ? 'true' : 'false');
+      x.tabIndex = on ? 0 : -1;
+      document.getElementById(x.getAttribute('aria-controls')).hidden = !on;
+    });
+    if (focus) t.focus();
+    if (!initial) { try { history.replaceState(null, '', '#' + t.id.replace('tab-', '')); } catch (e) { /* file:// in some browsers */ } }
+    requestAnimationFrame(() => VIEWS.forEach(v => v.resize()));
+  }
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => select(t));
+    t.addEventListener('keydown', e => {
+      let j = null;
+      if (e.key === 'ArrowRight') j = (i + 1) % tabs.length;
+      else if (e.key === 'ArrowLeft') j = (i - 1 + tabs.length) % tabs.length;
+      else if (e.key === 'Home') j = 0; else if (e.key === 'End') j = tabs.length - 1;
+      if (j !== null) { e.preventDefault(); select(tabs[j], true); }
+    });
+  });
+  const h = location.hash.slice(1);
+  select(tabs.find(t => t.id === h || t.id === 'tab-' + h) || tabs[0], false, true);
+}
+
+const PRESETS2 = [
+  { name: 'Dot product', G: [[1, 0], [0, 1]] },
+  { name: 'Weighted', G: [[1, 0], [0, 2]] },
+  { name: 'Perturbed', G: [[1, -1], [-1, 2]] },
+  { name: 'Example 2.3.4', G: [[2, 1], [1, 2]] },
+  { name: 'Minkowski', G: [[1, 0], [0, -1]] },
+  { name: 'Not symmetric', G: [[1, 1], [0, 1]] }
+];
+
+/* =====================================================================
+   TAB 1: inner products on the plane
+   ===================================================================== */
+function initTab1() {
+  const S = { G: [[1, -1], [-1, 2]], u: [1, 0], v: [1, 1], showStd: true, showCircle: true, showMeasure: false };
+  S.an = analyzeGram(S.G);
+  const mat = createMatrix($('#t1-matrix'), { values: S.G, name: 'G', onChange: M => { S.G = M; update(true); } });
+  const chips = presetChips($('#t1-presets'), PRESETS2, p => { S.G = copyM(p.G); mat.set(S.G); update(); });
+  const kSlider = bindSlider($('#t1-k'), $('#t1-k-txt'), { value: -1, onChange: k => { S.G[0][1] = k; S.G[1][0] = k; mat.set(S.G); update(); } });
+  const uIn = createVec($('#t1-u'), { name: 'u', values: S.u, color: C.u, onChange: x => { S.u = x; update(); } });
+  const vIn = createVec($('#t1-v'), { name: 'v', values: S.v, color: C.v, onChange: x => { S.v = x; update(); } });
+  $('#t1-std').addEventListener('change', e => { S.showStd = e.target.checked; view.request(); });
+  $('#t1-circle').addEventListener('change', e => { S.showCircle = e.target.checked; view.request(); });
+  $('#t1-measure').addEventListener('change', e => {
+    S.showMeasure = e.target.checked;
+    $('#t1-uv').hidden = !S.showMeasure; $('#t1-leg-uv').hidden = !S.showMeasure; $('#t1-drag-hint').hidden = !S.showMeasure;
+    update();
+  });
+
+  const view = new PlaneView($('#t1-canvas'), { scale: 72, draw });
+  view.handles = [
+    { get: () => S.u, set: (x, y) => { S.u = [x, y]; uIn.set(S.u); update(); }, enabled: () => S.showMeasure },
+    { get: () => S.v, set: (x, y) => { S.v = [x, y]; vIn.set(S.v); update(); }, enabled: () => S.showMeasure }
+  ];
+
+  const renderReadouts = rafThrottle(() => renderRows($('#t1-rows'), rows(), 'Once G is symmetric and positive definite, its inner product, norm and the geometry of e₁ and e₂ appear here.'));
+  function update(fromMatrix) {
+    S.an = analyzeGram(S.G);
+    $('#t1-status').innerHTML = gramStatusHTML(S.G, S.an);
+    chips.mark(p => !S.an.nan && sameM(p.G, S.G));
+    if (!S.an.nan && Math.abs(S.G[0][1] - S.G[1][0]) < 1e-9) kSlider.set(S.G[0][1]);
+    view.request(); renderReadouts();
+  }
+
+  function draw(ctx, V) {
+    const an = S.an, G = S.G;
+    if (S.showStd || !an.valid) drawStdGrid(ctx, V, { faint: an.valid });
+    if (an.valid) {
+      const [f1, f2] = gramBasis(G);
+      drawFrameGrid(ctx, V, f1, f2);
+      if (S.showCircle) {
+        drawEllipse(ctx, V, [0, 0], f1, f2, 1, { stroke: C.sea, width: 2.5, fill: 'rgba(71,191,255,0.10)' });
+        let best = null, bestD = -1;
+        for (let i = 0; i < 72; i++) {
+          const t = 2 * Math.PI * i / 72, pt = [Math.cos(t) * f1[0] + Math.sin(t) * f2[0], Math.cos(t) * f1[1] + Math.sin(t) * f2[1]];
+          const dd = Math.min(Math.hypot(pt[0] - 1, pt[1]), Math.hypot(pt[0], pt[1] - 1), Math.hypot(pt[0] - 0.5, pt[1]), Math.hypot(pt[0], pt[1] - 0.5));
+          if (dd > bestD) { bestD = dd; best = pt; }
+        }
+        const lp = V.toS(...best), nb = Math.hypot(...best) || 1;
+        canvasLabel(ctx, lp[0] + best[0] / nb * 34, lp[1] - best[1] / nb * 22, '‖x‖ = 1', C.marine, { font: "italic 700 15px 'PT Serif', Georgia, serif" });
+      }
+    } else if (an.sym && !an.nan) {
+      shadeNonPositive(ctx, V, G);
+      if (an.witness) arrow2(ctx, V, [0, 0], an.witness, { color: '#A00A1F', width: 2.4, dash: [6, 4], label: 'x', labelColor: '#A00A1F', lx: -16 });
+    }
+    arrow2(ctx, V, [0, 0], [1, 0], { color: C.e, width: 3.2, label: 'e₁', ly: 10 });
+    arrow2(ctx, V, [0, 0], [0, 1], { color: C.e, width: 3.2, label: 'e₂', lx: 14, ly: 4 });
+    if (S.showMeasure) {
+      arrow2(ctx, V, [0, 0], S.u, { color: C.u, width: 2.6, label: 'u' });
+      arrow2(ctx, V, [0, 0], S.v, { color: C.v, width: 2.6, label: 'v' });
+      grabHalo(ctx, V, S.u, C.u); grabHalo(ctx, V, S.v, C.v);
+    }
+    originDot(ctx, V);
+  }
+  function shadeNonPositive(ctx, V, G) {
+    const R = V.viewRadius() * 1.3, N = 720;
+    const q = t => { const c = Math.cos(t), s = Math.sin(t); return G[0][0] * c * c + 2 * G[0][1] * c * s + G[1][1] * s * s; };
+    ctx.save(); ctx.fillStyle = 'rgba(243,18,51,0.11)'; ctx.strokeStyle = 'rgba(160,10,31,0.7)'; ctx.lineWidth = 1.5; ctx.setLineDash([5, 4]);
+    let start = -1;
+    for (let i = 0; i < N; i++) if (q(2 * Math.PI * i / N) > 1e-12) { start = i; break; }
+    const runs = [];
+    if (start < 0) { ctx.fillRect(0, 0, V.w, V.h); runs.push(null); }
+    else {
+      let run = [];
+      for (let k = 1; k <= N; k++) {
+        const t = 2 * Math.PI * ((start + k) % N) / N;
+        if (q(t) <= 1e-12) run.push(t);
+        else if (run.length) { runs.push(run); run = []; }
+      }
+      if (run.length) runs.push(run);
+    }
+    const h = Math.PI / N;
+    for (const run of runs) {
+      if (!run) continue;
+      // unwrap angles for continuity
+      const ts = [run[0]];
+      for (let i = 1; i < run.length; i++) { let t = run[i]; while (t < ts[i - 1] - Math.PI) t += 2 * Math.PI; ts.push(t); }
+      const a0 = ts[0] - h, a1 = ts[ts.length - 1] + h;
+      const O = V.toS(0, 0);
+      ctx.beginPath(); ctx.moveTo(...O);
+      for (let t = a0; t <= a1 + 1e-9; t += (a1 - a0) / 60) ctx.lineTo(...V.toS(R * Math.cos(t), R * Math.sin(t)));
+      ctx.closePath(); ctx.fill();
+      ctx.beginPath(); ctx.moveTo(...O); ctx.lineTo(...V.toS(R * Math.cos(a0), R * Math.sin(a0)));
+      ctx.moveTo(...O); ctx.lineTo(...V.toS(R * Math.cos(a1), R * Math.sin(a1))); ctx.stroke();
+      const am = (a0 + a1) / 2, rr = Math.min(V.w, V.h) * 0.34 / V.scale;
+      const lp = V.toS(rr * Math.cos(am), rr * Math.sin(am));
+      canvasLabel(ctx, lp[0], lp[1], '⟨x, x⟩ ≤ 0', '#A00A1F', { font: "700 14px Montserrat, Arial, sans-serif" });
+    }
+    ctx.restore();
+  }
+  function rows() {
+    const G = S.G, an = S.an;
+    if (!an.valid) return [];
+    const [[a, b], [c, d]] = G, out = [];
+    out.push({
+      label: 'The inner product', sub: 'Expand uᵀG v', color: C.e,
+      tex: [`\\langle \\mathbf u,\\mathbf v\\rangle=\\mathbf u^{T}G\\,\\mathbf v = G_{11}u_1v_1+G_{12}u_1v_2+G_{21}u_2v_1+G_{22}u_2v_2`,
+        `\\langle \\mathbf u,\\mathbf v\\rangle = ${linComb([[a, 'u_1v_1'], [b, 'u_1v_2'], [c, 'u_2v_1'], [d, 'u_2v_2']])}`]
+    });
+    out.push({ label: 'Its norm', sub: '‖u‖ = √⟨u, u⟩', color: C.e, tex: `\\|\\mathbf u\\|^2=\\langle \\mathbf u,\\mathbf u\\rangle = ${linComb([[a, 'u_1^2'], [2 * b, 'u_1u_2'], [d, 'u_2^2']])}` });
+    const n1 = Math.sqrt(a), n2 = Math.sqrt(d), cs = b / (n1 * n2), ang = deg(Math.acos(Math.max(-1, Math.min(1, cs))));
+    out.push({
+      label: 'What G says about e₁ and e₂', sub: 'G is the ruler of the plane', color: C.e,
+      tex: `\\|\\mathbf e_1\\|=\\sqrt{G_{11}}=${sqrtTex(a)},\\qquad \\|\\mathbf e_2\\|=\\sqrt{G_{22}}=${sqrtTex(d)},\\qquad \\cos\\theta=\\frac{G_{12}}{\\|\\mathbf e_1\\|\\,\\|\\mathbf e_2\\|}=${fmt(cs)}\\ \\Rightarrow\\ \\theta\\approx ${fmt(ang, 1)}^{\\circ}`,
+      text: Math.abs(b) < 1e-12 ? 'G₁₂ = 0, so e₁ and e₂ are orthogonal for this inner product too.' : `On screen e₁ and e₂ look perpendicular, but for this inner product they meet at about ${fmt(ang, 1)}°.`
+    });
+    const [f1, f2] = gramBasis(G), w = [-b, a];
+    out.push({
+      label: 'How the grid is built', sub: 'An orthonormal basis f₁, f₂', color: C.marine,
+      tex: [`\\mathbf f_1=\\frac{\\mathbf e_1}{\\|\\mathbf e_1\\|}=${vt(f1)},\\qquad \\mathbf e_1^{\\perp}=(-G_{12},\\,G_{11})=${vt(w)}`,
+        `\\langle \\mathbf e_1,\\mathbf e_1^{\\perp}\\rangle=G_{11}(-G_{12})+G_{12}G_{11}=0`,
+        `\\mathbf f_2=\\frac{\\mathbf e_1^{\\perp}}{\\|\\mathbf e_1^{\\perp}\\|}=${vt(f2)},\\qquad \\|\\mathbf e_1^{\\perp}\\|^2=G_{11}\\det G=${tn(a * det2(G))}`],
+      text: `Horizontal lines run along f₁ and oblique lines along f₂, one unit apart in both directions, so every cell is a unit square for this inner product. On screen each cell has area 1/√det G ≈ ${fmt(1 / Math.sqrt(det2(G)))}.`
+    });
+    if (S.showMeasure) {
+      const u = S.u, v = S.v, uu = ip(G, u, u), vv = ip(G, v, v), uv = ip(G, u, v);
+      const r = { label: 'Measuring u and v', sub: 'Norms, angle and distance', color: C.u, tex: [`\\mathbf u=${vt(u)},\\quad \\mathbf v=${vt(v)},\\qquad \\langle \\mathbf u,\\mathbf v\\rangle=${tn(uv)},\\quad \\|\\mathbf u\\|=${sqrtTex(uu)},\\quad \\|\\mathbf v\\|=${sqrtTex(vv)}`] };
+      if (uu > 1e-12 && vv > 1e-12) {
+        const ct = uv / Math.sqrt(uu * vv), th = deg(Math.acos(Math.max(-1, Math.min(1, ct))));
+        const cd = dot(u, v) / (norm(u) * norm(v)), thd = deg(Math.acos(Math.max(-1, Math.min(1, cd))));
+        r.tex.push(`\\cos\\theta=\\frac{\\langle \\mathbf u,\\mathbf v\\rangle}{\\|\\mathbf u\\|\\,\\|\\mathbf v\\|}=${fmt(ct)}\\ \\Rightarrow\\ \\theta\\approx ${fmt(th, 1)}^{\\circ}\\qquad(\\text{with the dot product: } ${fmt(thd, 1)}^{\\circ})`);
+      }
+      const dd = sub(u, v);
+      r.tex.push(`d(\\mathbf u,\\mathbf v)=\\|\\mathbf u-\\mathbf v\\|=${sqrtTex(ip(G, dd, dd))}`);
+      const facts = [];
+      if (Math.abs(uv) < 1e-9) facts.push('u and v are orthogonal');
+      if (Math.abs(uu - 1) < 1e-9) facts.push('u has norm 1');
+      if (Math.abs(vv - 1) < 1e-9) facts.push('v has norm 1');
+      if (facts.length) r.html = `<span class="badge ok">${ICON_OK}${facts.join(', ')}</span>`;
+      out.push(r);
+    }
+    return out;
+  }
+  update();
+}
+
+/* =====================================================================
+   TAB 2: orthogonal decomposition
+   ===================================================================== */
+function initTab2() {
+  const S = { G: [[2, 1], [1, 2]], v: [1, 3], u: [3, 1], showGrid: true, showMarker: true, showBall: false, showDot: false };
+  const mat = createMatrix($('#t2-matrix'), { values: S.G, name: 'G', onChange: M => { S.G = M; update(); } });
+  const chips = presetChips($('#t2-presets'), PRESETS2.slice(0, 5), p => { S.G = copyM(p.G); mat.set(S.G); update(); });
+  const vIn = createVec($('#t2-v'), { name: 'v', values: S.v, color: C.v, onChange: x => { S.v = x; update(); } });
+  const uIn = createVec($('#t2-u'), { name: 'u', values: S.u, color: C.u, onChange: x => { S.u = x; update(); } });
+  for (const [id, key] of [['#t2-grid', 'showGrid'], ['#t2-marker', 'showMarker'], ['#t2-ball', 'showBall'], ['#t2-dot', 'showDot']])
+    $(id).addEventListener('change', e => { S[key] = e.target.checked; update(); });
+
+  const view = new PlaneView($('#t2-canvas'), { scale: 62, draw });
+  view.handles = [
+    { get: () => S.u, set: (x, y) => { S.u = [x, y]; uIn.set(S.u); update(); } },
+    { get: () => S.v, set: (x, y) => { S.v = [x, y]; vIn.set(S.v); update(); } }
+  ];
+  let R = {};
+  function compute() {
+    const G = S.G, an = analyzeGram(G), r = { an };
+    if (!an.valid) return r;
+    const u = S.u, v = S.v, uu = ip(G, u, u);
+    if (uu < 1e-12) { r.zero = true; return r; }
+    const uv = ip(G, u, v), lam = uv / uu, p = mul(lam, u), q = sub(v, p);
+    const Gu = matVec(G, u), up = [-Gu[1], Gu[0]], upup = ip(G, up, up), upv = ip(G, up, v), mu = upv / upup;
+    Object.assign(r, { ok: true, u, v, uu, uv, lam, p, q, Gu, up, upup, upv, mu, vv: ip(G, v, v), pp: ip(G, p, p), qq: ip(G, q, q), pq: ip(G, p, q) });
+    r.basis = gramBasis(G);
+    r.pDot = mul(dot(u, v) / dot(u, u), u);
+    return r;
+  }
+  const renderReadouts = rafThrottle(() => renderRows($('#t2-rows'), rows(), R.zero ? 'Choose a non-zero direction u: the zero vector does not span a line.' : 'Once G defines an inner product, the decomposition v = p + (v − p) appears here.'));
+  function update() {
+    R = compute();
+    $('#t2-status').innerHTML = gramStatusHTML(S.G, R.an);
+    chips.mark(p => !R.an.nan && sameM(p.G, S.G));
+    view.request(); renderReadouts();
+  }
+  function draw(ctx, V) {
+    drawStdGrid(ctx, V, { faint: true, ticks: !(R.ok && S.showGrid) });
+    if (R.ok) {
+      const [f1, f2] = R.basis;
+      if (S.showGrid) drawFrameGrid(ctx, V, f1, f2, { color: 'rgba(0,50,160,0.16)', axisColor: 'rgba(0,50,160,0.40)' });
+      if (S.showBall) {
+        const d = Math.sqrt(R.qq);
+        drawEllipse(ctx, V, R.v, f1, f2, d, { fill: 'rgba(71,191,255,0.16)', stroke: C.marine, width: 1.6, dash: [5, 4] });
+      }
+      // lines L and L-perp
+      ctx.save();
+      ctx.strokeStyle = C.u; ctx.lineWidth = 1.6; ctx.globalAlpha = 0.75; lineThrough(ctx, V, [0, 0], R.u);
+      ctx.strokeStyle = C.q; ctx.setLineDash([8, 6]); ctx.globalAlpha = 0.9; lineThrough(ctx, V, [0, 0], R.up);
+      ctx.restore();
+      const lpL = lineLabelPoint(V, [0, 0], R.u), lpP = lineLabelPoint(V, [0, 0], R.up);
+      if (lpL) canvasLabel(ctx, lpL[0], lpL[1] - 12, 'L', C.u, { font: "italic 700 18px 'PT Serif', Georgia, serif" });
+      if (lpP) canvasLabel(ctx, lpP[0] + 6, lpP[1] - 12, 'L⊥', C.qInk, { font: "italic 700 18px 'PT Serif', Georgia, serif" });
+      if (S.showDot) {
+        arrow2(ctx, V, [0, 0], R.pDot, { color: '#888A8C', width: 2.2, dash: [5, 4] });
+        ctx.save(); ctx.strokeStyle = '#888A8C'; ctx.setLineDash([3, 4]); ctx.lineWidth = 1.5; segW(ctx, V, R.pDot, R.v); ctx.restore();
+        const lp = V.toS(...R.pDot); canvasLabel(ctx, lp[0], lp[1] + 18, 'dot-product projection', C.ink2, { font: UI_FONT });
+      }
+      // parallelogram completion
+      ctx.save(); ctx.strokeStyle = C.q; ctx.lineWidth = 2; ctx.setLineDash([6, 5]); segW(ctx, V, R.p, R.v); ctx.restore();
+      ctx.save(); ctx.strokeStyle = C.p; ctx.globalAlpha = 0.6; ctx.lineWidth = 1.4; ctx.setLineDash([3, 5]); segW(ctx, V, R.q, R.v); ctx.restore();
+      if (S.showMarker && R.qq > 1e-10) {
+        const gn = x => Math.sqrt(ip(S.G, x, x));
+        const a = mul(-(R.lam >= 0 ? 1 : -1) / gn(R.u), R.u), b = mul(1 / Math.sqrt(R.qq), R.q);
+        const k = 13 / (V.scale * Math.max(norm(a), norm(b)));
+        const P1 = add(R.p, mul(k, a)), P2 = add(P1, mul(k, b)), P3 = add(R.p, mul(k, b));
+        ctx.save(); ctx.strokeStyle = C.ink; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(...V.toS(...P1)); ctx.lineTo(...V.toS(...P2)); ctx.lineTo(...V.toS(...P3)); ctx.stroke(); ctx.restore();
+      }
+      arrow2(ctx, V, [0, 0], S.u, { color: C.u, width: 2.2, label: 'u', labelOffset: 20 });
+      arrow2(ctx, V, [0, 0], R.q, { color: C.q, width: 3, label: 'v − p', labelColor: C.qInk, labelFont: "italic 700 16px 'PT Serif', Georgia, serif" });
+      arrow2(ctx, V, [0, 0], R.p, { color: C.p, width: 3.4, label: 'p', labelOffset: 18 });
+    } else {
+      ctx.save(); ctx.strokeStyle = C.u; ctx.globalAlpha = 0.6; ctx.lineWidth = 1.5; lineThrough(ctx, V, [0, 0], S.u); ctx.restore();
+      arrow2(ctx, V, [0, 0], S.u, { color: C.u, width: 2.2, label: 'u' });
+    }
+    arrow2(ctx, V, [0, 0], S.v, { color: C.v, width: 3, label: 'v' });
+    grabHalo(ctx, V, S.u, C.u); grabHalo(ctx, V, S.v, C.v);
+    originDot(ctx, V);
+  }
+  function rows() {
+    if (!R.ok) return [];
+    const B = s => `\\mathbf{${s}}`;
+    const out = [];
+    out.push({
+      label: 'Projection onto L', sub: 'Solve ⟨u, v − λu⟩ = 0', color: C.p,
+      tex: [`\\lambda=\\frac{\\langle ${B('u')},${B('v')}\\rangle}{\\langle ${B('u')},${B('u')}\\rangle}=\\frac{${tn(R.uv)}}{${tn(R.uu)}}=${tn(R.lam)},\\qquad ${B('p')}=\\operatorname{proj}_{${B('u')}}${B('v')}=\\lambda ${B('u')}=${vt(R.p)}`]
+    });
+    out.push({
+      label: 'A direction for L⊥', sub: 'Any u⊥ with ⟨u, u⊥⟩ = 0', color: C.q,
+      tex: `G${B('u')}=${vt(R.Gu)},\\qquad ${B('u')}^{\\perp}=\\big(-(G${B('u')})_2,\\ (G${B('u')})_1\\big)=${vt(R.up)},\\qquad \\langle ${B('u')},${B('u')}^{\\perp}\\rangle=${B('u')}^{T}G\\,${B('u')}^{\\perp}=0`,
+      text: Math.abs(dot(R.u, R.up)) > 1e-9 ? `Notice that u · u⊥ = ${fmt(dot(R.u, R.up))} ≠ 0: orthogonal for G does not mean perpendicular on screen.` : null
+    });
+    out.push({
+      label: 'Projection onto L⊥', sub: 'The same formula with u⊥', color: C.q,
+      tex: `\\mu=\\frac{\\langle ${B('u')}^{\\perp},${B('v')}\\rangle}{\\langle ${B('u')}^{\\perp},${B('u')}^{\\perp}\\rangle}=\\frac{${tn(R.upv)}}{${tn(R.upup)}}=${tn(R.mu)},\\qquad \\operatorname{proj}_{${B('u')}^{\\perp}}${B('v')}=\\mu ${B('u')}^{\\perp}=${vt(R.q)}=${B('v')}-${B('p')}`
+    });
+    out.push({
+      label: 'Checks', sub: 'v = p + (v − p), and the pieces are orthogonal', color: C.ink2,
+      tex: [`${B('p')}+(${B('v')}-${B('p')})=${vt(R.p)}+${vt(R.q)}=${vt(add(R.p, R.q))}=${B('v')},\\qquad \\langle ${B('p')},${B('v')}-${B('p')}\\rangle=${tn(R.pq)}`,
+        `\\text{Pythagoras:}\\quad \\|${B('v')}\\|^2=${tn(R.vv)}=${tn(R.pp)}+${tn(R.qq)}=\\|${B('p')}\\|^2+\\|${B('v')}-${B('p')}\\|^2`]
+    });
+    out.push({
+      label: 'Distances', sub: 'p is the point of L closest to v', color: C.marine,
+      tex: `d(${B('v')},L)=\\|${B('v')}-${B('p')}\\|=${sqrtTex(R.qq)},\\qquad d(${B('v')},L^{\\perp})=\\|${B('p')}\\|=${sqrtTex(R.pp)}`,
+      text: S.showBall ? 'The dashed curve is the circle of radius d(v, L) around v for this inner product. It touches L exactly at p: no other point of L is that close.' : 'Turn on “the disc of radius d(v, L) around v” to see why p is the closest point.'
+    });
+    if (S.showDot) {
+      const gap = Math.sqrt(ip(S.G, sub(R.pDot, R.p), sub(R.pDot, R.p)));
+      out.push({ label: 'With the dot product', sub: 'For comparison only', color: '#888A8C', tex: `\\frac{${B('u')}\\cdot ${B('v')}}{${B('u')}\\cdot ${B('u')}}\\,${B('u')}=${vt(R.pDot)}`, text: gap < 1e-9 ? 'Here both projections agree.' : 'A different point of L: changing the inner product changes which point counts as the foot of the perpendicular.' });
+    }
+    return out;
+  }
+  update();
+}
+
+/* =====================================================================
+   TAB 3: Frobenius inner product
+   ===================================================================== */
+function initTab3() {
+  const S = { A: [[1, 2], [-1, 1]], B: [[1, -1], [3, 2]] };
+  const mA = createMatrix($('#t3-A'), { values: S.A, name: 'A', heat: true, onChange: M => { S.A = M; update(); } });
+  const mB = createMatrix($('#t3-B'), { values: S.B, name: 'B', heat: true, onChange: M => { S.B = M; update(); } });
+  const PRE = [
+    { name: 'Identity and a rotation', A: [[1, 0], [0, 1]], B: [[0, 1], [-1, 0]] },
+    { name: 'Symmetric and antisymmetric', A: [[2, 1], [1, 3]], B: [[0, 2], [-2, 0]] },
+    { name: 'No zero entries', A: [[1, 1], [1, 1]], B: [[1, -1], [1, -1]] },
+    { name: 'Parallel', A: [[1, 2], [0, -1]], B: [[-2, -4], [0, 2]] },
+    { name: 'Random', random: true }
+  ];
+  const chips = presetChips($('#t3-presets'), PRE, p => {
+    if (p.random) {
+      const r = () => Math.round((Math.random() * 6 - 3) * 2) / 2;
+      S.A = [[r(), r()], [r(), r()]]; S.B = [[r(), r()], [r(), r()]];
+    } else { S.A = copyM(p.A); S.B = copyM(p.B); }
+    mA.set(S.A); mB.set(S.B); update();
+  });
+  const cols = new PlaneView($('#t3-cols'), { scale: 44, draw: drawCols });
+  const setCol = (M, k, x, y) => { M[0][k] = x; M[1][k] = y; };
+  cols.handles = [
+    { get: () => [S.A[0][0], S.A[1][0]], set: (x, y) => { setCol(S.A, 0, x, y); mA.set(S.A); update(); }, snap: 0.5 },
+    { get: () => [S.A[0][1], S.A[1][1]], set: (x, y) => { setCol(S.A, 1, x, y); mA.set(S.A); update(); }, snap: 0.5 },
+    { get: () => [S.B[0][0], S.B[1][0]], set: (x, y) => { setCol(S.B, 0, x, y); mB.set(S.B); update(); }, snap: 0.5 },
+    { get: () => [S.B[0][1], S.B[1][1]], set: (x, y) => { setCol(S.B, 1, x, y); mB.set(S.B); update(); }, snap: 0.5 }
+  ];
+  const spanCanvas = $('#t3-span');
+  const span = { c: spanCanvas, ctx: spanCanvas.getContext('2d'), w: 0, h: 0 };
+  span.resize = () => {
+    const r = spanCanvas.getBoundingClientRect(); if (r.width < 2) return;
+    span.w = r.width; span.h = r.height; span.dpr = window.devicePixelRatio || 1;
+    spanCanvas.width = Math.round(r.width * span.dpr); spanCanvas.height = Math.round(r.height * span.dpr); span.render();
+  };
+  span.render = () => { if (!span.w) return; span.ctx.setTransform(span.dpr, 0, 0, span.dpr, 0, 0); span.ctx.clearRect(0, 0, span.w, span.h); drawSpan(span.ctx, span.w, span.h); };
+  span.request = rafThrottle(span.render);
+  new ResizeObserver(span.resize).observe(spanCanvas);
+  VIEWS.push(span);
+
+  const F = (X, Y) => X[0][0] * Y[0][0] + X[0][1] * Y[0][1] + X[1][0] * Y[1][0] + X[1][1] * Y[1][1];
+  const T = X => [[X[0][0], X[1][0]], [X[0][1], X[1][1]]];
+  const mm = (X, Y) => [[X[0][0] * Y[0][0] + X[0][1] * Y[1][0], X[0][0] * Y[0][1] + X[0][1] * Y[1][1]], [X[1][0] * Y[0][0] + X[1][1] * Y[1][0], X[1][0] * Y[0][1] + X[1][1] * Y[1][1]]];
+  const ms = (k, X) => X.map(r => r.map(x => k * x));
+  const madd = (X, Y, s = 1) => X.map((r, i) => r.map((x, j) => x + s * Y[i][j]));
+  let R = {};
+  function compute() {
+    const A = S.A, B = S.B;
+    if ([...A.flat(), ...B.flat()].some(x => !isFinite(x))) return { nan: true };
+    const ab = F(A, B), aa = F(A, A), bb = F(B, B);
+    return { ok: true, A, B, ab, aa, bb, AtB: mm(T(A), B), a1: [A[0][0], A[1][0]], a2: [A[0][1], A[1][1]], b1: [B[0][0], B[1][0]], b2: [B[0][1], B[1][1]] };
+  }
+  const renderReadouts = rafThrottle(() => renderRows($('#t3-rows'), rows(), 'Every entry of A and B needs a number.'));
+  function update() {
+    R = compute();
+    chips.mark(p => !p.random && !R.nan && sameM(p.A, S.A) && sameM(p.B, S.B));
+    // Activity 1 check
+    let h;
+    if (R.nan) h = '';
+    else {
+      const nonzero = R.aa > 1e-12 && R.bb > 1e-12, orth = Math.abs(R.ab) < 1e-9;
+      const noZeros = [...S.A.flat(), ...S.B.flat()].every(x => Math.abs(x) > 1e-12);
+      if (nonzero && orth && noZeros) h = `<div class="status ok">${ICON_OK}<div><b>Done.</b> ⟨A, B⟩ = 0, both matrices are non-zero and no entry is zero.</div></div>`;
+      else {
+        const miss = [];
+        if (!orth) miss.push(`⟨A, B⟩ = ${minus(fmt(R.ab))}, not 0 yet`);
+        if (!nonzero) miss.push('both matrices must be non-zero');
+        if (!noZeros) miss.push('some entries are 0');
+        h = `<div class="status err">${ICON_ERR}<div><b>Not yet:</b> ${miss.join('; ')}.</div></div>`;
+      }
+    }
+    $('#t3-challenge').innerHTML = h;
+    cols.request(); span.request(); renderReadouts();
+  }
+  function drawCols(ctx, V) {
+    drawStdGrid(ctx, V, {});
+    if (R.nan) return;
+    const para = (a, b, fill) => {
+      ctx.save(); ctx.fillStyle = fill; ctx.beginPath();
+      [[0, 0], a, add(a, b), b].forEach((p, i) => (i ? ctx.lineTo(...V.toS(...p)) : ctx.moveTo(...V.toS(...p))));
+      ctx.closePath(); ctx.fill(); ctx.restore();
+    };
+    para(R.a1, R.a2, 'rgba(0,0,219,0.08)');
+    para(R.b1, R.b2, 'rgba(217,0,17,0.07)');
+    arrow2(ctx, V, [0, 0], R.a1, { color: C.u, width: 3, label: 'a₁' });
+    arrow2(ctx, V, [0, 0], R.a2, { color: C.u, width: 3, dash: [7, 5], label: 'a₂' });
+    arrow2(ctx, V, [0, 0], R.b1, { color: C.v, width: 3, label: 'b₁' });
+    arrow2(ctx, V, [0, 0], R.b2, { color: C.v, width: 3, dash: [7, 5], label: 'b₂' });
+    [R.a1, R.a2].forEach(p => grabHalo(ctx, V, p, C.u));
+    [R.b1, R.b2].forEach(p => grabHalo(ctx, V, p, C.v));
+    originDot(ctx, V);
+  }
+  function drawSpan(ctx, w, h) {
+    ctx.save();
+    ctx.font = "500 15px 'PT Serif', Georgia, serif"; ctx.fillStyle = C.ink2; ctx.textAlign = 'center';
+    if (R.nan) { ctx.fillText('Enter numbers in every entry.', w / 2, h / 2); ctx.restore(); return; }
+    const nA = Math.sqrt(R.aa), nB = Math.sqrt(R.bb);
+    if (nA < 1e-9 || nB < 1e-9) { ctx.fillText('A zero matrix spans no line: make A and B non-zero.', w / 2, h / 2); ctx.restore(); return; }
+    ctx.restore();
+    const cs = Math.max(-1, Math.min(1, R.ab / (nA * nB))), th = Math.acos(cs);
+    const Ap = [nA, 0], Bp = [nB * cs, nB * Math.sin(th)], Pp = [nB * cs, 0];
+    const xs = [0, Ap[0], Bp[0]], ys = [0, Bp[1]];
+    const minx = Math.min(...xs), maxx = Math.max(...xs), miny = 0, maxy = Math.max(...ys);
+    const pad = 56, sc = Math.min((w - 2 * pad) / Math.max(maxx - minx, 1e-6), (h - 2 * pad) / Math.max(maxy - miny, 0.6 * (maxx - minx), 1e-6));
+    const ox = pad + (w - 2 * pad - (maxx - minx) * sc) / 2 - minx * sc, oy = h - pad - ((h - 2 * pad) - (maxy - miny) * sc) / 2;
+    const V = { toS: (x, y) => [ox + x * sc, oy - y * sc] };
+    // span{A}
+    ctx.save(); ctx.strokeStyle = 'rgba(0,0,219,0.35)'; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.moveTo(0, oy); ctx.lineTo(w, oy); ctx.stroke(); ctx.restore();
+    canvasLabel(ctx, w - 12, oy + 18, 'span{A}', C.u, { font: UI_FONT, align: 'right' });
+    // angle arc
+    const ar = Math.min(42, 0.3 * Math.min(nA, nB) * sc);
+    if (ar > 8) {
+      ctx.save(); ctx.strokeStyle = C.ink2; ctx.lineWidth = 1.4; ctx.beginPath(); ctx.arc(ox, oy, ar, -th, 0); ctx.stroke(); ctx.restore();
+      canvasLabel(ctx, ox + (ar + 16) * Math.cos(th / 2), oy - (ar + 16) * Math.sin(th / 2), 'θ', C.ink, {});
+    }
+    if (Math.abs(Bp[1]) * sc > 2) {
+      ctx.save(); ctx.strokeStyle = C.q; ctx.lineWidth = 2; ctx.setLineDash([6, 5]); ctx.beginPath(); ctx.moveTo(...V.toS(...Pp)); ctx.lineTo(...V.toS(...Bp)); ctx.stroke(); ctx.restore();
+      const s = 11, dir = Pp[0] >= 0 ? -1 : 1, [px, py] = V.toS(...Pp);
+      ctx.save(); ctx.strokeStyle = C.ink; ctx.lineWidth = 1.4; ctx.beginPath(); ctx.moveTo(px + dir * s, py); ctx.lineTo(px + dir * s, py - s); ctx.lineTo(px, py - s); ctx.stroke(); ctx.restore();
+    }
+    if (Math.abs(Pp[0]) * sc > 4) arrow2(ctx, V, [0, 0], Pp, { color: C.p, width: 4.5, head: 12 });
+    arrow2(ctx, V, [0, 0], Ap, { color: C.u, width: 3, label: 'A' });
+    arrow2(ctx, V, [0, 0], Bp, { color: C.v, width: 3, label: 'B' });
+    if (Math.abs(Pp[0]) * sc > 4) { const [px, py] = V.toS(...Pp); ctx.font = UI_FONT; const hw = ctx.measureText('projection of B onto A').width / 2 + 8; canvasLabel(ctx, Math.max(hw, Math.min(w - hw, px)), py + 22, 'projection of B onto A', C.p, { font: UI_FONT }); }
+    canvasLabel(ctx, 14, 22, `‖A‖ = ${fmt(nA)}     ‖B‖ = ${fmt(nB)}     θ = ${fmt(deg(th), 1)}°`, C.ink, { font: "700 15px 'PT Serif', Georgia, serif", align: 'left' });
+    const [ox0, oy0] = V.toS(0, 0); ctx.save(); ctx.fillStyle = C.ink; ctx.beginPath(); ctx.arc(ox0, oy0, 3.2, 0, 7); ctx.fill(); ctx.restore();
+  }
+  function tilesHTML(M, cap) {
+    const vals = M.flat(), m = Math.max(2, ...vals.map(Math.abs));
+    return `<div><div class="tiles">${vals.map(x => `<div class="tile" style="background:${heatColor(x / m)}">${minus(fmt(x))}</div>`).join('')}</div><div class="tiles-cap">${cap}</div></div>`;
+  }
+  function rows() {
+    if (!R.ok) return [];
+    const { A, B } = R, out = [];
+    const H = A.map((r, i) => r.map((x, j) => x * B[i][j]));
+    const prods = [[0, 0], [0, 1], [1, 0], [1, 1]].map(([i, j]) => `${par(A[i][j])}\\cdot${par(B[i][j])}`).join('+');
+    out.push({
+      label: 'Entry by entry', sub: 'Multiply matching entries, then add', color: C.u,
+      html: `<div class="tiles-row">${tilesHTML(A, 'A')}<span class="op" aria-hidden="true">∘</span>${tilesHTML(B, 'B')}<span class="op" aria-hidden="true">=</span>${tilesHTML(H, 'a<sub>ij</sub>b<sub>ij</sub>')}<span class="op" aria-hidden="true">→</span><div><div class="sum-big">${fmt(R.ab)}</div><div class="tiles-cap">sum of the four</div></div></div>`,
+      tex: `\\langle A,B\\rangle=\\sum_{i,j}a_{ij}b_{ij}=${prods}=${tn(R.ab)}`
+    });
+    out.push({
+      label: 'As a trace', sub: 'tr(AᵀB) adds the diagonal of AᵀB', color: C.u,
+      tex: `A^{T}B=${mt(T(A))}${mt(B)}=${mt(R.AtB)},\\qquad \\operatorname{tr}(A^{T}B)=${par(R.AtB[0][0])}+${par(R.AtB[1][1])}=${tn(R.ab)}`
+    });
+    out.push({
+      label: 'As columns', sub: 'Those diagonal entries are dot products', color: C.u,
+      tex: `\\langle A,B\\rangle=\\mathbf a_1\\cdot\\mathbf b_1+\\mathbf a_2\\cdot\\mathbf b_2=${par(dot(R.a1, R.b1))}+${par(dot(R.a2, R.b2))}=${tn(R.ab)}`,
+      text: 'The (1,1) entry of AᵀB is a₁ · b₁ and the (2,2) entry is a₂ · b₂. So A ⟂ B when the two column dot products cancel, even if no column of A is perpendicular to the matching column of B.'
+    });
+    const nA = Math.sqrt(R.aa), nB = Math.sqrt(R.bb), D = madd(A, B, -1);
+    const r4 = {
+      label: 'Lengths, angle, distance', sub: 'Norm and distance of the inner product', color: C.marine,
+      tex: [`\\|A\\|=\\sqrt{\\langle A,A\\rangle}=${sqrtTex(R.aa)},\\qquad \\|B\\|=${sqrtTex(R.bb)},\\qquad d(A,B)=\\|A-B\\|=${sqrtTex(F(D, D))}`]
+    };
+    if (nA > 1e-9 && nB > 1e-9) {
+      const cs = R.ab / (nA * nB);
+      r4.tex.push(`\\cos\\theta=\\frac{\\langle A,B\\rangle}{\\|A\\|\\,\\|B\\|}=${fmt(cs)}\\ \\Rightarrow\\ \\theta\\approx ${fmt(deg(Math.acos(Math.max(-1, Math.min(1, cs)))), 1)}^{\\circ}`);
+      if (Math.abs(R.ab) < 1e-9) r4.html = `<span class="badge ok">${ICON_OK}A and B are orthogonal</span>`;
+      else if (Math.abs(Math.abs(cs) - 1) < 1e-9) r4.html = `<span class="badge ok">${ICON_OK}A and B are parallel: B is a multiple of A</span>`;
+    }
+    out.push(r4);
+    if (R.aa > 1e-12) {
+      const lam = R.ab / R.aa, P = ms(lam, A), Q = madd(B, P, -1);
+      out.push({
+        label: 'Projection of B onto A', sub: 'Definition 2.4.2 in 𝓜₂ₓ₂', color: C.p,
+        tex: [`\\operatorname{proj}_{A}B=\\frac{\\langle A,B\\rangle}{\\langle A,A\\rangle}A=\\frac{${tn(R.ab)}}{${tn(R.aa)}}A=${mt(P)},\\qquad B-\\operatorname{proj}_{A}B=${mt(Q)}`,
+          `\\langle A,\\ B-\\operatorname{proj}_{A}B\\rangle=${tn(F(A, Q))}`]
+      });
+    }
+    const Sy = ms(0.5, madd(A, T(A))), K = ms(0.5, madd(A, T(A), -1));
+    out.push({
+      label: 'Symmetric plus antisymmetric', sub: 'A projection onto a subspace', color: C.q,
+      tex: [`A=S+K,\\qquad S=\\frac{A+A^{T}}{2}=${mt(Sy)},\\qquad K=\\frac{A-A^{T}}{2}=${mt(K)}`,
+        `\\langle S,K\\rangle=${tn(F(Sy, K))},\\qquad \\|A\\|^2=${tn(R.aa)}=${tn(F(Sy, Sy))}+${tn(F(K, K))}=\\|S\\|^2+\\|K\\|^2`],
+      text: 'Every symmetric matrix is orthogonal to every antisymmetric one, so S is the orthogonal projection of A onto the subspace of symmetric matrices, and K = A − S lies in its orthogonal complement.'
+    });
+    return out;
+  }
+  update();
+}
+
+/* =====================================================================
+   3D view
+   ===================================================================== */
+class SpaceView {
+  constructor(canvas, { draw }) {
+    this.c = canvas; this.ctx = canvas.getContext('2d'); this.draw = draw;
+    this.phi0 = 0.62; this.theta0 = 0.36; this.scale0 = 56; this.D = 34;
+    this.phi = this.phi0; this.theta = this.theta0; this.scale = this.scale0; this.w = 0; this.h = 0;
+    this.ptrs = new Map(); this.drag = null;
+    new ResizeObserver(() => this.resize()).observe(canvas);
+    canvas.addEventListener('pointerdown', e => {
+      canvas.setPointerCapture(e.pointerId); this.ptrs.set(e.pointerId, [e.clientX, e.clientY]); this.anim = null;
+      if (this.ptrs.size === 2) { const [a, b] = [...this.ptrs.values()]; this.drag = { pinch: true, d0: Math.hypot(a[0] - b[0], a[1] - b[1]) || 1, s0: this.scale }; }
+      else this.drag = { last: [e.clientX, e.clientY] };
+      canvas.style.cursor = 'grabbing';
+    });
+    canvas.addEventListener('pointermove', e => {
+      if (!this.drag || !this.ptrs.has(e.pointerId)) return;
+      this.ptrs.set(e.pointerId, [e.clientX, e.clientY]);
+      if (this.drag.pinch) { if (this.ptrs.size < 2) return; const [a, b] = [...this.ptrs.values()]; this.setScale(this.drag.s0 * Math.hypot(a[0] - b[0], a[1] - b[1]) / this.drag.d0); return; }
+      const [lx, ly] = this.drag.last;
+      this.phi -= (e.clientX - lx) * 0.009; this.theta = Math.max(-1.55, Math.min(1.55, this.theta + (e.clientY - ly) * 0.009));
+      this.drag.last = [e.clientX, e.clientY]; this.request();
+    });
+    const up = e => { this.ptrs.delete(e.pointerId); if (!this.ptrs.size) { this.drag = null; canvas.style.cursor = 'grab'; } else if (this.drag && this.drag.pinch) this.drag = { last: [...this.ptrs.values()][0] }; };
+    canvas.addEventListener('pointerup', up); canvas.addEventListener('pointercancel', up);
+    canvas.style.cursor = 'grab';
+    canvas.addEventListener('wheel', e => { e.preventDefault(); this.setScale(this.scale * Math.exp(-e.deltaY * 0.0015)); }, { passive: false });
+    canvas.addEventListener('keydown', e => {
+      const k = e.key; let used = true;
+      if (k === 'ArrowLeft') this.phi += 0.08; else if (k === 'ArrowRight') this.phi -= 0.08;
+      else if (k === 'ArrowUp') this.theta = Math.min(1.55, this.theta + 0.08); else if (k === 'ArrowDown') this.theta = Math.max(-1.55, this.theta - 0.08);
+      else if (k === '+' || k === '=') this.scale *= 1.2; else if (k === '-' || k === '_') this.scale /= 1.2;
+      else if (k === '0') return this.reset(), e.preventDefault();
+      else used = false;
+      if (used) { e.preventDefault(); this.request(); }
+    });
+    const bar = canvas.parentElement.querySelector('.zoombar');
+    bar.addEventListener('click', e => {
+      const b = e.target.closest('[data-zoom]'); if (!b) return;
+      if (b.dataset.zoom === 'in') this.setScale(this.scale * 1.3); else if (b.dataset.zoom === 'out') this.setScale(this.scale / 1.3); else this.reset();
+    });
+    this.request = rafThrottle(() => this.render());
+    VIEWS.push(this);
+  }
+  setScale(s) { this.scale = Math.max(10, Math.min(400, s)); this.request(); }
+  reset() { this.scale = this.scale0; this.animateTo(this.phi0, this.theta0); }
+  animateTo(phi, theta) {
+    let dphi = ((phi - this.phi) % (2 * Math.PI) + 3 * Math.PI) % (2 * Math.PI) - Math.PI;
+    const p0 = this.phi, t0 = this.theta, t1 = theta;
+    if (REDUCED) { this.phi = p0 + dphi; this.theta = t1; this.request(); return; }
+    const start = performance.now(), dur = 650, token = {};
+    this.anim = token;
+    const step = now => {
+      if (this.anim !== token) return;
+      const s = Math.min(1, (now - start) / dur), e = s < 0.5 ? 4 * s * s * s : 1 - Math.pow(-2 * s + 2, 3) / 2;
+      this.phi = p0 + dphi * e; this.theta = t0 + (t1 - t0) * e; this.render();
+      if (s < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+  lookAlong(d) { // camera placed in direction d (toward the viewer)
+    const n = unit(d);
+    this.animateTo(Math.atan2(n[1], n[0]), Math.asin(Math.max(-1, Math.min(1, n[2]))));
+  }
+  resize() {
+    const r = this.c.getBoundingClientRect(); if (r.width < 2 || r.height < 2) return;
+    this.w = r.width; this.h = r.height; this.dpr = window.devicePixelRatio || 1;
+    this.c.width = Math.round(r.width * this.dpr); this.c.height = Math.round(r.height * this.dpr); this.render();
+  }
+  basis() {
+    const ct = Math.cos(this.theta), st = Math.sin(this.theta), cf = Math.cos(this.phi), sf = Math.sin(this.phi);
+    this.d = [ct * cf, ct * sf, st]; this.r = [-sf, cf, 0]; this.up = [-st * cf, -st * sf, ct];
+  }
+  P(p) {
+    const sx = dot(this.r, p), sy = dot(this.up, p), dz = dot(this.d, p);
+    const f = this.D / Math.max(this.D - dz, 1);
+    return [this.w / 2 + sx * this.scale * f, this.h / 2 + 20 - sy * this.scale * f, dz];
+  }
+  render() {
+    if (!this.w) return;
+    this.basis();
+    const ctx = this.ctx; ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0); ctx.clearRect(0, 0, this.w, this.h);
+    this.draw(ctx, this);
+  }
+}
+
+/* =====================================================================
+   TAB 4: projection onto a plane
+   ===================================================================== */
+function initTab4() {
+  const S = {
+    v: [2, 1, 3], mode: 'span', w1: [1, 1, 0], w2: [0, 1, 1], abc: [1, -1, 1],
+    custom: false, G: I3(), s: 1, t: -1,
+    showW: true, rings: true, basis: true, perp: false, dec: false, axes: true
+  };
+  const vHost = $('#t4-v');
+  const vSliders = ['x', 'y', 'z'].map((name, k) => {
+    const row = el('div', { class: 'slider' });
+    const id = `t4-v${k}`;
+    const lab = el('label', { for: id, text: `v${SUB[k]}` }); lab.style.color = C.v;
+    const rg = el('input', { type: 'range', id, min: '-5', max: '5', step: '0.1' });
+    const tx = el('input', { type: 'text', inputmode: 'decimal', 'aria-label': `v component ${k + 1}` });
+    row.append(lab, rg, tx); vHost.append(row);
+    return bindSlider(rg, tx, { value: S.v[k], onChange: x => { S.v[k] = x; update(); } });
+  });
+  const w1In = createVec($('#t4-w1'), { name: 'w₁', values: S.w1, color: C.ink, onChange: x => { S.w1 = x; update(); } });
+  const w2In = createVec($('#t4-w2'), { name: 'w₂', values: S.w2, color: C.ink, onChange: x => { S.w2 = x; update(); } });
+  const abcIn = ['#t4-a', '#t4-b', '#t4-c'].map((id, k) => {
+    const inp = $(id); inp.value = fmtIn(S.abc[k]);
+    inp.addEventListener('input', () => { const x = parseNum(inp.value); inp.setAttribute('aria-invalid', isFinite(x) ? 'false' : 'true'); if (isFinite(x)) { S.abc[k] = x; update(); } });
+    return inp;
+  });
+  function setMode(m) {
+    S.mode = m;
+    $('#t4-mode-span').setAttribute('aria-pressed', m === 'span'); $('#t4-mode-eq').setAttribute('aria-pressed', m === 'eq');
+    $('#t4-span-in').hidden = m !== 'span'; $('#t4-eq-in').hidden = m !== 'eq';
+    update();
+  }
+  $('#t4-mode-span').addEventListener('click', () => setMode('span'));
+  $('#t4-mode-eq').addEventListener('click', () => setMode('eq'));
+  const PRE = [
+    { name: 'span{(1,1,0), (0,1,1)}', w1: [1, 1, 0], w2: [0, 1, 1] },
+    { name: 'The xy-plane', w1: [1, 0, 0], w2: [0, 1, 0] },
+    { name: 'x + y + z = 0', abc: [1, 1, 1] },
+    { name: '2x − y = 0', abc: [2, -1, 0] }
+  ];
+  const chips = presetChips($('#t4-presets'), PRE, p => {
+    if (p.abc) { S.abc = p.abc.slice(); abcIn.forEach((inp, k) => { inp.value = fmtIn(S.abc[k]); inp.setAttribute('aria-invalid', 'false'); }); setMode('eq'); }
+    else { S.w1 = p.w1.slice(); S.w2 = p.w2.slice(); w1In.set(S.w1); w2In.set(S.w2); setMode('span'); }
+  });
+  const sS = bindSlider($('#t4-s'), $('#t4-s-txt'), { value: S.s, onChange: x => { S.s = x; update(); } });
+  const tS = bindSlider($('#t4-t'), $('#t4-t-txt'), { value: S.t, onChange: x => { S.t = x; update(); } });
+  $('#t4-w-to-u').addEventListener('click', () => { if (!R.ok) return; const [s, t] = R.uCoords; S.s = clean(s); S.t = clean(t); sS.set(S.s); tS.set(S.t); update(); });
+  $('#t4-w-rand').addEventListener('click', () => { S.s = Math.round((Math.random() * 6 - 3) * 10) / 10; S.t = Math.round((Math.random() * 6 - 3) * 10) / 10; sS.set(S.s); tS.set(S.t); update(); });
+  const gMat = createMatrix($('#t4-matrix'), { n: 3, values: S.G, name: 'G', onChange: M => { S.G = M; update(); } });
+  function setIP(custom) {
+    S.custom = custom;
+    $('#t4-ip-dot').setAttribute('aria-pressed', !custom); $('#t4-ip-gram').setAttribute('aria-pressed', custom);
+    $('#t4-gram').hidden = !custom;
+    if (custom && sameM(S.G, I3())) { S.G = [[2, 0, 1], [0, 1, 0], [1, 0, 2]]; gMat.set(S.G); }
+    update();
+  }
+  $('#t4-ip-dot').addEventListener('click', () => setIP(false));
+  $('#t4-ip-gram').addEventListener('click', () => setIP(true));
+  for (const [id, key] of [['#t4-showw', 'showW'], ['#t4-rings', 'rings'], ['#t4-basis', 'basis'], ['#t4-perp', 'perp'], ['#t4-dec', 'dec'], ['#t4-axes', 'axes']])
+    $(id).addEventListener('change', e => { S[key] = e.target.checked; update(); });
+
+  const view = new SpaceView($('#t4-canvas'), { draw });
+  $('#t4-view-tri').addEventListener('click', () => {
+    if (!R.ok) return;
+    let d = cross(R.u, R.z);
+    if (norm(d) < 1e-9) d = cross(R.nE, R.e1h);
+    if (norm(d) < 1e-9) d = R.e1h;
+    if (d[2] < 0) d = mul(-1, d);
+    view.lookAlong(d);
+  });
+  $('#t4-view-perp').addEventListener('click', () => {
+    if (!R.ok) return;
+    let d = R.nG.slice();
+    if (dot(d, R.v) < 0) d = mul(-1, d);
+    view.lookAlong(d);
+  });
+
+  let R = {};
+  function spanFromNormal(n) {
+    const [a, b, c] = n;
+    const cands = [[b, -a, 0], [0, c, -b], [c, 0, -a]].filter(x => norm(x) > 1e-12);
+    const w1 = cands[0];
+    const w2 = cands.slice(1).find(x => norm(cross(w1, x)) > 1e-9);
+    return [w1, w2];
+  }
+  function compute() {
+    const r = {};
+    const G = S.custom ? S.G : I3();
+    r.G = G;
+    r.gan = S.custom ? analyzeGram(G) : { valid: true };
+    let w1, w2, n;
+    if (S.mode === 'span') {
+      w1 = S.w1; w2 = S.w2; n = cross(w1, w2);
+      if (norm(n) < 1e-9) { r.planeErr = norm(w1) < 1e-12 || norm(w2) < 1e-12 ? 'One of the spanning vectors is zero, so they span at most a line, not a plane.' : 'w₁ and w₂ are parallel, so they span a line, not a plane. Change one of them.'; return r; }
+    } else {
+      n = S.abc;
+      if (norm(n) < 1e-12) { r.planeErr = 'With a = b = c = 0 the equation holds for every point: it does not describe a plane.'; return r; }
+      [w1, w2] = spanFromNormal(n);
+    }
+    Object.assign(r, { w1, w2, nE: n });
+    r.e1h = unit(w1); r.e2h = unit(sub(w2, mul(dot(w2, r.e1h), r.e1h)));
+    if (!r.gan.valid) return r;
+    const v = S.v;
+    const v1 = w1, c21 = ip(G, w2, v1) / ip(G, v1, v1), v2 = sub(w2, mul(c21, v1));
+    const n1 = ip(G, v1, v1), n2 = ip(G, v2, v2), p1 = ip(G, v, v1), p2 = ip(G, v, v2);
+    const c1 = p1 / n1, c2 = p2 / n2, u = add(mul(c1, v1), mul(c2, v2)), z = sub(v, u), dd = ip(G, z, z);
+    const nG = S.custom ? solve3(G, n) : n;
+    const Wp = add(mul(S.s, w1), mul(S.t, w2)), vw = sub(v, Wp), uw = sub(u, Wp);
+    // coordinates of u in (w1, w2), via normal equations (Euclidean)
+    const a11 = dot(w1, w1), a12 = dot(w1, w2), a22 = dot(w2, w2), b1 = dot(w1, u), b2 = dot(w2, u), dt = a11 * a22 - a12 * a12;
+    r.uCoords = [(b1 * a22 - a12 * b2) / dt, (a11 * b2 - a12 * b1) / dt];
+    Object.assign(r, { ok: true, v, v1, v2, c21, n1, n2, p1, p2, c1, c2, u, z, dd, d: Math.sqrt(Math.max(0, dd)), nG, Wp, vw2: ip(G, vw, vw), uw2: ip(G, uw, uw), zv1: ip(G, z, v1), zv2: ip(G, z, v2) });
+    r.g1 = mul(1 / Math.sqrt(n1), v1); r.g2 = mul(1 / Math.sqrt(n2), v2);
+    // patch extent
+    const crd = p => Math.max(Math.abs(dot(p, r.e1h)), Math.abs(dot(p, r.e2h)));
+    r.Rp = Math.min(10, Math.max(4, Math.ceil(Math.max(crd(u), S.showW ? crd(Wp) : 0) + 1.5)));
+    return r;
+  }
+  const renderReadouts = rafThrottle(() => renderRows($('#t4-rows'), rows(), R.planeErr ? 'Fix the plane W to see the projection.' : 'Fix the Gram matrix G: it has to be symmetric and positive definite.'));
+  function update() {
+    R = compute();
+    $('#t4-plane-status').innerHTML = R.planeErr ? `<div class="status err">${ICON_ERR}<div>${R.planeErr}</div></div>` : '';
+    $('#t4-gstatus').innerHTML = S.custom ? gramStatusHTML(S.G, R.gan) : '';
+    chips.mark(p => p.abc ? (S.mode === 'eq' && p.abc.every((x, i) => Math.abs(x - S.abc[i]) < 1e-9)) : (S.mode === 'span' && p.w1.every((x, i) => Math.abs(x - S.w1[i]) < 1e-9) && p.w2.every((x, i) => Math.abs(x - S.w2[i]) < 1e-9)));
+    view.request(); renderReadouts();
+  }
+
+  function draw(ctx, V) {
+    const back = [], mid = [], front = [], labels = [];
+    const nE = R.nE || [0, 0, 1];
+    const side = dot(nE, V.d) >= 0 ? 1 : -1;
+    const cls = p => (R.nE ? dot(nE, p) * side : 1);
+    const put = (item, p) => (cls(p) >= -1e-9 ? front : back).push(item);
+    const seg = (a, b, st) => {
+      if (!R.nE) { front.push({ k: 'seg', a, b, st }); return; }
+      const sa = cls(a), sb = cls(b);
+      if (sa >= -1e-9 && sb >= -1e-9) front.push({ k: 'seg', a, b, st });
+      else if (sa <= 1e-9 && sb <= 1e-9) back.push({ k: 'seg', a, b, st });
+      else { const t = sa / (sa - sb), m = add(a, mul(t, sub(b, a))); (sa > 0 ? front : back).push({ k: 'seg', a, b: m, st }); (sb > 0 ? front : back).push({ k: 'seg', a: m, b, st }); }
+    };
+    const arrow = (a, b, st, label) => {
+      const A = V.P(a), B = V.P(b), L = Math.hypot(B[0] - A[0], B[1] - A[1]);
+      const hl = Math.min(st.head || 13, L * 0.45);
+      const bodyEnd = L > 1 ? add(a, mul(1 - (hl * 0.8) / L, sub(b, a))) : b;
+      seg(a, bodyEnd, st);
+      if (L > 3) put({ k: 'head', a, b, st, hl }, b);
+      if (label) labels.push({ p: b, text: label, color: st.labelColor || st.color, font: st.labelFont, dx: st.lx || 0, dy: st.ly || 0, dir: [B[0] - A[0], B[1] - A[1]] });
+    };
+    const dotPt = (p, color, r = 5) => put({ k: 'dot', p, color, r }, p);
+    const textAt = (p, text, color, o = {}) => labels.push({ p, text, color, font: o.font || UI_FONT, dx: o.dx || 0, dy: o.dy || 0, align: o.align });
+
+    // axes
+    if (S.axes) {
+      const L = 5.5, names = ['x', 'y', 'z'];
+      for (let k = 0; k < 3; k++) {
+        const e = [0, 0, 0]; e[k] = 1;
+        arrow(mul(-L, e), mul(L, e), { color: '#888A8C', width: 1.3, head: 9 }, null);
+        textAt(mul(L + 0.45, e), names[k], C.ink2, { font: "italic 700 16px 'PT Serif', Georgia, serif" });
+        for (let t = -5; t <= 5; t++) if (t) put({ k: 'tick', p: mul(t, e) }, mul(t, e));
+      }
+    }
+    if (R.nE) {
+      // plane patch
+      const Rp = R.Rp || 4, E1 = R.e1h, E2 = R.e2h;
+      const corner = (a, b) => add(mul(a, E1), mul(b, E2));
+      mid.push({ k: 'poly', pts: [corner(-Rp, -Rp), corner(Rp, -Rp), corner(Rp, Rp), corner(-Rp, Rp)], fill: 'rgba(71,191,255,0.20)', stroke: 'rgba(0,50,160,0.55)' });
+      for (let i = -Rp + 1; i < Rp; i++) {
+        mid.push({ k: 'seg', a: corner(i, -Rp), b: corner(i, Rp), st: { color: 'rgba(0,50,160,0.16)', width: 1 } });
+        mid.push({ k: 'seg', a: corner(-Rp, i), b: corner(Rp, i), st: { color: 'rgba(0,50,160,0.16)', width: 1 } });
+      }
+      textAt(corner(Rp * 0.92, Rp * 0.92), 'W', C.marine, { font: "italic 700 20px 'PT Serif', Georgia, serif" });
+    }
+    if (R.ok) {
+      const G = R.G;
+      if (S.rings && R.d > 1e-6) {
+        for (const rho of [1, 2, 3, 4]) {
+          const pts = [];
+          const Rp = R.Rp, inside = q => Math.abs(dot(q, R.e1h)) <= Rp + 1e-9 && Math.abs(dot(q, R.e2h)) <= Rp + 1e-9;
+          let lab = null;
+          for (let i = 0; i <= 120; i++) {
+            const t = 2 * Math.PI * i / 120, q = add(R.u, add(mul(rho * Math.cos(t), R.g1), mul(rho * Math.sin(t), R.g2)));
+            if (inside(q)) { pts.push(q); if (!lab && i >= 10) lab = q; } else pts.push(null);
+          }
+          mid.push({ k: 'line', pts, color: 'rgba(0,0,102,0.45)', width: 1.2 });
+          if ((rho === 1 || rho === 3) && lab) textAt(lab, fmt(Math.sqrt(R.dd + rho * rho), 2), C.e, { font: "600 11px Montserrat, Arial, sans-serif", dy: -8 });
+        }
+      }
+      if (S.perp) {
+        const nn = unit(R.nG), L = 6;
+        seg(mul(-L, nn), mul(L, nn), { color: C.q, width: 1.8, dash: [8, 6], alpha: 0.85 });
+        const e0 = V.P(mul(-L, nn)), e1 = V.P(mul(L, nn));
+        if (Math.hypot(e1[0] - e0[0], e1[1] - e0[1]) > 60) textAt(mul(L + 0.4, nn), 'W⊥', C.qInk, { font: "italic 700 17px 'PT Serif', Georgia, serif" });
+      }
+      if (S.basis) {
+        arrow([0, 0, 0], R.v1, { color: C.u, width: 2.4, labelFont: "italic 700 15px 'PT Serif', Georgia, serif" }, 'v₁');
+        arrow([0, 0, 0], R.v2, { color: C.u, width: 2.4, labelFont: "italic 700 15px 'PT Serif', Georgia, serif" }, 'v₂');
+      }
+      if (S.dec) {
+        arrow([0, 0, 0], R.z, { color: C.q, width: 2.6, labelColor: C.qInk, labelFont: "italic 700 15px 'PT Serif', Georgia, serif" }, 'v − u');
+        seg(R.z, R.v, { color: C.p, width: 1.3, dash: [3, 5], alpha: 0.7 });
+      }
+      if (S.showW) {
+        seg(R.v, R.Wp, { color: C.w, width: 1.8, dash: [5, 4] });
+        seg(R.u, R.Wp, { color: C.w, width: 1.8 });
+        dotPt(R.Wp, C.w, 5.5);
+        textAt(R.Wp, 'w', C.wInk, { font: "italic 700 17px 'PT Serif', Georgia, serif", dx: 12, dy: 12 });
+        textAt(R.Wp, `‖v − w‖ = ${fmt(Math.sqrt(R.vw2), 2)}`, C.wInk, { dx: 12, dy: 32, align: 'left', font: DIST_FONT });
+      }
+      arrow([0, 0, 0], R.u, { color: C.p, width: 3.4 }, 'u');
+      if (R.d > 1e-6) {
+        seg(R.u, R.v, { color: C.q, width: 2.4, dash: [7, 5] });
+        // right-angle marker
+        const a = mul(1 / R.d, R.z);
+        let b = norm(R.u) > 1e-6 ? mul(-1 / Math.sqrt(ip(G, R.u, R.u)), R.u) : R.g1;
+        const k = 0.32 / Math.max(norm(a), norm(b));
+        const P1 = add(R.u, mul(k, a)), P2 = add(P1, mul(k, b)), P3 = add(R.u, mul(k, b));
+        seg(P1, P2, { color: C.ink, width: 1.4 }); seg(P2, P3, { color: C.ink, width: 1.4 });
+        textAt(mul(0.5, add(R.u, R.v)), `d = ${fmt(R.d, 2)}`, C.qInk, { dx: -10, dy: 0, align: 'right', font: DIST_FONT });
+      }
+      dotPt(R.u, C.p, 4.5);
+    }
+    arrow([0, 0, 0], S.v, { color: C.v, width: 3.2 }, 'v');
+    dotPt(S.v, C.v, 4.5);
+
+    // paint
+    const drawItem = it => {
+      if (it.k === 'seg') {
+        const A = V.P(it.a), B = V.P(it.b);
+        ctx.save(); ctx.strokeStyle = it.st.color; ctx.lineWidth = it.st.width || 2; ctx.globalAlpha = it.st.alpha ?? 1; ctx.lineCap = 'round';
+        if (it.st.dash) ctx.setLineDash(it.st.dash);
+        ctx.beginPath(); ctx.moveTo(A[0], A[1]); ctx.lineTo(B[0], B[1]); ctx.stroke(); ctx.restore();
+      } else if (it.k === 'head') {
+        const A = V.P(it.a), B = V.P(it.b), dx = B[0] - A[0], dy = B[1] - A[1], L = Math.hypot(dx, dy), ux = dx / L, uy = dy / L, hl = it.hl, hw = hl * 0.5;
+        ctx.save(); ctx.fillStyle = it.st.color; ctx.globalAlpha = it.st.alpha ?? 1; ctx.beginPath(); ctx.moveTo(B[0], B[1]);
+        ctx.lineTo(B[0] - ux * hl - uy * hw, B[1] - uy * hl + ux * hw); ctx.lineTo(B[0] - ux * hl + uy * hw, B[1] - uy * hl - ux * hw); ctx.closePath(); ctx.fill(); ctx.restore();
+      } else if (it.k === 'dot') {
+        const A = V.P(it.p); ctx.save(); ctx.fillStyle = it.color; ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(A[0], A[1], it.r, 0, 7); ctx.fill(); ctx.stroke(); ctx.restore();
+      } else if (it.k === 'tick') {
+        const A = V.P(it.p); ctx.save(); ctx.fillStyle = 'rgba(67,68,69,0.6)'; ctx.beginPath(); ctx.arc(A[0], A[1], 1.8, 0, 7); ctx.fill(); ctx.restore();
+      } else if (it.k === 'poly') {
+        ctx.save(); ctx.beginPath(); it.pts.forEach((p, i) => { const A = V.P(p); i ? ctx.lineTo(A[0], A[1]) : ctx.moveTo(A[0], A[1]); }); ctx.closePath();
+        ctx.fillStyle = it.fill; ctx.fill(); ctx.strokeStyle = it.stroke; ctx.lineWidth = 1.4; ctx.stroke(); ctx.restore();
+      } else if (it.k === 'line') {
+        ctx.save(); ctx.beginPath(); let pen = false;
+        it.pts.forEach(p => { if (!p) { pen = false; return; } const A = V.P(p); pen ? ctx.lineTo(A[0], A[1]) : ctx.moveTo(A[0], A[1]); pen = true; });
+        ctx.strokeStyle = it.color; ctx.lineWidth = it.width; ctx.stroke(); ctx.restore();
+      }
+    };
+    back.forEach(drawItem); mid.forEach(drawItem); front.forEach(drawItem);
+    for (const lb of labels) {
+      const A = V.P(lb.p);
+      let x = A[0] + lb.dx, y = A[1] + lb.dy, align = lb.align || 'center';
+      if (lb.dir) { const L = Math.hypot(...lb.dir) || 1; x += lb.dir[0] / L * 16; y += lb.dir[1] / L * 16; }
+      canvasLabel(ctx, x, y, lb.text, lb.color, { font: lb.font || "italic 700 17px 'PT Serif', Georgia, serif", align });
+    }
+    if (R.ok) {
+      const ip0 = S.custom ? 'Gram matrix G' : 'dot product';
+      canvasLabel(ctx, 14, V.h - 18, `Inner product: ${ip0}    d(v, W) = ${fmt(R.d)}`, C.ink, { font: UI_FONT, align: 'left' });
+    }
+  }
+  function rows() {
+    if (!R.ok) return [];
+    const out = [], B = s => `\\mathbf{${s}}`, I = S.custom ? '' : ' (here the dot product)';
+    const [a, b, c] = R.nE;
+    const eq = `${linComb([[a, 'x'], [b, 'y'], [c, 'z']])}=0`;
+    out.push({
+      label: 'The plane W', sub: S.mode === 'span' ? 'From its spanning vectors' : 'From its equation', color: C.marine,
+      tex: S.mode === 'span'
+        ? `W=\\operatorname{span}\\{${B('w')}_1,${B('w')}_2\\},\\quad ${B('w')}_1=${vt(R.w1)},\\ ${B('w')}_2=${vt(R.w2)},\\qquad ${B('w')}_1\\times ${B('w')}_2=${vt(R.nE)}\\ \\Rightarrow\\ W:\\ ${eq}`
+        : `W:\\ ${eq},\\qquad W=\\operatorname{span}\\{${B('w')}_1,${B('w')}_2\\},\\quad ${B('w')}_1=${vt(R.w1)},\\ ${B('w')}_2=${vt(R.w2)}`
+    });
+    out.push({
+      label: 'An orthogonal basis of W', sub: 'Gram–Schmidt, §2.4.2', color: C.u,
+      tex: `${B('v')}_1=${B('w')}_1=${vt(R.v1)},\\qquad ${B('v')}_2=${B('w')}_2-\\frac{\\langle ${B('w')}_2,${B('v')}_1\\rangle}{\\|${B('v')}_1\\|^2}${B('v')}_1=${vt(R.w2)}-${par(R.c21)}\\,${vt(R.v1)}=${vt(R.v2)}`,
+      text: `Check: ⟨v₁, v₂⟩ = ${fmt(ip(R.G, R.v1, R.v2))}${I}.`
+    });
+    out.push({
+      label: 'The projection', sub: 'Theorem 2.4.7 (2)', color: C.p,
+      tex: [`${B('u')}=\\operatorname{proj}_W ${B('v')}=\\frac{\\langle ${B('v')},${B('v')}_1\\rangle}{\\|${B('v')}_1\\|^2}${B('v')}_1+\\frac{\\langle ${B('v')},${B('v')}_2\\rangle}{\\|${B('v')}_2\\|^2}${B('v')}_2=\\frac{${tn(R.p1)}}{${tn(R.n1)}}${B('v')}_1+\\frac{${tn(R.p2)}}{${tn(R.n2)}}${B('v')}_2`,
+        `${B('u')}=${par(R.c1)}\\,${vt(R.v1)}+${par(R.c2)}\\,${vt(R.v2)}=${vt(R.u)}`]
+    });
+    out.push({
+      label: 'What is left over', sub: 'v − u lies in W⊥', color: C.q,
+      tex: `${B('v')}-${B('u')}=${vt(R.v)}-${vt(R.u)}=${vt(R.z)},\\qquad \\langle ${B('v')}-${B('u')},${B('v')}_1\\rangle=${tn(R.zv1)},\\quad \\langle ${B('v')}-${B('u')},${B('v')}_2\\rangle=${tn(R.zv2)}`,
+      text: S.custom ? `W⊥ is spanned by G⁻¹(w₁ × w₂) = (${R.nG.map(x => fmt(x)).join(', ')}), not by the normal w₁ × w₂ of the dot product.` : 'Being orthogonal to both basis vectors, v − u is orthogonal to every vector of W, so it is a multiple of the normal vector.'
+    });
+    const dt = [`d(${B('v')},W)=\\|${B('v')}-${B('u')}\\|=${sqrtTex(R.dd)}`];
+    if (!S.custom) {
+      const nn = dot(R.nE, R.nE), num = dot(R.nE, R.v);
+      dt.push(`\\text{Check with the normal } ${B('n')}=${vt(R.nE)}:\\quad \\frac{|${B('n')}\\cdot ${B('v')}|}{\\|${B('n')}\\|}=\\frac{${tn(Math.abs(num))}}{${sqrtTex(nn).split('\\approx')[0]}}=${fmt(Math.abs(num) / Math.sqrt(nn))}`);
+    }
+    out.push({ label: 'Distance from v to W', sub: 'Theorem 2.4.7 (3)', color: C.q, tex: dt });
+    if (S.showW) {
+      const gap = Math.sqrt(R.vw2) - R.d;
+      out.push({
+        label: 'Another point w of W', sub: 'u is the closest point', color: C.w,
+        tex: [`${B('w')}=${linComb([[S.s, B('w') + '_1'], [S.t, B('w') + '_2']])}=${vt(R.Wp)},\\qquad \\|${B('v')}-${B('w')}\\|=${sqrtTex(R.vw2)},\\qquad \\|${B('u')}-${B('w')}\\|=${sqrtTex(R.uw2)}`,
+          `\\|${B('v')}-${B('w')}\\|^2=\\|${B('u')}-${B('w')}\\|^2+\\|${B('v')}-${B('u')}\\|^2:\\qquad ${tn(R.vw2)}=${tn(R.uw2)}+${tn(R.dd)}`],
+        text: gap < 1e-9 ? 'w = u: equality holds only at the projection.' : `w is ${fmt(gap)} farther from v than u is. Since u − w ∈ W and v − u ∈ W⊥, Pythagoras makes ‖v − w‖ ≥ ‖v − u‖ for every w ∈ W.`
+      });
+    }
+    return out;
+  }
+  update();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  initTab1(); initTab2(); initTab3(); initTab4();
+  initTabs();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => VIEWS.forEach(v => (v.render ? v.render() : null)));
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,1501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Linear transformations of the plane · IE University</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=PT+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+/* ---------- IE University base tokens ---------- */
+:root {
+  --typography-fontfamilies-primary: "Montserrat", Arial, Helvetica, sans-serif;
+  --typography-fontfamilies-secondary: "PT Serif", Georgia, "Times New Roman", serif;
+  --typography-fontweights-regular: 400;
+  --typography-fontweights-medium: 500;
+  --typography-fontweights-semibold: 600;
+  --typography-fontweights-bold: 700;
+  --typography-fontweights-extrabold: 800;
+
+  --color-primary-oceanblue: #000066;
+  --color-primary-seablue: #47BFFF;
+  --color-secondary-marineblue: #0032A0;
+  --color-secondary-electricblue: #0000DB;
+  --color-secondary-lightblue: #BDE8FF;
+  --color-grey-ieblack: #0F0F0F;
+  --color-grey-darkgrey: #434445;
+  --color-grey-middlegrey: #888A8C;
+  --color-grey-lightgrey: #BFC1C3;
+  --color-grey-softgrey: #F8F8F8;
+  --color-grey-iewhite: #F4F4F4;
+  --color-grey-white: #FFFFFF;
+  --color-school-law: #D90011;
+  --color-school-archdesign: #921AD4;
+  --color-school-humanities: #FF5C00;
+  --color-school-sntdark: #1F3700;
+  --color-semantic-accept: #23CE6B;
+  --color-semantic-lemonyellow: #FBCA1E;
+  --color-semantic-tangerine: #FF7B31;
+  --color-semantic-iceblue: #E6F7FF;
+  --color-semantic-alumniblue: #1B1A43;
+  --color-semantic-midnight: #23207E;
+
+  /* ---------- semantic tokens (light) ---------- */
+  --page-bg: var(--color-grey-iewhite);
+  --surface: var(--color-grey-white);
+  --text: var(--color-grey-ieblack);
+  --text-muted: var(--color-grey-darkgrey);
+  --heading: var(--color-primary-oceanblue);
+  --rule: var(--color-grey-lightgrey);
+  --input-border: var(--color-grey-middlegrey);
+  --input-bg: var(--color-grey-white);
+  --btn-bg: var(--color-primary-oceanblue);
+  --btn-text: var(--color-grey-white);
+  --btn-bg-hover: var(--color-secondary-marineblue);
+  --focus: var(--color-secondary-electricblue);
+  --error-text: var(--color-school-law);
+  --error-bg: #FFF1F2;
+  --success-text: var(--color-school-sntdark);
+  --success-bg: #EAFBF1;
+  --success-icon: #148A45;
+  --info-bg: var(--color-semantic-iceblue);
+
+  /* plane */
+  --plane-bg: var(--color-grey-white);
+  --plane-minor: #EEEFF0;
+  --plane-major: #D6D8DA;
+  --plane-axis: var(--color-grey-darkgrey);
+  --plane-label: var(--color-grey-darkgrey);
+  --fig-stroke: var(--color-secondary-electricblue);
+  --fig-fill: rgba(71, 191, 255, 0.32);
+  --fig-detail: var(--color-primary-oceanblue);
+  --ghost: var(--color-grey-middlegrey);
+  --tgrid: rgba(71, 191, 255, 0.75);
+  --tgrid-axis: rgba(0, 50, 160, 0.75);
+  --e1: var(--color-school-law);
+  --e2: var(--color-school-archdesign);
+  --target: var(--color-school-humanities);
+  --dot-edge: rgba(15, 15, 15, 0.45);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --page-bg: var(--color-grey-ieblack);
+    --surface: var(--color-semantic-alumniblue);
+    --text: var(--color-grey-iewhite);
+    --text-muted: var(--color-grey-lightgrey);
+    --heading: var(--color-secondary-lightblue);
+    --rule: #3A3970;
+    --input-border: var(--color-grey-middlegrey);
+    --input-bg: #121133;
+    --btn-bg: var(--color-primary-seablue);
+    --btn-text: var(--color-primary-oceanblue);
+    --btn-bg-hover: var(--color-secondary-lightblue);
+    --focus: var(--color-primary-seablue);
+    --error-text: var(--color-semantic-tangerine);
+    --error-bg: #3A1420;
+    --success-text: var(--color-semantic-accept);
+    --success-bg: #10302A;
+    --success-icon: var(--color-semantic-accept);
+    --info-bg: #23225A;
+    --plane-bg: #14133A;
+    --plane-minor: rgba(255, 255, 255, 0.05);
+    --plane-major: rgba(255, 255, 255, 0.14);
+    --plane-axis: var(--color-grey-lightgrey);
+    --plane-label: var(--color-grey-lightgrey);
+    --fig-stroke: var(--color-primary-seablue);
+    --fig-fill: rgba(71, 191, 255, 0.28);
+    --fig-detail: var(--color-secondary-lightblue);
+    --ghost: var(--color-grey-middlegrey);
+    --tgrid: rgba(71, 191, 255, 0.45);
+    --tgrid-axis: rgba(189, 232, 255, 0.8);
+    --e1: var(--color-semantic-tangerine);
+    --e2: var(--color-semantic-lemonyellow);
+    --target: var(--color-semantic-accept);
+    --dot-edge: rgba(0, 0, 0, 0.6);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --page-bg: var(--color-grey-ieblack);
+  --surface: var(--color-semantic-alumniblue);
+  --text: var(--color-grey-iewhite);
+  --text-muted: var(--color-grey-lightgrey);
+  --heading: var(--color-secondary-lightblue);
+  --rule: #3A3970;
+  --input-bg: #121133;
+  --btn-bg: var(--color-primary-seablue);
+  --btn-text: var(--color-primary-oceanblue);
+  --btn-bg-hover: var(--color-secondary-lightblue);
+  --focus: var(--color-primary-seablue);
+  --error-text: var(--color-semantic-tangerine);
+  --error-bg: #3A1420;
+  --success-text: var(--color-semantic-accept);
+  --success-bg: #10302A;
+  --success-icon: var(--color-semantic-accept);
+  --info-bg: #23225A;
+  --plane-bg: #14133A;
+  --plane-minor: rgba(255, 255, 255, 0.05);
+  --plane-major: rgba(255, 255, 255, 0.14);
+  --plane-axis: var(--color-grey-lightgrey);
+  --plane-label: var(--color-grey-lightgrey);
+  --fig-stroke: var(--color-primary-seablue);
+  --fig-fill: rgba(71, 191, 255, 0.28);
+  --fig-detail: var(--color-secondary-lightblue);
+  --tgrid: rgba(71, 191, 255, 0.45);
+  --tgrid-axis: rgba(189, 232, 255, 0.8);
+  --e1: var(--color-semantic-tangerine);
+  --e2: var(--color-semantic-lemonyellow);
+  --target: var(--color-semantic-accept);
+  --dot-edge: rgba(0, 0, 0, 0.6);
+  color-scheme: dark;
+}
+
+/* ---------- base ---------- */
+:root { box-sizing: border-box; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+*, *::before, *::after { box-sizing: inherit; }
+html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+body {
+  margin: 0;
+  background: var(--page-bg);
+  color: var(--text);
+  font-family: var(--typography-fontfamilies-primary);
+  font-size: 16px;
+  line-height: 24px;
+}
+.sr-only {
+  position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+button, input, select { font-family: inherit; }
+
+/* ---------- masthead ---------- */
+.masthead {
+  display: flex; align-items: center; gap: 28px; flex-wrap: wrap;
+  padding: 18px clamp(16px, 4vw, 40px);
+  background: var(--surface);
+}
+.masthead .logo { height: 60px; width: auto; display: block; }
+.masthead .titles { border-left: 1px solid var(--rule); padding-left: 28px; min-width: 0; }
+.masthead h1 {
+  margin: 0; color: var(--heading);
+  font-weight: var(--typography-fontweights-medium);
+  font-size: clamp(26px, 2.6vw, 36px); line-height: 1.15;
+}
+.masthead .lede { margin: 6px 0 0; color: var(--text-muted); max-width: 70ch; }
+.lede i, .math { font-family: var(--typography-fontfamilies-secondary); font-style: italic; }
+@media (max-width: 640px) {
+  .masthead .titles { border-left: 0; padding-left: 0; }
+}
+
+/* ---------- tabs ---------- */
+.tabs {
+  display: flex; gap: 4px; overflow-x: auto;
+  padding: 0 clamp(16px, 4vw, 40px);
+  background: var(--surface); border-bottom: 1px solid var(--rule);
+}
+.tab {
+  appearance: none; background: none; border: 0; border-bottom: 4px solid transparent;
+  padding: 12px 18px 10px; min-height: 50px; cursor: pointer; white-space: nowrap;
+  color: var(--text-muted); font-size: 15px; line-height: 20px; font-weight: var(--typography-fontweights-bold);
+}
+.tab:hover { color: var(--heading); }
+.tab[aria-selected="true"] { color: var(--heading); border-bottom-color: var(--heading); }
+.tab:focus-visible { outline-offset: -3px; }
+.score { font-size: 14px; line-height: 20px; color: var(--text-muted); margin: 12px 0 0 !important; }
+
+/* ---------- layout ---------- */
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 410px);
+  gap: 24px;
+  padding: 24px clamp(16px, 4vw, 40px) 48px;
+  max-width: 1640px; margin: 0 auto;
+}
+.stage { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px); align-self: start; min-width: 0; }
+.toolbar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+.toolbar .readout { margin: 0 0 0 auto; color: var(--text-muted); font-size: 14px; line-height: 20px; font-variant-numeric: tabular-nums; }
+.icon-btn {
+  min-width: 44px; height: 44px; padding: 0 12px;
+  border: 1.5px solid var(--input-border); border-radius: 4px;
+  background: var(--surface); color: var(--heading);
+  font-size: 13px; font-weight: var(--typography-fontweights-extrabold);
+  cursor: pointer;
+}
+.icon-btn .glyph { font-size: 22px; font-weight: 500; line-height: 1; }
+.icon-btn:hover { border-color: var(--heading); }
+.canvas-wrap {
+  position: relative;
+  height: clamp(380px, calc(100vh - 230px), 940px);
+  border: 1px solid var(--rule); border-radius: 4px; overflow: hidden;
+  background: var(--plane-bg);
+}
+.canvas-wrap.dropping { outline: 3px dashed var(--focus); outline-offset: -6px; }
+#plane { display: block; width: 100%; height: 100%; touch-action: none; }
+.canvas-msg {
+  position: absolute; left: 50%; top: 18px; transform: translateX(-50%);
+  margin: 0; padding: 10px 16px; max-width: calc(100% - 32px);
+  background: var(--info-bg); color: var(--text); border-radius: 4px;
+  font-size: 16px; line-height: 24px; text-align: center; pointer-events: none;
+}
+.help { margin: 10px 0 0; color: var(--text-muted); font-size: 14px; line-height: 20px; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 8px 0 0; padding: 0; list-style: none; font-size: 14px; line-height: 20px; color: var(--text-muted); }
+.legend span.sw { display: inline-block; width: 22px; height: 0; vertical-align: middle; margin-right: 6px; border-top: 3px solid; }
+.sw-fig { border-color: var(--fig-stroke) !important; }
+.sw-ghost { border-top-style: dashed !important; border-color: var(--ghost) !important; }
+.sw-e1 { border-color: var(--e1) !important; }
+.sw-e2 { border-color: var(--e2) !important; }
+.sw-target { border-top-style: dashed !important; border-color: var(--target) !important; }
+
+/* ---------- control panel ---------- */
+.panel {
+  background: var(--surface); border: 1px solid var(--rule); border-radius: 4px;
+  padding: 4px 24px 12px; min-width: 0;
+}
+.panel > section { padding: 20px 0; border-top: 1px solid var(--rule); }
+.panel > section:first-child { border-top: 0; }
+.panel h2 {
+  margin: 0 0 12px; color: var(--heading);
+  font-size: 18px; line-height: 24px; font-weight: var(--typography-fontweights-bold);
+}
+.panel p { margin: 0 0 12px; }
+.field { margin-bottom: 14px; }
+.field > label, .field-label {
+  display: block; margin-bottom: 6px;
+  font-size: 14px; line-height: 20px; font-weight: var(--typography-fontweights-semibold);
+}
+select, .text-input {
+  width: 100%; min-height: 44px; padding: 8px 12px;
+  border: 1.5px solid var(--input-border); border-radius: 4px;
+  background: var(--input-bg); color: var(--text);
+  font-size: 16px;
+}
+input[type="range"] { width: 100%; accent-color: var(--btn-bg); min-height: 28px; }
+.range-row { display: flex; align-items: center; gap: 12px; }
+.range-row output { min-width: 4.5ch; text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
+
+/* matrix entry: the bracketed matrix is the visual anchor of the panel */
+.matrix-row { display: flex; align-items: center; gap: 14px; margin: 6px 0 4px; }
+.mat-name { font-family: var(--typography-fontfamilies-secondary); font-style: italic; font-size: 34px; line-height: 1; color: var(--heading); white-space: nowrap; }
+.matrix {
+  position: relative; flex: 1; min-width: 0;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px;
+  padding: 10px 18px 4px;
+}
+.matrix::before, .matrix::after {
+  content: ""; position: absolute; top: 0; bottom: 0; width: 11px;
+  border: 3px solid var(--heading);
+}
+.matrix::before { left: 0; border-right: 0; }
+.matrix::after { right: 0; border-left: 0; }
+.cell input {
+  width: 100%; height: 50px; padding: 4px 8px;
+  border: 1.5px solid var(--input-border); border-radius: 4px;
+  background: var(--input-bg); color: var(--text);
+  font-size: 20px; font-weight: 500; text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.cell input[aria-invalid="true"] { border: 2.5px solid var(--error-text); background: var(--error-bg); }
+.cell .approx { display: block; min-height: 18px; font-size: 12px; line-height: 18px; color: var(--text-muted); text-align: center; font-variant-numeric: tabular-nums; }
+.hint-small { font-size: 14px; line-height: 20px; color: var(--text-muted); }
+
+.btn-row { display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0 12px; }
+.btn {
+  min-height: 46px; padding: 10px 18px; border-radius: 4px; cursor: pointer;
+  font-size: 15px; font-weight: var(--typography-fontweights-extrabold); line-height: 20px;
+  border: 2px solid var(--btn-bg);
+}
+.btn-primary { background: var(--btn-bg); color: var(--btn-text); }
+.btn-primary:hover { background: var(--btn-bg-hover); border-color: var(--btn-bg-hover); }
+.btn-secondary { background: transparent; color: var(--heading); border-color: var(--heading); }
+.btn-secondary:hover { background: var(--info-bg); }
+.btn-small { min-height: 40px; padding: 8px 14px; font-size: 13px; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.file-btn { display: inline-flex; align-items: center; }
+.file-btn input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.file-btn:focus-within { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+.msg { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border-radius: 4px; margin: 10px 0 0; font-size: 16px; line-height: 24px; }
+.msg .ico { font-weight: 800; flex: none; }
+.msg-error { background: var(--error-bg); color: var(--error-text); border-left: 4px solid var(--error-text); }
+.msg-success { background: var(--success-bg); color: var(--success-text); border-left: 4px solid var(--success-icon); }
+.msg-success .ico { color: var(--success-icon); }
+.msg-info { background: var(--info-bg); color: var(--text); border-left: 4px solid var(--heading); }
+[hidden] { display: none !important; }
+
+.checks { display: grid; gap: 8px; }
+.checks label { display: flex; align-items: center; gap: 10px; min-height: 32px; cursor: pointer; }
+.checks input { width: 20px; height: 20px; accent-color: var(--btn-bg); }
+
+/* readouts */
+.facts { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 8px 14px; align-items: baseline; }
+.facts dt { font-size: 14px; line-height: 20px; color: var(--text-muted); font-weight: 600; }
+.facts dd { margin: 0; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.effect { margin-top: 12px !important; }
+.mini-matrix { display: inline-grid; grid-template-columns: auto auto; gap: 0 10px; padding: 0 7px; position: relative; vertical-align: middle; font-variant-numeric: tabular-nums; text-align: right; }
+.mini-matrix::before, .mini-matrix::after { content: ""; position: absolute; top: 0; bottom: 0; width: 5px; border: 1.5px solid currentColor; }
+.mini-matrix::before { left: 0; border-right: 0; }
+.mini-matrix::after { right: 0; border-left: 0; }
+
+details.tips { margin-top: 4px; }
+details.tips summary { cursor: pointer; font-weight: 700; color: var(--heading); min-height: 32px; display: list-item; }
+details.tips ul { margin: 10px 0 0; padding-left: 20px; }
+details.tips li { margin-bottom: 10px; }
+
+@media (max-width: 980px) {
+  .layout { grid-template-columns: minmax(0, 1fr); }
+  .stage { position: static; }
+  .canvas-wrap { height: min(78vh, 105vw); min-height: 320px; }
+  .toolbar .readout { flex-basis: 100%; margin-left: 0; }
+}
+@media (max-width: 400px) {
+  .panel { padding: 4px 16px 12px; }
+  .mat-name { font-size: 26px; }
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <picture>
+    <source srcset="https://static.ie.edu/IT/logos/Corporate/Logo_Corporate_Full_White_Filled.svg" media="(prefers-color-scheme: dark)">
+    <img class="logo" src="https://static.ie.edu/IT/logos/Corporate/Logo_Corporate_Blue_Filled.svg" alt="IE University" height="60">
+  </picture>
+  <div class="titles">
+    <h1>Linear transformations of the plane</h1>
+    <p class="lede">Pick a 2&nbsp;×&nbsp;2 matrix <i>A</i> and a figure, then watch every point <i>x</i> of the figure move to <i>Ax</i>.</p>
+  </div>
+</header>
+
+<nav class="tabs" role="tablist" aria-label="Activity">
+  <button class="tab" role="tab" type="button" id="tab-explore" aria-selected="true" aria-controls="panel-explore">Explore transformations</button>
+  <button class="tab" role="tab" type="button" id="tab-challenge" aria-selected="false" aria-controls="panel-challenge" tabindex="-1">Mystery matrix challenge</button>
+</nav>
+
+<main class="layout">
+  <section class="stage" aria-labelledby="plane-heading">
+    <h2 id="plane-heading" class="sr-only">The coordinate plane</h2>
+    <div class="toolbar" role="toolbar" aria-label="View controls">
+      <button class="icon-btn" id="zoom-in" type="button" aria-label="Zoom in"><span class="glyph" aria-hidden="true">+</span></button>
+      <button class="icon-btn" id="zoom-out" type="button" aria-label="Zoom out"><span class="glyph" aria-hidden="true">−</span></button>
+      <button class="icon-btn" id="fit-view" type="button">Fit figure</button>
+      <button class="icon-btn" id="reset-view" type="button">Reset view</button>
+      <p class="readout" id="readout" aria-live="off">Point at the plane to see where a point goes.</p>
+    </div>
+    <div class="canvas-wrap" id="canvas-wrap">
+      <canvas id="plane" tabindex="0" role="img" aria-describedby="plane-help" aria-label="Coordinate plane"></canvas>
+      <p class="canvas-msg" id="canvas-msg" hidden></p>
+    </div>
+    <ul class="legend" aria-label="Legend">
+      <li><span class="sw sw-fig" aria-hidden="true"></span><span id="legend-fig">Transformed figure</span></li>
+      <li><span class="sw sw-ghost" aria-hidden="true"></span><span id="legend-ghost">Original figure</span></li>
+      <li><span class="sw sw-e1" aria-hidden="true"></span><i class="math">e</i>₁ and <i class="math">Ae</i>₁</li>
+      <li><span class="sw sw-e2" aria-hidden="true"></span><i class="math">e</i>₂ and <i class="math">Ae</i>₂</li>
+      <li id="legend-target" hidden><span class="sw sw-target" aria-hidden="true"></span>Challenge target</li>
+    </ul>
+    <p class="help" id="plane-help">Drag the original figure to move it anywhere on the plane. Drag empty space to pan and scroll to zoom. With the plane focused, arrow keys move the figure and the + and − keys zoom.</p>
+    <div id="live" class="sr-only" aria-live="polite"></div>
+  </section>
+
+  <aside class="panel" id="panel-explore" role="tabpanel" aria-labelledby="tab-explore">
+    <section aria-labelledby="h-matrix">
+      <h2 id="h-matrix">Matrix A</h2>
+      <div class="field">
+        <label for="preset">Start from a common matrix</label>
+        <select id="preset"></select>
+      </div>
+      <div class="field" id="param-field" hidden>
+        <label for="param" id="param-label">Angle θ</label>
+        <div class="range-row">
+          <input type="range" id="param">
+          <output id="param-out" for="param"></output>
+        </div>
+      </div>
+
+      <div class="matrix-row">
+        <span class="mat-name" aria-hidden="true">A =</span>
+        <div class="matrix" role="group" aria-label="Entries of matrix A" aria-describedby="matrix-hint">
+          <div class="cell"><label class="sr-only" for="m11">Row 1, column 1</label><input id="m11" type="text" inputmode="text" autocomplete="off" spellcheck="false" aria-describedby="matrix-error"><span class="approx" id="m11-approx"></span></div>
+          <div class="cell"><label class="sr-only" for="m12">Row 1, column 2</label><input id="m12" type="text" inputmode="text" autocomplete="off" spellcheck="false" aria-describedby="matrix-error"><span class="approx" id="m12-approx"></span></div>
+          <div class="cell"><label class="sr-only" for="m21">Row 2, column 1</label><input id="m21" type="text" inputmode="text" autocomplete="off" spellcheck="false" aria-describedby="matrix-error"><span class="approx" id="m21-approx"></span></div>
+          <div class="cell"><label class="sr-only" for="m22">Row 2, column 2</label><input id="m22" type="text" inputmode="text" autocomplete="off" spellcheck="false" aria-describedby="matrix-error"><span class="approx" id="m22-approx"></span></div>
+        </div>
+      </div>
+      <p class="hint-small" id="matrix-hint">Type numbers or expressions such as <code>1/2</code>, <code>sqrt(2)/2</code>, <code>cos(30°)</code> or <code>sin(pi/6)</code>.</p>
+      <p class="msg msg-error" id="matrix-error" aria-live="polite" hidden></p>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" id="apply" type="button">Apply transformation</button>
+        <button class="btn btn-secondary" id="undo" type="button">Back to original</button>
+      </div>
+      <div class="field">
+        <label for="progress">Progress from <i class="math">I</i> to <i class="math">A</i></label>
+        <div class="range-row">
+          <input type="range" id="progress" min="0" max="100" step="1" value="0">
+          <output id="progress-out" for="progress">0%</output>
+        </div>
+        <p class="hint-small" style="margin-top:6px">In between, the plane is moved by the matrix (1 − <i class="math">t</i>)<i class="math">I</i> + <i class="math">tA</i>.</p>
+      </div>
+    </section>
+
+    <section aria-labelledby="h-figure">
+      <h2 id="h-figure">Figure</h2>
+      <div class="field">
+        <label for="figure">Figure to transform</label>
+        <select id="figure">
+          <option value="square">Unit square</option>
+          <option value="triangle">Triangle</option>
+          <option value="letterF">Letter F</option>
+          <option value="house">House</option>
+          <option value="arrow">Arrow</option>
+          <option value="circle">Unit circle with a radius</option>
+          <option value="dots">Coloured grid of points</option>
+          <option value="custom">Draw your own polygon</option>
+          <option value="picture">Your picture</option>
+        </select>
+      </div>
+
+      <div id="custom-panel" hidden>
+        <p class="hint-small">Click on the plane to add corners. Points snap to the nearest 0.5.</p>
+        <div class="btn-row" style="margin-top:0">
+          <button class="btn btn-secondary btn-small" id="custom-undo" type="button">Remove last point</button>
+          <button class="btn btn-secondary btn-small" id="custom-clear" type="button">Clear shape</button>
+        </div>
+      </div>
+
+      <div id="picture-panel" hidden>
+        <div class="btn-row" style="margin-top:0">
+          <label class="btn btn-primary btn-small file-btn">Upload a picture
+            <input type="file" id="pic-file" accept="image/*">
+          </label>
+          <button class="btn btn-secondary btn-small" id="pic-sample" type="button">Use a sample picture</button>
+        </div>
+        <p class="hint-small">You can also drop an image file onto the plane. Drag the picture to place it, then select Apply transformation.</p>
+        <div class="field" id="pic-width-field" hidden>
+          <label for="pic-width">Picture width on the plane</label>
+          <div class="range-row">
+            <input type="range" id="pic-width" min="1" max="10" step="0.5" value="4">
+            <output id="pic-width-out" for="pic-width">4 units</output>
+          </div>
+        </div>
+        <p class="msg msg-error" id="pic-error" aria-live="polite" hidden></p>
+      </div>
+    </section>
+
+    <section aria-labelledby="h-effect">
+      <h2 id="h-effect">What A does</h2>
+      <dl class="facts">
+        <dt>Rule</dt><dd id="f-rule"></dd>
+        <dt><i class="math">Ae</i>₁</dt><dd id="f-ae1"></dd>
+        <dt><i class="math">Ae</i>₂</dt><dd id="f-ae2"></dd>
+        <dt>det <i class="math">A</i></dt><dd id="f-det"></dd>
+        <dt>Area</dt><dd id="f-area"></dd>
+        <dt><i class="math">A</i>⁻¹</dt><dd id="f-inv"></dd>
+      </dl>
+      <p class="msg msg-info effect" id="f-effect"></p>
+    </section>
+
+    <section aria-labelledby="h-display">
+      <h2 id="h-display">Show on the plane</h2>
+      <div class="checks">
+        <label><input type="checkbox" id="show-tgrid" checked> The transformed grid lines</label>
+        <label><input type="checkbox" id="show-basis" checked> The vectors <i class="math">e</i>₁, <i class="math">e</i>₂ and where they land</label>
+        <label><input type="checkbox" id="show-original" checked> The original figure</label>
+      </div>
+    </section>
+
+    <section aria-labelledby="h-tips">
+      <h2 id="h-tips">Things to try</h2>
+      <details class="tips">
+        <summary>Questions to explore</summary>
+        <ul>
+          <li>Rotate the letter F by 45° counterclockwise. Does its area change? Compare with det <i class="math">A</i>.</li>
+          <li>Reflect about the axis <i class="math">y</i> = 0. Can you still read the F? What is the sign of det <i class="math">A</i>?</li>
+          <li>Double the size of the figure. Why does the area grow by 4 and not by 2?</li>
+          <li>Project onto the line <i class="math">y</i> = <i class="math">x</i>. What is det <i class="math">A</i>, and could any matrix undo this?</li>
+          <li>Place your picture far from the origin and rotate it. Why does it swing around the origin instead of turning in place?</li>
+          <li>Look at the columns of <i class="math">A</i> and at the arrows <i class="math">Ae</i>₁, <i class="math">Ae</i>₂. They are the key to the mystery matrix challenge.</li>
+        </ul>
+      </details>
+    </section>
+  </aside>
+
+  <aside class="panel" id="panel-challenge" role="tabpanel" aria-labelledby="tab-challenge" hidden>
+    <section aria-labelledby="h-ch">
+      <h2 id="h-ch">Find the mystery matrix</h2>
+      <p>A hidden matrix has moved this grid of coloured points. Each ring shows where the dot of the same colour has to end up. Type a matrix <i class="math">A</i> that puts every dot inside its ring.</p>
+      <div class="matrix-row">
+        <span class="mat-name" aria-hidden="true">A =</span>
+        <div class="matrix" role="group" aria-label="Entries of your matrix A" aria-describedby="ch-matrix-hint">
+          <div class="cell"><label class="sr-only" for="c11">Row 1, column 1</label><input id="c11" type="text" autocomplete="off" spellcheck="false" aria-describedby="ch-matrix-error"><span class="approx" id="c11-approx"></span></div>
+          <div class="cell"><label class="sr-only" for="c12">Row 1, column 2</label><input id="c12" type="text" autocomplete="off" spellcheck="false" aria-describedby="ch-matrix-error"><span class="approx" id="c12-approx"></span></div>
+          <div class="cell"><label class="sr-only" for="c21">Row 2, column 1</label><input id="c21" type="text" autocomplete="off" spellcheck="false" aria-describedby="ch-matrix-error"><span class="approx" id="c21-approx"></span></div>
+          <div class="cell"><label class="sr-only" for="c22">Row 2, column 2</label><input id="c22" type="text" autocomplete="off" spellcheck="false" aria-describedby="ch-matrix-error"><span class="approx" id="c22-approx"></span></div>
+        </div>
+      </div>
+      <p class="hint-small" id="ch-matrix-hint">The dots move as you type. Every challenge starts from the identity matrix.</p>
+      <p class="msg msg-error" id="ch-matrix-error" aria-live="polite" hidden></p>
+      <p class="msg msg-info" id="ch-status" aria-live="polite"></p>
+      <div class="btn-row">
+        <button class="btn btn-secondary btn-small" id="ch-hint" type="button">Show where <i class="math">e</i>₁, <i class="math">e</i>₂ land</button>
+        <button class="btn btn-secondary btn-small" id="ch-reveal" type="button">Reveal the matrix</button>
+        <button class="btn btn-primary btn-small" id="ch-new" type="button">New challenge</button>
+      </div>
+    </section>
+
+    <section aria-labelledby="h-ch-progress">
+      <h2 id="h-ch-progress">Your matrix so far</h2>
+      <dl class="facts">
+        <dt>Dots in rings</dt><dd id="ch-count"></dd>
+        <dt><i class="math">Ae</i>₁</dt><dd id="ch-ae1"></dd>
+        <dt><i class="math">Ae</i>₂</dt><dd id="ch-ae2"></dd>
+      </dl>
+      <p class="score" id="ch-score">Challenges solved this session: 0</p>
+    </section>
+
+    <section aria-labelledby="h-ch-display">
+      <h2 id="h-ch-display">Show on the plane</h2>
+      <div class="checks">
+        <label><input type="checkbox" id="ch-show-tgrid"> The grid lines moved by your matrix</label>
+        <label><input type="checkbox" id="ch-show-basis" checked> The vectors <i class="math">e</i>₁, <i class="math">e</i>₂ and where they land</label>
+        <label><input type="checkbox" id="ch-show-original" checked> The starting position of the dots</label>
+      </div>
+    </section>
+  </aside>
+</main>
+
+<script>
+(() => {
+'use strict';
+const $ = (s) => document.querySelector(s);
+const canvas = $('#plane');
+const ctx = canvas.getContext('2d');
+const wrap = $('#canvas-wrap');
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+/* ---------------- maths helpers ---------------- */
+const I2 = [1, 0, 0, 1];
+const det = (M) => M[0] * M[3] - M[1] * M[2];
+const mul = (M, x, y) => [M[0] * x + M[1] * y, M[2] * x + M[3] * y];
+function fmt(v, dp = 3) {
+  if (!isFinite(v)) return '—';
+  let r = Math.round(v * 10 ** dp) / 10 ** dp;
+  if (r === 0) r = 0;
+  return String(r).replace('-', '−');
+}
+function vec(x, y) { return `(${fmt(x)}, ${fmt(y)})`; }
+function linearTerm(a, b) {
+  const parts = [];
+  [[a, 'x'], [b, 'y']].forEach(([c, v]) => {
+    const r = Math.round(c * 1000) / 1000;
+    if (r === 0) return;
+    const mag = Math.abs(r) === 1 ? '' : String(Math.abs(r));
+    parts.push({ neg: r < 0, s: mag + v });
+  });
+  if (!parts.length) return '0';
+  return parts.map((p, i) => (i === 0 ? (p.neg ? '−' : '') + p.s : (p.neg ? ' − ' : ' + ') + p.s)).join('');
+}
+function miniMatrix(M) {
+  return `<span class="mini-matrix" role="img" aria-label="matrix with rows ${fmt(M[0])}, ${fmt(M[1])} and ${fmt(M[2])}, ${fmt(M[3])}"><span>${fmt(M[0])}</span><span>${fmt(M[1])}</span><span>${fmt(M[2])}</span><span>${fmt(M[3])}</span></span>`;
+}
+
+/* Safe expression parser: numbers, + − * / ^, parentheses, pi, °, deg, sqrt, sin, cos, tan */
+function parseExpr(raw) {
+  const s = String(raw).replace(/\s+/g, '').replace(/[−–]/g, '-').replace(/π/g, 'pi')
+    .replace(/√/g, 'sqrt').replace(/[×·]/g, '*').replace(/º/g, '°').toLowerCase();
+  if (!s) throw new Error('empty');
+  let i = 0;
+  const peek = () => s[i];
+  const fns = { sin: Math.sin, cos: Math.cos, tan: Math.tan, sqrt: Math.sqrt };
+  function expr() {
+    let v = term();
+    while (peek() === '+' || peek() === '-') { const op = s[i++]; const r = term(); v = op === '+' ? v + r : v - r; }
+    return v;
+  }
+  function term() {
+    let v = unary();
+    while (i < s.length && (peek() === '*' || peek() === '/' || /[a-z(]/.test(peek()))) {
+      let op = '*';
+      if (peek() === '*' || peek() === '/') op = s[i++];
+      const r = unary();
+      v = op === '*' ? v * r : v / r;
+    }
+    return v;
+  }
+  function unary() {
+    if (peek() === '-') { i++; return -unary(); }
+    if (peek() === '+') { i++; return unary(); }
+    return power();
+  }
+  function power() {
+    const b = postfix();
+    if (peek() === '^') { i++; return Math.pow(b, unary()); }
+    return b;
+  }
+  function postfix() {
+    let v = primary();
+    while (peek() === '°') { i++; v *= Math.PI / 180; }
+    return v;
+  }
+  function primary() {
+    const c = peek();
+    if (c === undefined) throw new Error('end');
+    if (c === '(') {
+      i++; const v = expr();
+      if (peek() !== ')') throw new Error('paren');
+      i++; return v;
+    }
+    if (/[0-9.]/.test(c)) {
+      const j = i;
+      while (i < s.length && /[0-9.]/.test(s[i])) i++;
+      const n = Number(s.slice(j, i));
+      if (!isFinite(n)) throw new Error('num');
+      return n;
+    }
+    if (/[a-z]/.test(c)) {
+      const j = i;
+      while (i < s.length && /[a-z]/.test(s[i])) i++;
+      const name = s.slice(j, i);
+      if (name === 'pi') return Math.PI;
+      if (name === 'deg') return Math.PI / 180;
+      if (fns[name]) { if (peek() !== '(') throw new Error('fn'); return fns[name](postfix()); }
+      throw new Error('name');
+    }
+    throw new Error('char');
+  }
+  const v = expr();
+  if (i !== s.length) throw new Error('trailing');
+  return v;
+}
+const isPlainNumber = (s) => /^\s*[-−]?\d*\.?\d+\s*$/.test(s);
+
+/* ---------------- presets ---------------- */
+const PRESETS = [
+  { id: 'identity', group: 'Basics', label: 'Identity I', m: () => ['1', '0', '0', '1'] },
+  { id: 'rot45', group: 'Rotations', label: 'Rotation by 45° counterclockwise', m: () => ['cos(45°)', '-sin(45°)', 'sin(45°)', 'cos(45°)'] },
+  { id: 'rot90', group: 'Rotations', label: 'Rotation by 90° counterclockwise', m: () => ['0', '-1', '1', '0'] },
+  { id: 'rot180', group: 'Rotations', label: 'Rotation by 180°', m: () => ['-1', '0', '0', '-1'] },
+  { id: 'rotT', group: 'Rotations', label: 'Rotation by an angle θ', param: { label: 'Angle θ', min: -180, max: 180, step: 5, value: 30, unit: '°' },
+    m: (p) => [`cos(${p}°)`, `-sin(${p}°)`, `sin(${p}°)`, `cos(${p}°)`] },
+  { id: 'refX', group: 'Reflections', label: 'Reflection about the axis y = 0', m: () => ['1', '0', '0', '-1'] },
+  { id: 'refY', group: 'Reflections', label: 'Reflection about the axis x = 0', m: () => ['-1', '0', '0', '1'] },
+  { id: 'refYX', group: 'Reflections', label: 'Reflection about the line y = x', m: () => ['0', '1', '1', '0'] },
+  { id: 'refYmX', group: 'Reflections', label: 'Reflection about the line y = −x', m: () => ['0', '-1', '-1', '0'] },
+  { id: 'refT', group: 'Reflections', label: 'Reflection about a line at angle θ', param: { label: 'Angle θ of the line', min: -90, max: 90, step: 5, value: 30, unit: '°' },
+    m: (p) => [`cos(${2 * p}°)`, `sin(${2 * p}°)`, `sin(${2 * p}°)`, `-cos(${2 * p}°)`] },
+  { id: 'dbl', group: 'Scalings', label: 'Doubling the size', m: () => ['2', '0', '0', '2'] },
+  { id: 'half', group: 'Scalings', label: 'Halving the size', m: () => ['1/2', '0', '0', '1/2'] },
+  { id: 'stretchX', group: 'Scalings', label: 'Stretch along x by 2', m: () => ['2', '0', '0', '1'] },
+  { id: 'scaleK', group: 'Scalings', label: 'Scaling by a factor k', param: { label: 'Factor k', min: -3, max: 3, step: 0.25, value: 1.5, unit: '' },
+    m: (p) => [String(p), '0', '0', String(p)] },
+  { id: 'shearH', group: 'Shears', label: 'Horizontal shear', m: () => ['1', '1', '0', '1'] },
+  { id: 'shearV', group: 'Shears', label: 'Vertical shear', m: () => ['1', '0', '1', '1'] },
+  { id: 'shearK', group: 'Shears', label: 'Horizontal shear by k', param: { label: 'Shear factor k', min: -3, max: 3, step: 0.25, value: 0.5, unit: '' },
+    m: (p) => ['1', String(p), '0', '1'] },
+  { id: 'projX', group: 'Projections', label: 'Projection onto the x-axis', m: () => ['1', '0', '0', '0'] },
+  { id: 'projY', group: 'Projections', label: 'Projection onto the y-axis', m: () => ['0', '0', '0', '1'] },
+  { id: 'projYX', group: 'Projections', label: 'Projection onto the line y = x', m: () => ['1/2', '1/2', '1/2', '1/2'] },
+  { id: 'projT', group: 'Projections', label: 'Projection onto a line at angle θ', param: { label: 'Angle θ of the line', min: -90, max: 90, step: 5, value: 30, unit: '°' },
+    m: (p) => [`cos(${p}°)^2`, `cos(${p}°)sin(${p}°)`, `cos(${p}°)sin(${p}°)`, `sin(${p}°)^2`] },
+];
+
+/* ---------------- figures ---------------- */
+const circlePts = Array.from({ length: 96 }, (_, k) => [Math.cos(2 * Math.PI * k / 96), Math.sin(2 * Math.PI * k / 96)]);
+const FIG = {
+  square: { offset: [0, 0], paths: [{ pts: [[0, 0], [1, 0], [1, 1], [0, 1]], closed: true, main: true }] },
+  triangle: { offset: [0.5, 0.5], paths: [{ pts: [[0, 0], [2, 0], [0.5, 1.5]], closed: true, main: true }] },
+  letterF: { offset: [0.5, 0.5], paths: [{ pts: [[0, 0], [0.6, 0], [0.6, 1.2], [1.4, 1.2], [1.4, 1.75], [0.6, 1.75], [0.6, 2.4], [1.8, 2.4], [1.8, 3], [0, 3]], closed: true, main: true }] },
+  house: { offset: [0.5, 0.5], paths: [
+    { pts: [[0, 0], [2, 0], [2, 1.4], [1, 2.3], [0, 1.4]], closed: true, main: true },
+    { pts: [[0.3, 0], [0.8, 0], [0.8, 0.9], [0.3, 0.9]], closed: true },
+    { pts: [[1.2, 0.7], [1.7, 0.7], [1.7, 1.1], [1.2, 1.1]], closed: true },
+  ] },
+  arrow: { offset: [0.5, 1.5], paths: [{ pts: [[0, -0.3], [1.6, -0.3], [1.6, -0.75], [2.6, 0], [1.6, 0.75], [1.6, 0.3], [0, 0.3]], closed: true, main: true }] },
+  circle: { offset: [0, 0], paths: [{ pts: circlePts, closed: true, main: true }, { pts: [[0, 0], [1, 0]], closed: false }] },
+  dots: { offset: [0, 0] },
+};
+// Maps (x, y) in the 9 × 7 grid to an rgb colour
+function colorizer(x, y) {
+  const cl = (v) => Math.max(0, Math.min(1, v));
+  const r = cl(Math.min(1, 1 - y / 3)), g = cl(Math.min(1, 1 + y / 3)), b = cl(1 / 4 + x / 16);
+  return `rgb(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)})`;
+}
+const DOTS = [];
+for (let x = -4; x <= 4; x++) for (let y = -3; y <= 3; y++) DOTS.push({ x, y, color: colorizer(x, y) });
+
+/* ---------------- state (one per tab) ---------------- */
+const exploreState = {
+  mode: 'explore',
+  A: [1, 0, 0, 1],
+  t: 0,
+  figure: 'letterF',
+  custom: [],
+  image: null,
+  picOffset: [0.5, 0.5],
+  picW: 4,
+  showTGrid: true,
+  showBasis: true,
+  showOriginal: true,
+  challenge: null,
+};
+const chState = {
+  mode: 'challenge',
+  A: [1, 0, 0, 1], t: 1, figure: 'dots', custom: [], image: null, picOffset: [0, 0], picW: 4,
+  showTGrid: false, showBasis: true, showOriginal: true,
+  challenge: null, solvedCount: 0,
+};
+const exploreView = { cx: 1.5, cy: 1.5, s: 50 };
+const chView = { cx: 0, cy: 0, s: 30 };
+let state = exploreState;
+let view = exploreView;
+const inChallenge = () => state.mode === 'challenge';
+let W = 0, H = 0, dpr = 1, viewInitialised = false;
+
+const lerpM = (t) => { const A = state.A; return [1 + (A[0] - 1) * t, A[1] * t, A[2] * t, 1 + (A[3] - 1) * t]; };
+const w2s = (x, y) => [W / 2 + (x - view.cx) * view.s, H / 2 - (y - view.cy) * view.s];
+const s2w = (X, Y) => [view.cx + (X - W / 2) / view.s, view.cy - (Y - H / 2) / view.s];
+
+function figPaths() {
+  const f = state.figure;
+  if (f === 'custom') return state.custom.length ? [{ pts: state.custom, closed: state.custom.length >= 3, main: true }] : [];
+  if (!FIG[f] || !FIG[f].paths) return [];
+  const [ox, oy] = FIG[f].offset;
+  return FIG[f].paths.map((p) => ({ ...p, pts: p.pts.map(([x, y]) => [x + ox, y + oy]) }));
+}
+function figDots() {
+  const [ox, oy] = inChallenge() ? [0, 0] : FIG.dots.offset;
+  return DOTS.map((d) => ({ x: d.x + ox, y: d.y + oy, color: d.color }));
+}
+function picRect() {
+  const img = state.image;
+  const w = state.picW, h = img ? w * img.height / img.width : w * 0.75;
+  return { x: state.picOffset[0], y: state.picOffset[1], w, h };
+}
+function figPoints() {
+  const f = state.figure;
+  if (f === 'dots') return figDots().map((d) => [d.x, d.y]);
+  if (f === 'picture') {
+    if (!state.image) return [];
+    const r = picRect();
+    return [[r.x, r.y], [r.x + r.w, r.y], [r.x + r.w, r.y + r.h], [r.x, r.y + r.h]];
+  }
+  return figPaths().flatMap((p) => p.pts);
+}
+
+/* ---------------- colours ---------------- */
+let C = {};
+function readColors() {
+  const cs = getComputedStyle(document.documentElement);
+  const g = (n) => cs.getPropertyValue(n).trim();
+  C = {
+    bg: g('--plane-bg'), minor: g('--plane-minor'), major: g('--plane-major'), axis: g('--plane-axis'),
+    label: g('--plane-label'), fig: g('--fig-stroke'), fill: g('--fig-fill'), detail: g('--fig-detail'),
+    ghost: g('--ghost'), tgrid: g('--tgrid'), tgridAxis: g('--tgrid-axis'), e1: g('--e1'), e2: g('--e2'),
+    target: g('--target'), dotEdge: g('--dot-edge'),
+  };
+}
+const FONT = '"Montserrat", Arial, Helvetica, sans-serif';
+const SERIF = '"PT Serif", Georgia, "Times New Roman", serif';
+
+/* ---------------- drawing ---------------- */
+function niceStep() {
+  const target = 64 / view.s;
+  const p = Math.pow(10, Math.floor(Math.log10(target)));
+  const n = target / p;
+  const m = n < 1.5 ? 1 : n < 3.5 ? 2 : n < 7.5 ? 5 : 10;
+  return { step: m * p, minor: (m * p) / (m === 2 ? 4 : 5) };
+}
+function haloText(txt, X, Y) {
+  ctx.save();
+  ctx.lineWidth = 4; ctx.strokeStyle = C.bg; ctx.lineJoin = 'round';
+  ctx.strokeText(txt, X, Y); ctx.restore();
+  ctx.fillText(txt, X, Y);
+}
+function drawGrid() {
+  ctx.fillStyle = C.bg; ctx.fillRect(0, 0, W, H);
+  const { step, minor } = niceStep();
+  const [xmin, ymax] = s2w(0, 0), [xmax, ymin] = s2w(W, H);
+  const lines = (st, color, lw) => {
+    ctx.beginPath();
+    for (let k = Math.ceil(xmin / st); k * st <= xmax; k++) { const X = Math.round(w2s(k * st, 0)[0]) + 0.5; ctx.moveTo(X, 0); ctx.lineTo(X, H); }
+    for (let k = Math.ceil(ymin / st); k * st <= ymax; k++) { const Y = Math.round(w2s(0, k * st)[1]) + 0.5; ctx.moveTo(0, Y); ctx.lineTo(W, Y); }
+    ctx.strokeStyle = color; ctx.lineWidth = lw; ctx.stroke();
+  };
+  if (minor * view.s >= 7) lines(minor, C.minor, 1);
+  lines(step, C.major, 1);
+  const [OX, OY] = w2s(0, 0);
+  ctx.beginPath();
+  ctx.moveTo(0, Math.round(OY) + 0.5); ctx.lineTo(W, Math.round(OY) + 0.5);
+  ctx.moveTo(Math.round(OX) + 0.5, 0); ctx.lineTo(Math.round(OX) + 0.5, H);
+  ctx.strokeStyle = C.axis; ctx.lineWidth = 1.5; ctx.stroke();
+
+  ctx.fillStyle = C.label; ctx.font = `500 12px ${FONT}`;
+  const dp = Math.max(0, -Math.floor(Math.log10(step)) + 1);
+  const ly = Math.min(Math.max(OY + 6, 4), H - 20);
+  ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+  for (let k = Math.ceil(xmin / step); k * step <= xmax; k++) {
+    if (k === 0) continue;
+    const X = w2s(k * step, 0)[0];
+    if (X < 14 || X > W - 14) continue;
+    haloText(fmt(k * step, dp), X, ly);
+  }
+  const lx = Math.min(Math.max(OX - 6, 34), W - 4);
+  ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+  for (let k = Math.ceil(ymin / step); k * step <= ymax; k++) {
+    if (k === 0) continue;
+    const Y = w2s(0, k * step)[1];
+    if (Y < 10 || Y > H - 10) continue;
+    haloText(fmt(k * step, dp), lx, Y);
+  }
+  ctx.font = `italic 400 18px ${SERIF}`;
+  ctx.textAlign = 'right'; ctx.textBaseline = 'bottom';
+  haloText('x', W - 8, Math.min(Math.max(OY - 4, 22), H - 4));
+  ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+  haloText('y', Math.min(Math.max(OX + 8, 4), W - 16), 6);
+}
+function drawTGrid(M) {
+  const g = view.s >= 14 ? 1 : niceStep().step;
+  const corners = [s2w(0, 0), s2w(W, 0), s2w(0, H), s2w(W, H)];
+  const Rv = Math.max(...corners.map(([x, y]) => Math.hypot(x, y)));
+  const S = M[0] ** 2 + M[1] ** 2 + M[2] ** 2 + M[3] ** 2, D = det(M);
+  const smin = Math.sqrt(Math.max(0, (S - Math.sqrt(Math.max(0, S * S - 4 * D * D))) / 2));
+  const K = smin > 0.02 ? Math.min(160, Math.ceil(Rv / smin / g) + 2) : 160;
+  const L = K * g;
+  const seg = (x0, y0, x1, y1) => {
+    const [a, b] = w2s(...mul(M, x0, y0)), [c, d] = w2s(...mul(M, x1, y1));
+    ctx.moveTo(a, b); ctx.lineTo(c, d);
+  };
+  ctx.save();
+  ctx.beginPath();
+  for (let k = -K; k <= K; k++) { if (k === 0) continue; seg(k * g, -L, k * g, L); seg(-L, k * g, L, k * g); }
+  ctx.strokeStyle = C.tgrid; ctx.lineWidth = 1; ctx.stroke();
+  ctx.beginPath(); seg(0, -L, 0, L); seg(-L, 0, L, 0);
+  ctx.strokeStyle = C.tgridAxis; ctx.lineWidth = 1.75; ctx.stroke();
+  ctx.restore();
+}
+function tracePath(pts, M) {
+  ctx.beginPath();
+  pts.forEach(([x, y], i) => { const [X, Y] = w2s(...mul(M, x, y)); if (i) ctx.lineTo(X, Y); else ctx.moveTo(X, Y); });
+}
+function compose(F, G) {
+  return {
+    a: F.a * G.a + F.c * G.b, b: F.b * G.a + F.d * G.b,
+    c: F.a * G.c + F.c * G.d, d: F.b * G.c + F.d * G.d,
+    e: F.a * G.e + F.c * G.f + F.e, f: F.b * G.e + F.d * G.f + F.f,
+  };
+}
+function drawPicture(M, style) {
+  const img = state.image; if (!img) return;
+  const r = picRect();
+  const corners = [[r.x, r.y], [r.x + r.w, r.y], [r.x + r.w, r.y + r.h], [r.x, r.y + r.h]];
+  const singular = Math.abs(det(M)) < 1e-6;
+  if (!singular && style !== 'target') {
+    const k = r.w / img.width;
+    const P = { a: k, b: 0, c: 0, d: -k, e: r.x, f: r.y + r.h };          // pixel -> plane
+    const Lm = { a: M[0], b: M[2], c: M[1], d: M[3], e: 0, f: 0 };          // plane -> plane (A)
+    const S = { a: view.s, b: 0, c: 0, d: -view.s, e: W / 2 - view.cx * view.s, f: H / 2 + view.cy * view.s }; // plane -> screen
+    const T = compose(S, compose(Lm, P));
+    ctx.save();
+    ctx.globalAlpha = style === 'ghost' ? 0.28 : 1;
+    ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
+    ctx.setTransform(dpr * T.a, dpr * T.b, dpr * T.c, dpr * T.d, dpr * T.e, dpr * T.f);
+    ctx.drawImage(img, 0, 0);
+    ctx.restore();
+  }
+  ctx.save();
+  tracePath(corners, M); ctx.closePath();
+  if (style === 'ghost') { ctx.setLineDash([6, 5]); ctx.strokeStyle = C.ghost; ctx.lineWidth = 1.5; }
+  else { ctx.strokeStyle = C.fig; ctx.lineWidth = singular ? 5 : 2; ctx.lineCap = 'round'; }
+  ctx.stroke();
+  ctx.restore();
+}
+function drawDots(M, style) {
+  for (const d of figDots()) {
+    const [X, Y] = w2s(...mul(M, d.x, d.y));
+    ctx.beginPath();
+    if (style === 'ghost') {
+      ctx.globalAlpha = 0.3; ctx.arc(X, Y, 4, 0, 2 * Math.PI); ctx.fillStyle = d.color; ctx.fill(); ctx.globalAlpha = 1;
+    } else if (style === 'target') {
+      ctx.arc(X, Y, 9, 0, 2 * Math.PI); ctx.strokeStyle = C.target; ctx.lineWidth = 2; ctx.stroke();
+      ctx.beginPath(); ctx.arc(X, Y, 3.5, 0, 2 * Math.PI); ctx.fillStyle = d.color; ctx.fill();
+      ctx.strokeStyle = C.dotEdge; ctx.lineWidth = 0.75; ctx.stroke();
+    } else {
+      ctx.arc(X, Y, 5.5, 0, 2 * Math.PI); ctx.fillStyle = d.color; ctx.fill();
+      ctx.strokeStyle = C.dotEdge; ctx.lineWidth = 1; ctx.stroke();
+    }
+  }
+}
+function drawFigure(M, style, figure = state.figure) {
+  if (figure === 'picture') return drawPicture(M, style);
+  if (figure === 'dots') return drawDots(M, style);
+  for (const p of figPaths()) {
+    if (p.pts.length < 2) continue;
+    tracePath(p.pts, M); if (p.closed) ctx.closePath();
+    ctx.save(); ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+    if (style === 'ghost') { ctx.setLineDash([6, 5]); ctx.lineWidth = 1.5; ctx.strokeStyle = C.ghost; ctx.stroke(); }
+    else if (style === 'target') { ctx.setLineDash([10, 6]); ctx.lineWidth = 2.5; ctx.strokeStyle = C.target; ctx.stroke(); }
+    else {
+      if (p.closed && p.main) { ctx.fillStyle = C.fill; ctx.fill(); }
+      ctx.lineWidth = p.main ? 2.25 : 1.5; ctx.strokeStyle = p.main ? C.fig : C.detail; ctx.stroke();
+    }
+    ctx.restore();
+  }
+}
+function arrow(x, y, color, label, dashed) {
+  const [X0, Y0] = w2s(0, 0), [X1, Y1] = w2s(x, y);
+  const dx = X1 - X0, dy = Y1 - Y0, len = Math.hypot(dx, dy);
+  ctx.save();
+  ctx.strokeStyle = color; ctx.fillStyle = color;
+  ctx.font = `600 15px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  if (len < 2) {
+    ctx.beginPath(); ctx.arc(X0, Y0, 6, 0, 2 * Math.PI); ctx.lineWidth = 2; ctx.stroke();
+    if (label) haloText(label + ' = 0', X0 + 30, Y0 + (label.includes('₁') ? 16 : -16));
+    ctx.restore(); return;
+  }
+  const ux = dx / len, uy = dy / len, hs = Math.min(12, len * 0.45);
+  ctx.lineWidth = dashed ? 1.5 : 2.75; ctx.lineCap = 'round';
+  if (dashed) ctx.setLineDash([5, 4]);
+  ctx.beginPath(); ctx.moveTo(X0, Y0); ctx.lineTo(X1 - ux * hs * 0.8, Y1 - uy * hs * 0.8); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.beginPath();
+  ctx.moveTo(X1, Y1);
+  ctx.lineTo(X1 - ux * hs - uy * hs * 0.5, Y1 - uy * hs + ux * hs * 0.5);
+  ctx.lineTo(X1 - ux * hs + uy * hs * 0.5, Y1 - uy * hs - ux * hs * 0.5);
+  ctx.closePath();
+  if (dashed) { ctx.lineWidth = 1.5; ctx.stroke(); } else ctx.fill();
+  if (label) haloText(label, X1 + ux * (label.length > 4 ? 40 : 18), Y1 + uy * 18);
+  ctx.restore();
+}
+function draw() {
+  if (!W) return;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  drawGrid();
+  const t = state.t, M = lerpM(t), moved = t > 0.0005;
+  if (state.showTGrid && moved) drawTGrid(M);
+  if (moved && state.showOriginal) drawFigure(I2, 'ghost');
+  if (state.challenge) drawFigure(state.challenge.M, 'target', 'dots');
+  drawFigure(M, 'solid');
+  if (state.figure === 'custom') {
+    ctx.fillStyle = C.fig;
+    for (const [x, y] of state.custom) { const [X, Y] = w2s(x, y); ctx.fillRect(X - 3.5, Y - 3.5, 7, 7); }
+  }
+  if (state.challenge && state.challenge.hint) {
+    const T = state.challenge.M;
+    arrow(T[0], T[2], C.target, 'Te₁', true);
+    arrow(T[1], T[3], C.target, 'Te₂', true);
+  }
+  if (state.showBasis) {
+    if (moved && state.showOriginal) { arrow(1, 0, C.e1, 'e₁', true); arrow(0, 1, C.e2, 'e₂', true); }
+    const same = moved && Math.hypot(M[0] - M[1], M[2] - M[3]) < 1e-6;
+    arrow(M[1], M[3], C.e2, same ? '' : moved ? 'Ae₂' : 'e₂', false);
+    arrow(M[0], M[2], C.e1, same ? 'Ae₁ = Ae₂' : moved ? 'Ae₁' : 'e₁', false);
+  }
+  const [OX, OY] = w2s(0, 0);
+  ctx.beginPath(); ctx.arc(OX, OY, 3.5, 0, 2 * Math.PI); ctx.fillStyle = C.axis; ctx.fill();
+}
+let drawQueued = false;
+function requestDraw() {
+  if (drawQueued) return;
+  drawQueued = true;
+  requestAnimationFrame(() => { drawQueued = false; draw(); });
+}
+
+/* ---------------- view ---------------- */
+function resize() {
+  const r = wrap.getBoundingClientRect();
+  W = Math.max(1, Math.round(r.width)); H = Math.max(1, Math.round(r.height));
+  dpr = window.devicePixelRatio || 1;
+  canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+  if (!viewInitialised) { resetView(); viewInitialised = true; }
+  draw();
+}
+function resetView() { if (inChallenge()) { fitView(); return; } view.cx = 1.5; view.cy = 1.5; view.s = Math.min(W, H) / 11; requestDraw(); }
+function zoomAt(f, X = W / 2, Y = H / 2) {
+  const [wx, wy] = s2w(X, Y);
+  view.s = Math.min(1200, Math.max(4, view.s * f));
+  view.cx = wx - (X - W / 2) / view.s;
+  view.cy = wy + (Y - H / 2) / view.s;
+  requestDraw();
+}
+function fitView() {
+  let pts = figPoints();
+  const out = [...pts, ...pts.map(([x, y]) => mul(state.t > 0 ? state.A : I2, x, y)), [0, 0], [1, 0], [0, 1]];
+  out.push(mul(state.A, 1, 0), mul(state.A, 0, 1));
+  if (state.challenge) figDots().forEach((d) => out.push(mul(state.challenge.M, d.x, d.y)));
+  const xs = out.map((p) => p[0]), ys = out.map((p) => p[1]);
+  const x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = Math.min(...ys), y1 = Math.max(...ys);
+  const bw = Math.max(x1 - x0, 1), bh = Math.max(y1 - y0, 1);
+  view.s = Math.min(1200, Math.max(4, Math.min(W / (bw * 1.3), H / (bh * 1.3))));
+  view.cx = (x0 + x1) / 2; view.cy = (y0 + y1) / 2;
+  requestDraw();
+}
+function ensureVisible() {
+  const pts = figPoints(); if (!pts.length) return;
+  const inside = pts.every(([x, y]) => { const [X, Y] = w2s(x, y); return X > 10 && X < W - 10 && Y > 10 && Y < H - 10; });
+  if (!inside) fitView();
+}
+
+/* ---------------- matrix input ---------------- */
+const cells = ['m11', 'm12', 'm21', 'm22'].map((id) => $('#' + id));
+const approx = ['m11', 'm12', 'm21', 'm22'].map((id) => $('#' + id + '-approx'));
+const cellNames = ['row 1, column 1', 'row 1, column 2', 'row 2, column 1', 'row 2, column 2'];
+const presetSel = $('#preset');
+(function buildPresets() {
+  const groups = {};
+  PRESETS.forEach((p) => { (groups[p.group] = groups[p.group] || []).push(p); });
+  const custom = document.createElement('option');
+  custom.value = 'custom'; custom.textContent = 'Your own matrix (typed in below)';
+  presetSel.appendChild(custom);
+  Object.entries(groups).forEach(([g, list]) => {
+    const og = document.createElement('optgroup'); og.label = g;
+    list.forEach((p) => { const o = document.createElement('option'); o.value = p.id; o.textContent = p.label; og.appendChild(o); });
+    presetSel.appendChild(og);
+  });
+})();
+function readMatrixFrom(cellsArr, approxArr, box) {
+  const vals = [], bad = [];
+  cellsArr.forEach((inp, k) => {
+    try {
+      const v = parseExpr(inp.value);
+      if (!isFinite(v)) throw new Error('nan');
+      vals[k] = v;
+      inp.removeAttribute('aria-invalid');
+      approxArr[k].textContent = isPlainNumber(inp.value) ? '' : '≈ ' + fmt(v, 4);
+    } catch (e) {
+      inp.setAttribute('aria-invalid', 'true');
+      approxArr[k].textContent = '';
+      bad.push(k);
+    }
+  });
+  if (bad.length) {
+    const where = bad.map((k) => `${cellNames[k]} (“${cellsArr[k].value.trim() || 'empty'}”)`).join(', ');
+    box.innerHTML = `<span class="ico" aria-hidden="true">⚠</span><span>Check ${where}. Each entry must be a number or an expression such as 0.5, 1/2, sqrt(2)/2 or cos(30°). The plane still shows the last valid matrix.</span>`;
+    box.hidden = false;
+    return null;
+  }
+  box.hidden = true;
+  return vals;
+}
+function readMatrix() {
+  const vals = readMatrixFrom(cells, approx, $('#matrix-error'));
+  if (!vals) return false;
+  exploreState.A = vals;
+  return true;
+}
+function setCells(strs) { strs.forEach((s, k) => { cells[k].value = s; }); }
+function currentPreset() { return PRESETS.find((p) => p.id === presetSel.value); }
+function applyPreset() {
+  const p = currentPreset();
+  const pf = $('#param-field');
+  if (!p) { pf.hidden = true; return; }
+  if (p.param) {
+    const r = $('#param');
+    if (r.dataset.preset !== p.id) {
+      r.min = p.param.min; r.max = p.param.max; r.step = p.param.step; r.value = p.param.value;
+      r.dataset.preset = p.id;
+      $('#param-label').textContent = p.param.label;
+    }
+    $('#param-out').textContent = fmt(Number(r.value), 2) + p.param.unit;
+    pf.hidden = false;
+    setCells(p.m(Number(r.value)));
+  } else {
+    pf.hidden = true;
+    setCells(p.m());
+  }
+  matrixChanged();
+}
+function matrixChanged() {
+  if (!readMatrix()) return;
+  updateInfo();
+  requestDraw();
+}
+presetSel.addEventListener('change', applyPreset);
+$('#param').addEventListener('input', applyPreset);
+cells.forEach((inp) => inp.addEventListener('input', () => {
+  presetSel.value = 'custom'; $('#param-field').hidden = true;
+  matrixChanged();
+}));
+cells.forEach((inp) => inp.addEventListener('keydown', (e) => { if (e.key === 'Enter') animateTo(1, true); }));
+
+/* ---------------- animation ---------------- */
+let anim = null;
+function setT(t) {
+  state.t = t;
+  if (state !== exploreState) { requestDraw(); return; }
+  $('#progress').value = Math.round(t * 100);
+  $('#progress-out').textContent = Math.round(t * 100) + '%';
+  requestDraw();
+}
+function animateTo(target, replay) {
+  if (anim) cancelAnimationFrame(anim.id);
+  let from = state.t;
+  if (replay && target === 1 && from > 0.999) from = 0;
+  const done = () => {
+    anim = null;
+    if (target === 1) announce(`Matrix applied. A e1 = ${vec(state.A[0], state.A[2])}, A e2 = ${vec(state.A[1], state.A[3])}, det A = ${fmt(det(state.A))}.`);
+    else announce('Showing the original figure.');
+  };
+  if (reduceMotion.matches) { setT(target); done(); return; }
+  const dur = 450 + 900 * Math.abs(target - from), t0 = performance.now();
+  const ease = (u) => (u < 0.5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 3) / 2);
+  const step = (now) => {
+    const u = Math.min(1, (now - t0) / dur);
+    setT(from + (target - from) * ease(u));
+    if (u < 1) anim.id = requestAnimationFrame(step); else done();
+  };
+  anim = { id: requestAnimationFrame(step) };
+}
+$('#apply').addEventListener('click', () => { if (readMatrix()) animateTo(1, true); });
+$('#undo').addEventListener('click', () => animateTo(0));
+$('#progress').addEventListener('input', (e) => { if (anim) { cancelAnimationFrame(anim.id); anim = null; } setT(Number(e.target.value) / 100); });
+
+/* ---------------- readouts ---------------- */
+function shoelace(pts) {
+  let a = 0;
+  for (let k = 0; k < pts.length; k++) { const [x1, y1] = pts[k], [x2, y2] = pts[(k + 1) % pts.length]; a += x1 * y2 - x2 * y1; }
+  return Math.abs(a) / 2;
+}
+function figureArea() {
+  if (state.figure === 'picture') { if (!state.image) return null; const r = picRect(); return r.w * r.h; }
+  if (state.figure === 'dots') return null;
+  const main = figPaths().find((p) => p.main && p.closed);
+  return main ? shoelace(main.pts) : null;
+}
+function updateInfo() {
+  if (inChallenge()) { updateChallengeInfo(); return; }
+  const A = state.A, D = det(A);
+  $('#f-rule').innerHTML = `(x, y) ↦ (${linearTerm(A[0], A[1])}, ${linearTerm(A[2], A[3])})`.replace(/[xy]/g, '<i class="math">$&</i>');
+  $('#f-ae1').textContent = `${vec(A[0], A[2])}, the first column`;
+  $('#f-ae2').textContent = `${vec(A[1], A[3])}, the second column`;
+  $('#f-det').textContent = `${fmt(A[0])}·${fmt(A[3])} − ${fmt(A[1])}·${fmt(A[2])} = ${fmt(D)}`;
+  const area = figureArea();
+  $('#f-area').textContent = area == null
+    ? (state.figure === 'dots' ? 'Points have no area. Try a shape.' : 'Add at least three points.')
+    : `${fmt(area)} before, ${fmt(area * Math.abs(D))} after`;
+  $('#f-inv').innerHTML = Math.abs(D) < 1e-9 ? 'Does not exist, because det A = 0.' : miniMatrix([A[3] / D, -A[1] / D, -A[2] / D, A[0] / D]);
+  const eff = $('#f-effect');
+  if (Math.abs(D) < 1e-9) {
+    eff.innerHTML = '<span class="ico" aria-hidden="true">ℹ</span><span>A squashes the whole plane onto a line or a point. Areas become 0, so no matrix can undo it.</span>';
+  } else if (D < 0) {
+    eff.innerHTML = `<span class="ico" aria-hidden="true">ℹ</span><span>det A is negative, so A flips orientation: the figure comes out mirrored. Areas are multiplied by |det A| = ${fmt(Math.abs(D))}.</span>`;
+  } else {
+    eff.innerHTML = `<span class="ico" aria-hidden="true">ℹ</span><span>det A is positive, so A keeps orientation. Areas are multiplied by det A = ${fmt(D)}.</span>`;
+  }
+  const names = { square: 'unit square', triangle: 'triangle', letterF: 'letter F', house: 'house', arrow: 'arrow', circle: 'unit circle', dots: 'coloured grid of points', custom: 'your polygon', picture: 'your picture' };
+  canvas.setAttribute('aria-label', `Coordinate plane showing the ${names[state.figure]} and its image under A with rows (${fmt(A[0])}, ${fmt(A[1])}) and (${fmt(A[2])}, ${fmt(A[3])}). A e1 = ${vec(A[0], A[2])}, A e2 = ${vec(A[1], A[3])}.`);
+}
+function announce(msg) { const l = $('#live'); l.textContent = ''; setTimeout(() => { l.textContent = msg; }, 30); }
+
+/* ---------------- figure selection ---------------- */
+const figSel = $('#figure');
+function updateFigurePanels() {
+  const f = state.figure;
+  $('#custom-panel').hidden = f !== 'custom';
+  $('#picture-panel').hidden = f !== 'picture';
+  $('#pic-width-field').hidden = !state.image;
+  const msg = $('#canvas-msg');
+  if (inChallenge()) msg.hidden = true;
+  else if (f === 'picture' && !state.image) { msg.textContent = 'Upload a picture or use the sample picture to start.'; msg.hidden = false; }
+  else if (f === 'custom' && state.custom.length < 3) {
+    msg.textContent = state.custom.length ? `Add ${3 - state.custom.length} more point${state.custom.length === 2 ? '' : 's'} to close the polygon.` : 'Click on the plane to add the corners of your polygon.';
+    msg.hidden = false;
+  } else msg.hidden = true;
+}
+function setFigure(f) {
+  state.figure = f; figSel.value = f;
+  updateFigurePanels(); updateInfo(); ensureVisible(); requestDraw();
+}
+figSel.addEventListener('change', () => setFigure(figSel.value));
+$('#custom-undo').addEventListener('click', () => { state.custom.pop(); updateFigurePanels(); updateInfo(); requestDraw(); });
+$('#custom-clear').addEventListener('click', () => { state.custom = []; updateFigurePanels(); updateInfo(); requestDraw(); });
+
+/* ---------------- pictures ---------------- */
+function picError(text) {
+  const b = $('#pic-error');
+  if (!text) { b.hidden = true; return; }
+  b.innerHTML = `<span class="ico" aria-hidden="true">⚠</span><span>${text}</span>`; b.hidden = false;
+}
+function useImage(src, at) {
+  state.image = src;
+  if (at) { const r = picRect(); state.picOffset = [at[0] - r.w / 2, at[1] - r.h / 2]; }
+  else state.picOffset = [0.5, 0.5];
+  setT(0);
+  picError(null);
+  setFigure('picture');
+  ensureVisible();
+  announce('Picture placed on the plane. Drag it where you like, then select Apply transformation.');
+}
+function loadFile(file, at) {
+  if (!file) return;
+  if (!/^image\//.test(file.type)) { picError(`“${file.name}” is not an image file. Choose a PNG, JPEG, GIF or WebP picture.`); setFigure('picture'); return; }
+  const url = URL.createObjectURL(file);
+  const im = new Image();
+  im.onload = () => {
+    const maxD = 1400, k = Math.min(1, maxD / Math.max(im.naturalWidth, im.naturalHeight));
+    const c = document.createElement('canvas');
+    c.width = Math.max(1, Math.round(im.naturalWidth * k)); c.height = Math.max(1, Math.round(im.naturalHeight * k));
+    c.getContext('2d').drawImage(im, 0, 0, c.width, c.height);
+    URL.revokeObjectURL(url);
+    useImage(c, at);
+  };
+  im.onerror = () => { URL.revokeObjectURL(url); picError(`“${file.name}” couldn’t be opened as a picture. Try a PNG or JPEG file.`); setFigure('picture'); };
+  im.src = url;
+}
+function samplePicture() {
+  const c = document.createElement('canvas'); c.width = 480; c.height = 360;
+  const g = c.getContext('2d');
+  const sky = g.createLinearGradient(0, 0, 0, 260); sky.addColorStop(0, '#47BFFF'); sky.addColorStop(1, '#E6F7FF');
+  g.fillStyle = sky; g.fillRect(0, 0, 480, 360);
+  g.fillStyle = '#FBCA1E'; g.beginPath(); g.arc(395, 70, 38, 0, 2 * Math.PI); g.fill();
+  g.fillStyle = '#6DC201'; g.beginPath(); g.moveTo(0, 270); g.quadraticCurveTo(160, 200, 300, 250); g.quadraticCurveTo(400, 285, 480, 240); g.lineTo(480, 360); g.lineTo(0, 360); g.fill();
+  g.fillStyle = '#1F3700'; g.fillRect(0, 320, 480, 40);
+  g.fillStyle = '#FFFFFF'; g.fillRect(70, 180, 150, 120);
+  g.fillStyle = '#D90011'; g.beginPath(); g.moveTo(55, 185); g.lineTo(145, 105); g.lineTo(235, 185); g.closePath(); g.fill();
+  g.fillStyle = '#000066'; g.fillRect(95, 230, 40, 70);
+  g.fillStyle = '#BDE8FF'; g.fillRect(160, 215, 40, 35);
+  g.strokeStyle = '#000066'; g.lineWidth = 3; g.strokeRect(160, 215, 40, 35);
+  g.beginPath(); g.moveTo(145, 105); g.lineTo(145, 60); g.stroke();
+  g.fillStyle = '#FF5C00'; g.beginPath(); g.moveTo(145, 60); g.lineTo(185, 72); g.lineTo(145, 84); g.closePath(); g.fill();
+  g.fillStyle = '#6B3E1F'; g.fillRect(345, 200, 18, 100);
+  g.fillStyle = '#148A45'; g.beginPath(); g.arc(354, 180, 48, 0, 2 * Math.PI); g.fill();
+  g.beginPath(); g.arc(325, 205, 30, 0, 2 * Math.PI); g.arc(385, 205, 30, 0, 2 * Math.PI); g.fill();
+  g.strokeStyle = '#0F0F0F'; g.lineWidth = 2.5;
+  [[260, 80], [295, 100]].forEach(([x, y]) => { g.beginPath(); g.moveTo(x - 12, y); g.quadraticCurveTo(x - 6, y - 8, x, y); g.quadraticCurveTo(x + 6, y - 8, x + 12, y); g.stroke(); });
+  g.strokeStyle = '#000066'; g.lineWidth = 8; g.strokeRect(4, 4, 472, 352);
+  return c;
+}
+$('#pic-file').addEventListener('change', (e) => { loadFile(e.target.files[0]); e.target.value = ''; });
+$('#pic-sample').addEventListener('click', () => useImage(samplePicture()));
+$('#pic-width').addEventListener('input', (e) => {
+  state.picW = Number(e.target.value);
+  $('#pic-width-out').textContent = fmt(state.picW, 1) + ' units';
+  updateInfo(); requestDraw();
+});
+['dragenter', 'dragover'].forEach((ev) => wrap.addEventListener(ev, (e) => { e.preventDefault(); wrap.classList.add('dropping'); }));
+['dragleave', 'drop'].forEach((ev) => wrap.addEventListener(ev, (e) => { e.preventDefault(); wrap.classList.remove('dropping'); }));
+wrap.addEventListener('drop', (e) => {
+  const file = e.dataTransfer && e.dataTransfer.files[0];
+  if (!file) return;
+  const r = canvas.getBoundingClientRect();
+  loadFile(file, s2w(e.clientX - r.left, e.clientY - r.top));
+});
+
+/* ---------------- pointer interaction ---------------- */
+function pointInPoly(x, y, pts) {
+  let inside = false;
+  for (let i = 0, j = pts.length - 1; i < pts.length; j = i++) {
+    const [xi, yi] = pts[i], [xj, yj] = pts[j];
+    if ((yi > y) !== (yj > y) && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) inside = !inside;
+  }
+  return inside;
+}
+function hitOriginal(x, y) {
+  if (inChallenge()) return false;
+  const f = state.figure;
+  if (f === 'picture') { if (!state.image) return false; const r = picRect(); return x >= r.x && x <= r.x + r.w && y >= r.y && y <= r.y + r.h; }
+  if (f === 'dots') { const d = figDots(); const xs = d.map((p) => p.x), ys = d.map((p) => p.y); const pad = 0.4; return x >= Math.min(...xs) - pad && x <= Math.max(...xs) + pad && y >= Math.min(...ys) - pad && y <= Math.max(...ys) + pad; }
+  return figPaths().some((p) => p.closed && p.pts.length >= 3 && pointInPoly(x, y, p.pts));
+}
+function moveFigure(dx, dy) {
+  if (inChallenge()) return;
+  const f = state.figure;
+  if (f === 'custom') state.custom = state.custom.map(([x, y]) => [x + dx, y + dy]);
+  else if (f === 'picture') state.picOffset = [state.picOffset[0] + dx, state.picOffset[1] + dy];
+  else if (FIG[f]) FIG[f].offset = [FIG[f].offset[0] + dx, FIG[f].offset[1] + dy];
+  requestDraw();
+}
+function localXY(e) { const r = canvas.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; }
+function updateReadout(X, Y) {
+  const [x, y] = s2w(X, Y), [u, v] = mul(state.A, x, y);
+  $('#readout').textContent = `A sends ${vec(x, y)} to ${vec(u, v)}`;
+}
+function setCursor(over) {
+  canvas.style.cursor = drag ? 'grabbing' : over ? 'grab' : state.figure === 'custom' ? 'crosshair' : 'default';
+}
+let drag = null;
+canvas.addEventListener('pointerdown', (e) => {
+  if (e.button !== 0) return;
+  canvas.setPointerCapture(e.pointerId);
+  const [X, Y] = localXY(e);
+  const [wx, wy] = s2w(X, Y);
+  drag = { x0: X, y0: Y, lx: X, ly: Y, moved: false, mode: hitOriginal(wx, wy) ? 'figure' : 'pan' };
+  setCursor(true);
+});
+canvas.addEventListener('pointermove', (e) => {
+  const [X, Y] = localXY(e);
+  updateReadout(X, Y);
+  if (!drag) { const [wx, wy] = s2w(X, Y); setCursor(hitOriginal(wx, wy)); return; }
+  if (Math.hypot(X - drag.x0, Y - drag.y0) > 4) drag.moved = true;
+  const dx = X - drag.lx, dy = Y - drag.ly;
+  drag.lx = X; drag.ly = Y;
+  if (!drag.moved) return;
+  if (drag.mode === 'figure') moveFigure(dx / view.s, -dy / view.s);
+  else { view.cx -= dx / view.s; view.cy += dy / view.s; requestDraw(); }
+});
+function endDrag(e) {
+  if (!drag) return;
+  const d = drag; drag = null;
+  if (!d.moved && !inChallenge() && state.figure === 'custom' && e.type === 'pointerup') {
+    const [X, Y] = localXY(e);
+    const [wx, wy] = s2w(X, Y);
+    state.custom.push([Math.round(wx * 2) / 2, Math.round(wy * 2) / 2]);
+    updateFigurePanels(); updateInfo(); requestDraw();
+  }
+  if (d.moved && d.mode === 'figure') updateInfo();
+  setCursor(false);
+}
+canvas.addEventListener('pointerup', endDrag);
+canvas.addEventListener('pointercancel', endDrag);
+canvas.addEventListener('pointerleave', () => { if (!drag) $('#readout').textContent = 'Point at the plane to see where a point goes.'; });
+canvas.addEventListener('wheel', (e) => {
+  e.preventDefault();
+  const [X, Y] = localXY(e);
+  zoomAt(Math.exp(-e.deltaY * 0.0015), X, Y);
+}, { passive: false });
+canvas.addEventListener('keydown', (e) => {
+  const st = e.shiftKey ? 0.1 : 0.5;
+  const moves = { ArrowLeft: [-st, 0], ArrowRight: [st, 0], ArrowUp: [0, st], ArrowDown: [0, -st] };
+  if (moves[e.key]) {
+    e.preventDefault();
+    if (inChallenge()) { view.cx -= moves[e.key][0]; view.cy -= moves[e.key][1]; requestDraw(); }
+    else { moveFigure(...moves[e.key]); updateInfo(); }
+    return;
+  }
+  if (e.key === '+' || e.key === '=') { e.preventDefault(); zoomAt(1.25); }
+  else if (e.key === '-' || e.key === '_') { e.preventDefault(); zoomAt(0.8); }
+  else if (e.key === '0') { e.preventDefault(); resetView(); }
+});
+$('#zoom-in').addEventListener('click', () => zoomAt(1.25));
+$('#zoom-out').addEventListener('click', () => zoomAt(0.8));
+$('#fit-view').addEventListener('click', fitView);
+$('#reset-view').addEventListener('click', resetView);
+
+/* ---------------- display toggles ---------------- */
+[['#show-tgrid', 'showTGrid'], ['#show-basis', 'showBasis'], ['#show-original', 'showOriginal']].forEach(([sel, key]) => {
+  $(sel).addEventListener('change', (e) => { exploreState[key] = e.target.checked; requestDraw(); });
+});
+[['#ch-show-tgrid', 'showTGrid'], ['#ch-show-basis', 'showBasis'], ['#ch-show-original', 'showOriginal']].forEach(([sel, key]) => {
+  $(sel).addEventListener('change', (e) => { chState[key] = e.target.checked; requestDraw(); });
+});
+
+/* ---------------- challenge tab ---------------- */
+const chCells = ['c11', 'c12', 'c21', 'c22'].map((id) => $('#' + id));
+const chApprox = ['c11', 'c12', 'c21', 'c22'].map((id) => $('#' + id + '-approx'));
+const ICON = { info: 'ℹ', success: '✓' };
+function chStatus(kind, html) {
+  const b = $('#ch-status');
+  b.className = 'msg msg-' + kind;
+  b.innerHTML = `<span class="ico" aria-hidden="true">${ICON[kind]}</span><span>${html}</span>`;
+}
+const sameM = (P, Q) => P.every((v, k) => Math.abs(v - Q[k]) < 1e-6);
+function dotsInRings() {
+  const ch = chState.challenge; if (!ch) return 0;
+  return DOTS.filter((d) => {
+    const [a, b] = mul(chState.A, d.x, d.y), [c, e] = mul(ch.M, d.x, d.y);
+    return Math.hypot(a - c, b - e) < 1e-6;
+  }).length;
+}
+function updateChallengeInfo() {
+  const A = chState.A, n = dotsInRings();
+  $('#ch-count').textContent = `${n} of ${DOTS.length}`;
+  $('#ch-ae1').textContent = `${vec(A[0], A[2])}, the first column`;
+  $('#ch-ae2').textContent = `${vec(A[1], A[3])}, the second column`;
+  $('#ch-score').textContent = `Challenges solved this session: ${chState.solvedCount}`;
+  if (inChallenge()) canvas.setAttribute('aria-label', `Coordinate plane for the mystery matrix challenge. Your matrix A has rows (${fmt(A[0])}, ${fmt(A[1])}) and (${fmt(A[2])}, ${fmt(A[3])}). ${n} of ${DOTS.length} dots are inside their rings.`);
+}
+function checkChallenge() {
+  const ch = chState.challenge; if (!ch) return;
+  if (sameM(chState.A, ch.M)) {
+    if (!ch.solved && !ch.revealed) { ch.solved = true; chState.solvedCount++; announce('Solved. Every dot is inside its ring.'); }
+    chStatus('success', ch.revealed
+      ? `This is the hidden matrix. Its first column is where e₁ lands and its second column is where e₂ lands. Select New challenge to try another one.`
+      : `Solved. Every dot is inside its ring, so A = ${miniMatrix(ch.M)}. Select New challenge to try another one.`);
+  } else {
+    chStatus('info', 'Tip: look at where the dots that start at (1, 0) and (0, 1) have to go. Those two positions are the columns of the matrix.');
+  }
+}
+function chMatrixChanged() {
+  const vals = readMatrixFrom(chCells, chApprox, $('#ch-matrix-error'));
+  if (!vals) return;
+  chState.A = vals;
+  updateChallengeInfo(); checkChallenge(); requestDraw();
+}
+chCells.forEach((inp) => inp.addEventListener('input', chMatrixChanged));
+function newChallenge() {
+  const ri = () => Math.floor(Math.random() * 5) - 2;
+  const prev = chState.challenge && chState.challenge.M;
+  let M;
+  do { M = [ri(), ri(), ri(), ri()]; }
+  while (Math.abs(det(M)) < 0.5 || sameM(M, I2) || (prev && sameM(M, prev)));
+  chState.challenge = { M, hint: false, solved: false, revealed: false };
+  chState.A = [1, 0, 0, 1]; chState.t = 1;
+  chCells.forEach((inp, k) => { inp.value = String(I2[k]); });
+  readMatrixFrom(chCells, chApprox, $('#ch-matrix-error'));
+  updateChallengeInfo(); checkChallenge();
+  if (inChallenge()) fitView();
+  requestDraw();
+  announce('New challenge. Your matrix has been reset to the identity.');
+}
+$('#ch-new').addEventListener('click', newChallenge);
+$('#ch-hint').addEventListener('click', () => {
+  if (!chState.challenge) return;
+  chState.challenge.hint = true; requestDraw();
+  announce('The dashed arrows Te1 and Te2 show where the hidden matrix sends e1 and e2.');
+});
+$('#ch-reveal').addEventListener('click', () => {
+  const ch = chState.challenge; if (!ch) return;
+  if (!ch.solved) ch.revealed = true;
+  chCells.forEach((inp, k) => { inp.value = String(ch.M[k]); });
+  chMatrixChanged();
+});
+
+/* ---------------- tabs ---------------- */
+const tabs = [$('#tab-explore'), $('#tab-challenge')];
+function switchTab(mode) {
+  if (anim) { cancelAnimationFrame(anim.id); anim = null; }
+  if (drag) drag = null;
+  const toCh = mode === 'challenge';
+  tabs.forEach((t) => {
+    const on = (t.id === 'tab-challenge') === toCh;
+    t.setAttribute('aria-selected', String(on)); t.tabIndex = on ? 0 : -1;
+  });
+  $('#panel-explore').hidden = toCh; $('#panel-challenge').hidden = !toCh;
+  state = toCh ? chState : exploreState;
+  view = toCh ? chView : exploreView;
+  $('#legend-target').hidden = !toCh;
+  $('#legend-fig').textContent = toCh ? 'Your dots (moved by A)' : 'Transformed figure';
+  $('#legend-ghost').textContent = toCh ? 'Starting position of the dots' : 'Original figure';
+  $('#fit-view').textContent = toCh ? 'Fit all dots' : 'Fit figure';
+  $('#plane-help').textContent = toCh
+    ? 'Drag the plane to pan and scroll to zoom. With the plane focused, arrow keys pan and the + and − keys zoom.'
+    : 'Drag the original figure to move it anywhere on the plane. Drag empty space to pan and scroll to zoom. With the plane focused, arrow keys move the figure and the + and − keys zoom.';
+  if (toCh && !chState.challenge) newChallenge();
+  if (toCh && !chView.ready) { fitView(); chView.ready = true; }
+  updateFigurePanels(); updateInfo(); setCursor(false); requestDraw();
+}
+tabs.forEach((t, i) => {
+  t.addEventListener('click', () => switchTab(i ? 'challenge' : 'explore'));
+  t.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+      e.preventDefault();
+      const j = 1 - i; tabs[j].focus(); switchTab(j ? 'challenge' : 'explore');
+    }
+  });
+});
+
+/* ---------------- start ---------------- */
+readColors();
+const mq = window.matchMedia('(prefers-color-scheme: dark)');
+(mq.addEventListener ? mq.addEventListener('change', () => { readColors(); requestDraw(); }) : mq.addListener(() => { readColors(); requestDraw(); }));
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => requestDraw());
+presetSel.value = 'rot45';
+applyPreset();
+setFigure('letterF');
+new ResizeObserver(resize).observe(wrap);
+resize();
+})();
+</script>
+</body>
+</html>
