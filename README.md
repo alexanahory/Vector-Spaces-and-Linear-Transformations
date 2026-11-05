@@ -1,6 +1,3 @@
-# Vector-Spaces-and-Linear-Transformations
-This repository contains animations that I use in course I teach at IE University on Linear Algebra and Geometry.
-
 # Linear Algebra and Geometry: interactive animations
 
 Interactive, browser-based animations for the Linear Algebra and Geometry courses at the School of Science & Technology, IE University. Students can move vectors, change matrices and watch the plane (or space) respond, with nothing to install.
@@ -13,6 +10,7 @@ Interactive, browser-based animations for the Linear Algebra and Geometry course
 | Animation | Course | What students do |
 |---|---|---|
 | [Linear transformations of the plane](linear_transformations_activity.html) | Linear Algebra | Choose a 2 × 2 matrix *A* and a figure (a preset, a polygon they draw, or an uploaded picture) and watch every point *x* move to *Ax*, reading off the determinant, area change and inverse. A second mode, the mystery matrix challenge, asks them to find a hidden matrix from where it sends a grid of coloured dots. |
+| [Quadratic forms in the plane](quadratic_forms_activity.html) | Linear Algebra | Choose the coefficients of *Q*(*x*, *y*) = *ax*² + 2*bxy* + *cy*² (or a preset, including the lecture examples) and see its level curves next to its 3D graph, with the eigenvalues, principal axes and classification of the symmetric matrix *A*. A second mode asks them to classify a hidden form from its level curves and graph, and to say what the curve *Q* = 1 is. |
 | [Euclidean spaces, seen](euclidean_spaces_interactive.html) | Geometry | An interactive companion to Chapter 2 of the course notes, in four parts: inner products on the plane and the Gram matrix (§2.1, §2.3.1), orthogonal decomposition (§2.4.1, §2.4.3), the Frobenius inner product on 2 × 2 matrices (§2.1, Example 2.1.1), and orthogonal projection onto a plane in 3D (§2.4.4). |
 
 ## For students
@@ -30,6 +28,7 @@ The animations work in recent versions of Chrome, Edge, Firefox and Safari, on c
 ├── index.html                              Landing page that lists every animation
 ├── README.md                               This file
 ├── linear_transformations_activity.html    Linear transformations of the plane
+├── quadratic_forms_activity.html           Quadratic forms in the plane
 └── euclidean_spaces_interactive.html       Euclidean spaces, seen
 ```
 
@@ -67,7 +66,7 @@ GitHub Pages serves public content. If the repository needs to stay private, che
 
    Entries are grouped by course in the order of the `COURSES` list. To add a course, add `{ id, name, note }` to `COURSES`. Entries whose course is not in that list appear under “More animations”.
 
-   The `figure` value picks one of the small decorative drawings in the `FIGURES` object (`transform`, `projection` or the plain `grid`). You can add a new drawing there as a fragment of SVG on a 200 × 200 canvas with the origin at (70, 130).
+   The `figure` value picks one of the small decorative drawings in the `FIGURES` object (`transform`, `projection`, `quadratic` or the plain `grid`). You can add a new drawing there as a fragment of SVG on a 200 × 200 canvas with the origin at (70, 130).
 
    Set `REPO_URL` in the same script to show a “Source code on GitHub” link in the footer.
 3. **Add a row to the table** in the [Animations](#animations) section of this README.
