@@ -1,0 +1,1771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Quadratic forms in the plane · IE University</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=PT+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+/* ---------- IE University base tokens ---------- */
+:root {
+  --typography-fontfamilies-primary: "Montserrat", Arial, Helvetica, sans-serif;
+  --typography-fontfamilies-secondary: "PT Serif", Georgia, "Times New Roman", serif;
+  --typography-fontweights-regular: 400;
+  --typography-fontweights-medium: 500;
+  --typography-fontweights-semibold: 600;
+  --typography-fontweights-bold: 700;
+  --typography-fontweights-extrabold: 800;
+
+  --color-primary-oceanblue: #000066;
+  --color-primary-seablue: #47BFFF;
+  --color-secondary-marineblue: #0032A0;
+  --color-secondary-electricblue: #0000DB;
+  --color-secondary-lightblue: #BDE8FF;
+  --color-grey-ieblack: #0F0F0F;
+  --color-grey-darkgrey: #434445;
+  --color-grey-middlegrey: #888A8C;
+  --color-grey-lightgrey: #BFC1C3;
+  --color-grey-softgrey: #F8F8F8;
+  --color-grey-iewhite: #F4F4F4;
+  --color-grey-white: #FFFFFF;
+  --color-school-law: #D90011;
+  --color-school-archdesign: #921AD4;
+  --color-school-humanities: #FF5C00;
+  --color-school-snt: #6DC201;
+  --color-school-sntdark: #1F3700;
+  --color-semantic-accept: #23CE6B;
+  --color-semantic-lemonyellow: #FBCA1E;
+  --color-semantic-tangerine: #FF7B31;
+  --color-semantic-iceblue: #E6F7FF;
+  --color-semantic-alumniblue: #1B1A43;
+  --color-semantic-midnight: #23207E;
+
+  /* ---------- semantic tokens (light) ---------- */
+  --page-bg: var(--color-grey-iewhite);
+  --surface: var(--color-grey-white);
+  --text: var(--color-grey-ieblack);
+  --text-muted: var(--color-grey-darkgrey);
+  --heading: var(--color-primary-oceanblue);
+  --rule: var(--color-grey-lightgrey);
+  --input-border: var(--color-grey-middlegrey);
+  --input-bg: var(--color-grey-white);
+  --btn-bg: var(--color-primary-oceanblue);
+  --btn-text: var(--color-grey-white);
+  --btn-bg-hover: var(--color-secondary-marineblue);
+  --focus: var(--color-secondary-electricblue);
+  --error-text: var(--color-school-law);
+  --error-bg: #FFF1F2;
+  --success-text: var(--color-school-sntdark);
+  --success-bg: #EAFBF1;
+  --success-icon: #148A45;
+  --info-bg: var(--color-semantic-iceblue);
+
+  /* plane & graph */
+  --plane-bg: var(--color-grey-white);
+  --plane-minor: rgba(15, 15, 15, 0.06);
+  --plane-major: rgba(15, 15, 15, 0.14);
+  --plane-axis: var(--color-grey-darkgrey);
+  --plane-label: var(--color-grey-darkgrey);
+  --lvl-pos: var(--color-secondary-marineblue);
+  --lvl-neg: #C24100;
+  --lvl-zero: var(--color-grey-ieblack);
+  --hl: var(--color-school-archdesign);
+  --ax1: var(--color-school-law);
+  --ax2: #148A45;
+  --heat-pos: 71, 191, 255;
+  --heat-neg: 255, 123, 49;
+  --heat-max: 0.55;
+  --mesh: rgba(0, 0, 40, 0.16);
+  --surf-line: rgba(10, 10, 40, 0.62);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --page-bg: var(--color-grey-ieblack);
+    --surface: var(--color-semantic-alumniblue);
+    --text: var(--color-grey-iewhite);
+    --text-muted: var(--color-grey-lightgrey);
+    --heading: var(--color-secondary-lightblue);
+    --rule: #3A3970;
+    --input-bg: #121133;
+    --btn-bg: var(--color-primary-seablue);
+    --btn-text: var(--color-primary-oceanblue);
+    --btn-bg-hover: var(--color-secondary-lightblue);
+    --focus: var(--color-primary-seablue);
+    --error-text: var(--color-semantic-tangerine);
+    --error-bg: #3A1420;
+    --success-text: var(--color-semantic-accept);
+    --success-bg: #10302A;
+    --success-icon: var(--color-semantic-accept);
+    --info-bg: #23225A;
+    --plane-bg: #14133A;
+    --plane-minor: rgba(255, 255, 255, 0.05);
+    --plane-major: rgba(255, 255, 255, 0.13);
+    --plane-axis: var(--color-grey-lightgrey);
+    --plane-label: var(--color-grey-lightgrey);
+    --lvl-pos: var(--color-primary-seablue);
+    --lvl-neg: var(--color-semantic-tangerine);
+    --lvl-zero: var(--color-grey-iewhite);
+    --hl: var(--color-semantic-lemonyellow);
+    --ax1: #FF8A8A;
+    --ax2: var(--color-semantic-accept);
+    --heat-max: 0.42;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --page-bg: var(--color-grey-ieblack);
+  --surface: var(--color-semantic-alumniblue);
+  --text: var(--color-grey-iewhite);
+  --text-muted: var(--color-grey-lightgrey);
+  --heading: var(--color-secondary-lightblue);
+  --rule: #3A3970;
+  --input-bg: #121133;
+  --btn-bg: var(--color-primary-seablue);
+  --btn-text: var(--color-primary-oceanblue);
+  --btn-bg-hover: var(--color-secondary-lightblue);
+  --focus: var(--color-primary-seablue);
+  --error-text: var(--color-semantic-tangerine);
+  --error-bg: #3A1420;
+  --success-text: var(--color-semantic-accept);
+  --success-bg: #10302A;
+  --success-icon: var(--color-semantic-accept);
+  --info-bg: #23225A;
+  --plane-bg: #14133A;
+  --plane-minor: rgba(255, 255, 255, 0.05);
+  --plane-major: rgba(255, 255, 255, 0.13);
+  --plane-axis: var(--color-grey-lightgrey);
+  --plane-label: var(--color-grey-lightgrey);
+  --lvl-pos: var(--color-primary-seablue);
+  --lvl-neg: var(--color-semantic-tangerine);
+  --lvl-zero: var(--color-grey-iewhite);
+  --hl: var(--color-semantic-lemonyellow);
+  --ax1: #FF8A8A;
+  --ax2: var(--color-semantic-accept);
+  --heat-max: 0.42;
+  color-scheme: dark;
+}
+
+/* ---------- base ---------- */
+:root { box-sizing: border-box; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+*, *::before, *::after { box-sizing: inherit; }
+html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+body {
+  margin: 0;
+  background: var(--page-bg);
+  color: var(--text);
+  font-family: var(--typography-fontfamilies-primary);
+  font-size: 16px;
+  line-height: 24px;
+}
+.sr-only {
+  position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+button, input, select { font-family: inherit; }
+.math, .lede i { font-family: var(--typography-fontfamilies-secondary); font-style: italic; }
+
+/* ---------- masthead ---------- */
+.masthead {
+  display: flex; align-items: center; gap: 28px; flex-wrap: wrap;
+  padding: 18px clamp(16px, 4vw, 40px);
+  background: var(--surface);
+}
+.masthead .logo { height: 60px; width: auto; display: block; }
+.masthead .titles { border-left: 1px solid var(--rule); padding-left: 28px; min-width: 0; }
+.masthead h1 {
+  margin: 0; color: var(--heading);
+  font-weight: var(--typography-fontweights-medium);
+  font-size: clamp(26px, 2.6vw, 36px); line-height: 1.15;
+}
+.masthead .lede { margin: 6px 0 0; color: var(--text-muted); max-width: 74ch; }
+@media (max-width: 640px) {
+  .masthead .titles { border-left: 0; padding-left: 0; }
+}
+
+/* ---------- tabs ---------- */
+.tabs {
+  display: flex; gap: 4px; overflow-x: auto;
+  padding: 0 clamp(16px, 4vw, 40px);
+  background: var(--surface); border-bottom: 1px solid var(--rule);
+}
+.tab {
+  appearance: none; background: none; border: 0; border-bottom: 4px solid transparent;
+  padding: 12px 18px 10px; min-height: 50px; cursor: pointer; white-space: nowrap;
+  color: var(--text-muted); font-size: 15px; line-height: 20px; font-weight: var(--typography-fontweights-bold);
+}
+.tab:hover { color: var(--heading); }
+.tab[aria-selected="true"] { color: var(--heading); border-bottom-color: var(--heading); }
+.tab:focus-visible { outline-offset: -3px; }
+
+/* ---------- layout ---------- */
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 410px);
+  gap: 24px;
+  padding: 24px clamp(16px, 4vw, 40px) 48px;
+  max-width: 1720px; margin: 0 auto;
+}
+.stage { align-self: start; min-width: 0; }
+@media (min-width: 1181px) and (min-height: 760px) {
+  .stage { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px); }
+}
+.toolbar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+.seg { display: inline-flex; border: 1.5px solid var(--input-border); border-radius: 4px; overflow: hidden; }
+.seg button {
+  appearance: none; border: 0; background: var(--surface); color: var(--heading);
+  min-height: 42px; padding: 8px 14px; cursor: pointer;
+  font-size: 13px; line-height: 18px; font-weight: var(--typography-fontweights-extrabold);
+}
+.seg button + button { border-left: 1.5px solid var(--input-border); }
+.seg button[aria-pressed="true"] { background: var(--btn-bg); color: var(--btn-text); }
+.seg button:focus-visible { outline-offset: -4px; }
+.toolbar .note { margin: 0 0 0 auto; font-size: 14px; line-height: 20px; color: var(--text-muted); }
+
+.views { display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.views.mode-2d, .views.mode-3d { grid-template-columns: minmax(0, 1fr); }
+.views.mode-2d .view-3d, .views.mode-3d .view-2d { display: none; }
+@media (max-width: 1180px) { .views.mode-both { grid-template-columns: minmax(0, 1fr); } }
+
+.view { min-width: 0; }
+.view-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+.view-title {
+  margin: 0 auto 0 0; color: var(--heading);
+  font-size: 18px; line-height: 24px; font-weight: var(--typography-fontweights-bold);
+}
+.view-title .math { font-weight: 400; }
+.icon-btn {
+  min-width: 40px; height: 40px; padding: 0 10px;
+  border: 1.5px solid var(--input-border); border-radius: 4px;
+  background: var(--surface); color: var(--heading);
+  font-size: 13px; font-weight: var(--typography-fontweights-extrabold);
+  cursor: pointer;
+}
+.icon-btn .glyph { font-size: 22px; font-weight: 500; line-height: 1; }
+.icon-btn:hover { border-color: var(--heading); }
+.canvas-wrap {
+  position: relative; width: 100%;
+  aspect-ratio: 1 / 1;
+  max-height: calc(100vh - 250px); min-height: 320px;
+  border: 1px solid var(--rule); border-radius: 4px; overflow: hidden;
+  background: var(--plane-bg);
+}
+.views.mode-2d .canvas-wrap, .views.mode-3d .canvas-wrap { aspect-ratio: 4 / 3; }
+.canvas-wrap canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+#plane3d { cursor: grab; }
+#plane3d.grabbing { cursor: grabbing; }
+.canvas-msg {
+  position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%);
+  margin: 0; padding: 8px 14px; width: max-content; max-width: calc(100% - 28px);
+  background: var(--info-bg); color: var(--text); border-radius: 4px;
+  font-size: 14px; line-height: 20px; text-align: center; pointer-events: none;
+}
+.readout { margin: 8px 0 0; min-height: 20px; color: var(--text-muted); font-size: 14px; line-height: 20px; font-variant-numeric: tabular-nums; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 14px 0 0; padding: 0; list-style: none; font-size: 14px; line-height: 20px; color: var(--text-muted); }
+.legend .sw { display: inline-block; width: 26px; height: 0; vertical-align: middle; margin-right: 6px; border-top: 3px solid; }
+.sw-pos { border-color: var(--lvl-pos) !important; border-top-width: 2px !important; }
+.sw-neg { border-color: var(--lvl-neg) !important; border-top-style: dashed !important; border-top-width: 2px !important; }
+.sw-zero { border-color: var(--lvl-zero) !important; }
+.sw-hl { border-color: var(--hl) !important; border-top-width: 4px !important; }
+.sw-ax1 { border-color: var(--ax1) !important; }
+.sw-ax2 { border-color: var(--ax2) !important; }
+.ramp { display: inline-block; width: 64px; height: 12px; vertical-align: middle; margin-right: 6px; border-radius: 2px; border: 1px solid var(--rule);
+  background: linear-gradient(90deg, #FF5C00, #FFB27F, #ECF0F4, #7FD0FF, #0032A0); }
+.help { margin: 10px 0 0; color: var(--text-muted); font-size: 14px; line-height: 20px; }
+
+/* ---------- control panel ---------- */
+.panel {
+  background: var(--surface); border: 1px solid var(--rule); border-radius: 4px;
+  padding: 4px 24px 12px; min-width: 0; align-self: start;
+}
+.panel > section { padding: 20px 0; border-top: 1px solid var(--rule); }
+.panel > section:first-child { border-top: 0; }
+.panel h2 {
+  margin: 0 0 12px; color: var(--heading);
+  font-size: 18px; line-height: 24px; font-weight: var(--typography-fontweights-bold);
+}
+.panel p { margin: 0 0 12px; }
+.field { margin-bottom: 14px; }
+.field > label, .field-label {
+  display: block; margin-bottom: 6px;
+  font-size: 14px; line-height: 20px; font-weight: var(--typography-fontweights-semibold);
+}
+select, .text-input {
+  width: 100%; min-height: 44px; padding: 8px 12px;
+  border: 1.5px solid var(--input-border); border-radius: 4px;
+  background: var(--input-bg); color: var(--text);
+  font-size: 16px;
+}
+.text-input[aria-invalid="true"] { border: 2.5px solid var(--error-text); background: var(--error-bg); }
+input[type="range"] { width: 100%; accent-color: var(--btn-bg); min-height: 28px; }
+.range-row { display: flex; align-items: center; gap: 12px; }
+.range-row output { min-width: 4.5ch; text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
+.coef-row { display: grid; grid-template-columns: 2.2ch minmax(0, 1fr) 5ch; align-items: center; gap: 10px; margin-bottom: 4px; }
+.coef-row label { font-family: var(--typography-fontfamilies-secondary); font-style: italic; font-size: 20px; color: var(--heading); }
+.coef-row output { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
+
+.formula {
+  margin: 4px 0 14px; padding: 12px 14px; border-radius: 4px; background: var(--info-bg);
+  font-family: var(--typography-fontfamilies-secondary); font-size: 22px; line-height: 30px;
+  overflow-wrap: anywhere;
+}
+.formula .math { font-size: inherit; }
+
+/* bracketed matrix (as in the linear transformations activity) */
+.matrix-row { display: flex; align-items: center; gap: 14px; margin: 6px 0 4px; }
+.mat-name { font-family: var(--typography-fontfamilies-secondary); font-style: italic; font-size: 34px; line-height: 1; color: var(--heading); white-space: nowrap; }
+.matrix {
+  position: relative; flex: 1; min-width: 0;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px;
+  padding: 10px 18px 4px;
+}
+.matrix::before, .matrix::after {
+  content: ""; position: absolute; top: 0; bottom: 0; width: 11px;
+  border: 3px solid var(--heading);
+}
+.matrix::before { left: 0; border-right: 0; }
+.matrix::after { right: 0; border-left: 0; }
+.cell input {
+  width: 100%; height: 50px; padding: 4px 8px;
+  border: 1.5px solid var(--input-border); border-radius: 4px;
+  background: var(--input-bg); color: var(--text);
+  font-size: 20px; font-weight: 500; text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.cell input[aria-invalid="true"] { border: 2.5px solid var(--error-text); background: var(--error-bg); }
+.cell .approx { display: block; min-height: 18px; font-size: 12px; line-height: 18px; color: var(--text-muted); text-align: center; font-variant-numeric: tabular-nums; }
+.hint-small { font-size: 14px; line-height: 20px; color: var(--text-muted); }
+
+.btn-row { display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0 12px; }
+.btn {
+  min-height: 46px; padding: 10px 18px; border-radius: 4px; cursor: pointer;
+  font-size: 15px; font-weight: var(--typography-fontweights-extrabold); line-height: 20px;
+  border: 2px solid var(--btn-bg);
+}
+.btn-primary { background: var(--btn-bg); color: var(--btn-text); }
+.btn-primary:hover { background: var(--btn-bg-hover); border-color: var(--btn-bg-hover); }
+.btn-secondary { background: transparent; color: var(--heading); border-color: var(--heading); }
+.btn-secondary:hover { background: var(--info-bg); }
+.btn-small { min-height: 40px; padding: 8px 14px; font-size: 13px; }
+
+.msg { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border-radius: 4px; margin: 10px 0 0; font-size: 16px; line-height: 24px; }
+.msg .ico { font-weight: 800; flex: none; }
+.msg-error { background: var(--error-bg); color: var(--error-text); border-left: 4px solid var(--error-text); }
+.msg-success { background: var(--success-bg); color: var(--success-text); border-left: 4px solid var(--success-icon); }
+.msg-success .ico { color: var(--success-icon); }
+.msg-info { background: var(--info-bg); color: var(--text); border-left: 4px solid var(--heading); }
+.msg strong { font-weight: 700; }
+[hidden] { display: none !important; }
+
+.checks { display: grid; gap: 8px; }
+.checks label { display: flex; align-items: center; gap: 10px; min-height: 32px; cursor: pointer; }
+.checks input { width: 20px; height: 20px; accent-color: var(--btn-bg); flex: none; }
+
+fieldset.choice { border: 0; margin: 0 0 16px; padding: 0; min-width: 0; }
+fieldset.choice legend { padding: 0; margin-bottom: 8px; font-weight: 700; color: var(--heading); }
+fieldset.choice label { display: flex; align-items: center; gap: 10px; min-height: 36px; cursor: pointer; }
+fieldset.choice input { width: 20px; height: 20px; accent-color: var(--btn-bg); flex: none; }
+
+/* readouts */
+.facts { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 8px 14px; align-items: baseline; }
+.facts dt { font-size: 14px; line-height: 20px; color: var(--text-muted); font-weight: 600; }
+.facts dd { margin: 0; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.class-name { display: block; font-weight: 800; color: var(--heading); font-size: 18px; line-height: 26px; }
+.desc { margin: 12px 0 0 !important; }
+.desc strong { color: var(--heading); }
+.mini-matrix { display: inline-grid; grid-template-columns: auto auto; gap: 0 10px; padding: 0 7px; position: relative; vertical-align: middle; font-variant-numeric: tabular-nums; text-align: right; }
+.mini-matrix::before, .mini-matrix::after { content: ""; position: absolute; top: 0; bottom: 0; width: 5px; border: 1.5px solid currentColor; }
+.mini-matrix::before { left: 0; border-right: 0; }
+.mini-matrix::after { right: 0; border-left: 0; }
+.score { font-size: 14px; line-height: 20px; color: var(--text-muted); margin: 12px 0 0 !important; }
+
+details.tips { margin-top: 4px; }
+details.tips summary { cursor: pointer; font-weight: 700; color: var(--heading); min-height: 32px; display: list-item; }
+details.tips ul { margin: 10px 0 0; padding-left: 20px; }
+details.tips li { margin-bottom: 10px; }
+
+@media (max-width: 980px) {
+  .layout { grid-template-columns: minmax(0, 1fr); }
+  .canvas-wrap { max-height: 78vh; }
+}
+@media (max-width: 400px) {
+  .panel { padding: 4px 16px 12px; }
+  .mat-name { font-size: 26px; }
+  .formula { font-size: 19px; }
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <picture>
+    <source srcset="https://static.ie.edu/IT/logos/Corporate/Logo_Corporate_Full_White_Filled.svg" media="(prefers-color-scheme: dark)">
+    <img class="logo" src="https://static.ie.edu/IT/logos/Corporate/Logo_Corporate_Blue_Filled.svg" alt="IE University" height="60">
+  </picture>
+  <div class="titles">
+    <h1>Quadratic forms in the plane</h1>
+    <p class="lede">Choose the coefficients of <i>Q</i>(<i>x</i>, <i>y</i>) = <i>ax</i>² + 2<i>bxy</i> + <i>cy</i>² and see its level curves <i>Q</i>(<i>x</i>, <i>y</i>) = <i>k</i> next to its graph <i>z</i> = <i>Q</i>(<i>x</i>, <i>y</i>).</p>
+  </div>
+</header>
+
+<nav class="tabs" role="tablist" aria-label="Activity">
+  <button class="tab" role="tab" type="button" id="tab-explore" aria-selected="true" aria-controls="panel-explore">Explore quadratic forms</button>
+  <button class="tab" role="tab" type="button" id="tab-challenge" aria-selected="false" aria-controls="panel-challenge" tabindex="-1">Classify the mystery form</button>
+</nav>
+
+<main class="layout">
+  <section class="stage" aria-label="Level curves and graph of Q">
+    <div class="toolbar">
+      <div class="seg" role="group" aria-label="Views to show">
+        <button type="button" data-mode="both" aria-pressed="true">Both views</button>
+        <button type="button" data-mode="2d" aria-pressed="false">Level curves</button>
+        <button type="button" data-mode="3d" aria-pressed="false">Graph</button>
+      </div>
+    </div>
+
+    <div class="views mode-both" id="views">
+      <div class="view view-2d">
+        <div class="view-head">
+          <h2 class="view-title" id="h-2d">Level curves <span class="math">Q</span>(<span class="math">x</span>, <span class="math">y</span>) = <span class="math">k</span></h2>
+          <button class="icon-btn" id="z2-in" type="button" aria-label="Zoom in on the level curves"><span class="glyph" aria-hidden="true">+</span></button>
+          <button class="icon-btn" id="z2-out" type="button" aria-label="Zoom out on the level curves"><span class="glyph" aria-hidden="true">−</span></button>
+          <button class="icon-btn" id="z2-reset" type="button">Reset</button>
+        </div>
+        <div class="canvas-wrap" id="wrap2d">
+          <canvas id="plane2d" tabindex="0" role="img" aria-describedby="help2d" aria-label="Level curves of Q"></canvas>
+          <p class="canvas-msg" id="msg2d" hidden></p>
+        </div>
+        <p class="readout" id="readout2d">Point at the plane to read <span class="math">Q</span>(<span class="math">x</span>, <span class="math">y</span>).</p>
+      </div>
+
+      <div class="view view-3d">
+        <div class="view-head">
+          <h2 class="view-title" id="h-3d">Graph <span class="math">z</span> = <span class="math">Q</span>(<span class="math">x</span>, <span class="math">y</span>)</h2>
+          <button class="icon-btn" id="z3-in" type="button" aria-label="Zoom in on the graph"><span class="glyph" aria-hidden="true">+</span></button>
+          <button class="icon-btn" id="z3-out" type="button" aria-label="Zoom out on the graph"><span class="glyph" aria-hidden="true">−</span></button>
+          <button class="icon-btn" id="z3-top" type="button">From above</button>
+          <button class="icon-btn" id="z3-reset" type="button">Reset</button>
+        </div>
+        <div class="canvas-wrap" id="wrap3d">
+          <canvas id="plane3d" tabindex="0" role="img" aria-describedby="help3d" aria-label="Graph of Q"></canvas>
+          <p class="canvas-msg" id="msg3d" hidden></p>
+        </div>
+        <p class="readout" id="readout3d">Drag to turn the graph. Heights are scaled to fit: read the values on the <span class="math">z</span>-axis.</p>
+      </div>
+    </div>
+
+    <ul class="legend" aria-label="Legend">
+      <li><span class="sw sw-pos" aria-hidden="true"></span>Level <span class="math">k</span> &gt; 0 (solid)</li>
+      <li><span class="sw sw-neg" aria-hidden="true"></span>Level <span class="math">k</span> &lt; 0 (dashed)</li>
+      <li><span class="sw sw-zero" aria-hidden="true"></span>Level <span class="math">k</span> = 0</li>
+      <li id="lg-hl"><span class="sw sw-hl" aria-hidden="true"></span>Chosen level <span class="math">Q</span> = <span class="math">k</span> and plane <span class="math">z</span> = <span class="math">k</span></li>
+      <li id="lg-ax"><span class="sw sw-ax1" aria-hidden="true"></span><span class="math">v</span>₁ <span class="sw sw-ax2" aria-hidden="true" style="margin-left:10px"></span><span class="math">v</span>₂ principal axes</li>
+      <li><span class="ramp" aria-hidden="true"></span>Colour: negative ← 0 → positive</li>
+    </ul>
+    <p class="help" id="help2d">Level curves: drag to pan, scroll to zoom, and click a point to choose the level curve through it. With the plane focused, arrow keys pan and the + and − keys zoom.</p>
+    <p class="help" id="help3d">Graph: drag to turn it, scroll to zoom. With the graph focused, arrow keys turn it and the + and − keys zoom.</p>
+    <div id="live" class="sr-only" aria-live="polite"></div>
+  </section>
+
+  <!-- ================= EXPLORE PANEL ================= -->
+  <aside class="panel" id="panel-explore" role="tabpanel" aria-labelledby="tab-explore">
+    <section aria-labelledby="h-form">
+      <h2 id="h-form">The quadratic form</h2>
+      <div class="field">
+        <label for="preset">Start from an example</label>
+        <select id="preset"></select>
+      </div>
+
+      <p class="formula" id="formula" aria-live="off"></p>
+
+      <div class="matrix-row">
+        <span class="mat-name" aria-hidden="true">A =</span>
+        <div class="matrix" role="group" aria-label="Entries of the symmetric matrix A" aria-describedby="matrix-hint">
+          <div class="cell"><label class="sr-only" for="qa">Row 1, column 1, the coefficient a</label><input id="qa" type="text" autocomplete="off" spellcheck="false" aria-describedby="matrix-error"><span class="approx" id="qa-approx"></span></div>
+          <div class="cell"><label class="sr-only" for="qb1">Row 1, column 2, the coefficient b</label><input id="qb1" type="text" autocomplete="off" spellcheck="false" aria-describedby="matrix-error"><span class="approx" id="qb1-approx"></span></div>
+          <div class="cell"><label class="sr-only" for="qb2">Row 2, column 1, also the coefficient b because A is symmetric</label><input id="qb2" type="text" autocomplete="off" spellcheck="false" aria-describedby="matrix-error"><span class="approx" id="qb2-approx"></span></div>
+          <div class="cell"><label class="sr-only" for="qc">Row 2, column 2, the coefficient c</label><input id="qc" type="text" autocomplete="off" spellcheck="false" aria-describedby="matrix-error"><span class="approx" id="qc-approx"></span></div>
+        </div>
+      </div>
+      <p class="hint-small" id="matrix-hint"><i class="math">Q</i>(<i class="math">x</i>, <i class="math">y</i>) = (<i class="math">x</i>, <i class="math">y</i>) <i class="math">A</i> (<i class="math">x</i>, <i class="math">y</i>)<sup>T</sup>. The two off-diagonal entries are both <i class="math">b</i>, half the coefficient of <i class="math">xy</i>. Type numbers or expressions such as <code>1/2</code> or <code>sqrt(2)</code>.</p>
+      <p class="msg msg-error" id="matrix-error" aria-live="polite" hidden></p>
+
+      <div style="margin-top:14px">
+        <div class="coef-row"><label for="sa">a</label><input type="range" id="sa" min="-6" max="6" step="0.1"><output id="sa-out" for="sa"></output></div>
+        <div class="coef-row"><label for="sb">b</label><input type="range" id="sb" min="-6" max="6" step="0.1"><output id="sb-out" for="sb"></output></div>
+        <div class="coef-row"><label for="sc">c</label><input type="range" id="sc" min="-6" max="6" step="0.1"><output id="sc-out" for="sc"></output></div>
+      </div>
+    </section>
+
+    <section aria-labelledby="h-level">
+      <h2 id="h-level">Chosen level curve</h2>
+      <div class="field">
+        <label for="sk">Level <span class="math">k</span> in <span class="math">Q</span>(<span class="math">x</span>, <span class="math">y</span>) = <span class="math">k</span></label>
+        <div class="range-row">
+          <input type="range" id="sk" min="-10" max="10" step="0.1">
+          <input class="text-input" id="ik" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" style="width:7ch;flex:none;text-align:center" aria-label="Level k, typed value">
+        </div>
+        <p class="hint-small" style="margin-top:6px">You can also click any point of the level-curve view to choose the curve through it.</p>
+      </div>
+      <p class="msg msg-info" id="k-desc"></p>
+      <div class="field" style="margin-top:16px">
+        <label for="spacing">Spacing between the drawn level curves</label>
+        <select id="spacing">
+          <option value="auto">Automatic</option>
+          <option value="0.25">0.25</option>
+          <option value="0.5">0.5</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="5">5</option>
+        </select>
+      </div>
+    </section>
+
+    <section aria-labelledby="h-what">
+      <h2 id="h-what">What Q is like</h2>
+      <dl class="facts">
+        <dt>det <i class="math">A</i></dt><dd id="f-det"></dd>
+        <dt>Eigenvalues</dt><dd id="f-eig"></dd>
+        <dt>Principal axes</dt><dd id="f-axes"></dd>
+        <dt>In those axes</dt><dd id="f-diag"></dd>
+      </dl>
+      <div class="msg msg-info desc" id="f-class"></div>
+      <p class="desc" id="f-graph"></p>
+      <p class="desc" id="f-levels"></p>
+    </section>
+
+    <section aria-labelledby="h-display">
+      <h2 id="h-display">Show</h2>
+      <div class="checks">
+        <label><input type="checkbox" id="show-heat" checked><span>Colour by the value of <span class="math">Q</span></span></label>
+        <label><input type="checkbox" id="show-levels" checked><span>Level curves</span></label>
+        <label><input type="checkbox" id="show-labels" checked><span>Values <span class="math">k</span> on the level curves</span></label>
+        <label><input type="checkbox" id="show-hl" checked><span>The chosen level curve and the plane <span class="math">z</span> = <span class="math">k</span></span></label>
+        <label><input type="checkbox" id="show-axes" checked><span>Principal axes <span class="math">v</span>₁, <span class="math">v</span>₂</span></label>
+        <label><input type="checkbox" id="show-surf" checked><span>Level curves drawn on the graph</span></label>
+        <label><input type="checkbox" id="show-mesh" checked><span>Mesh on the graph</span></label>
+      </div>
+      <div class="field" style="margin-top:14px">
+        <label for="radius">Radius of the disc under the graph</label>
+        <div class="range-row">
+          <input type="range" id="radius" min="1" max="5" step="0.5" value="3">
+          <output id="radius-out" for="radius">3</output>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="h-tips">
+      <h2 id="h-tips">Things to try</h2>
+      <details class="tips">
+        <summary>Questions to explore</summary>
+        <ul>
+          <li>Start from <i class="math">x</i>² + <i class="math">y</i>² and move the slider <i class="math">b</i>. For which values of <i class="math">b</i> is the form still positive definite? Compare <i class="math">b</i>² with <i class="math">ac</i>.</li>
+          <li>Choose the example 5<i class="math">x</i>² − 4<i class="math">xy</i> + 8<i class="math">y</i>² from the lecture notes. Check that the eigenvalues are 4 and 9 and that the axes are turned by about 26.6°.</li>
+          <li>Move the level <i class="math">k</i> from 5 to −5 for a positive definite form. When does the level curve disappear, and how do you see it on the graph?</li>
+          <li>For an indefinite form, what is the level curve <i class="math">Q</i> = 0? What happens to the hyperbola <i class="math">Q</i> = <i class="math">k</i> when <i class="math">k</i> changes sign?</li>
+          <li>Compare <i class="math">x</i>² and (<i class="math">x</i> + <i class="math">y</i>)². Both are positive semidefinite. On which line is <i class="math">Q</i> = 0 in each case?</li>
+          <li>Multiply all three coefficients by −1. What happens to the graph, to the eigenvalues and to the classification?</li>
+          <li>Turn the graph to view it from above. Why does it look like the level-curve picture?</li>
+        </ul>
+      </details>
+    </section>
+  </aside>
+
+  <!-- ================= CHALLENGE PANEL ================= -->
+  <aside class="panel" id="panel-challenge" role="tabpanel" aria-labelledby="tab-challenge" hidden>
+    <section aria-labelledby="h-ch">
+      <h2 id="h-ch">Classify the mystery form</h2>
+      <p>The coefficients of this quadratic form are hidden. Study its level curves, their values and its graph, then answer both questions.</p>
+      <fieldset class="choice" id="q1">
+        <legend>1. How is <span class="math">Q</span> classified?</legend>
+        <label><input type="radio" name="q1" value="pd"> Positive definite</label>
+        <label><input type="radio" name="q1" value="nd"> Negative definite</label>
+        <label><input type="radio" name="q1" value="indef"> Indefinite</label>
+        <label><input type="radio" name="q1" value="psd"> Positive semidefinite</label>
+        <label><input type="radio" name="q1" value="nsd"> Negative semidefinite</label>
+      </fieldset>
+      <fieldset class="choice" id="q2">
+        <legend>2. What is the curve <span class="math">Q</span>(<span class="math">x</span>, <span class="math">y</span>) = 1?</legend>
+        <label><input type="radio" name="q2" value="ellipse"> An ellipse</label>
+        <label><input type="radio" name="q2" value="hyperbola"> A hyperbola</label>
+        <label><input type="radio" name="q2" value="lines"> Two parallel lines</label>
+        <label><input type="radio" name="q2" value="empty"> No points at all (empty)</label>
+      </fieldset>
+      <div class="btn-row">
+        <button class="btn btn-primary btn-small" id="ch-check" type="button">Check answers</button>
+        <button class="btn btn-secondary btn-small" id="ch-reveal" type="button">Reveal <i class="math">Q</i></button>
+        <button class="btn btn-secondary btn-small" id="ch-new" type="button">New form</button>
+      </div>
+      <div id="ch-feedback" aria-live="polite"></div>
+      <p class="score" id="ch-score">Forms classified correctly this session: 0</p>
+    </section>
+
+    <section aria-labelledby="h-ch-display">
+      <h2 id="h-ch-display">Show</h2>
+      <div class="checks">
+        <label><input type="checkbox" id="ch-heat" checked><span>Colour by the value of <span class="math">Q</span></span></label>
+        <label><input type="checkbox" id="ch-labels" checked><span>Values <span class="math">k</span> on the level curves</span></label>
+        <label><input type="checkbox" id="ch-surf" checked><span>Level curves drawn on the graph</span></label>
+        <label><input type="checkbox" id="ch-mesh" checked><span>Mesh on the graph</span></label>
+      </div>
+    </section>
+
+    <section aria-labelledby="h-ch-tips">
+      <h2 id="h-ch-tips">How to read the pictures</h2>
+      <details class="tips">
+        <summary>Hints</summary>
+        <ul>
+          <li>Look at the signs of the values written on the level curves. Are they all positive, all negative, or both?</li>
+          <li>Find the level <i class="math">k</i> = 0 (the thick curve). Is it a single point, one line or two crossing lines?</li>
+          <li>On the graph: a bowl, an upside-down bowl, a saddle or a trough?</li>
+        </ul>
+      </details>
+    </section>
+  </aside>
+</main>
+
+<script>
+(() => {
+'use strict';
+const $ = (s) => document.querySelector(s);
+const $$ = (s) => Array.from(document.querySelectorAll(s));
+
+/* ================= maths helpers ================= */
+function fmt(v, dp = 3) {
+  if (!isFinite(v)) return '—';
+  let r = Math.round(v * 10 ** dp) / 10 ** dp;
+  if (r === 0) r = 0;
+  return String(r).replace('-', '−');
+}
+const deg = (r) => r * 180 / Math.PI;
+function nice(x) {
+  if (!(x > 0) || !isFinite(x)) return 1;
+  const p = Math.pow(10, Math.floor(Math.log10(x)));
+  const n = x / p;
+  return (n < 1.5 ? 1 : n < 2.25 ? 2 : n < 3.5 ? 2.5 : n < 7.5 ? 5 : 10) * p;
+}
+
+/* Safe expression parser: numbers, + − * / ^, parentheses, pi, °, sqrt, sin, cos, tan */
+function parseExpr(raw) {
+  const s = String(raw).replace(/\s+/g, '').replace(/[−–]/g, '-').replace(/π/g, 'pi')
+    .replace(/√/g, 'sqrt').replace(/[×·]/g, '*').replace(/º/g, '°').replace(/,/g, '.').toLowerCase();
+  if (!s) throw new Error('empty');
+  let i = 0;
+  const peek = () => s[i];
+  const fns = { sin: Math.sin, cos: Math.cos, tan: Math.tan, sqrt: Math.sqrt };
+  function expr() {
+    let v = term();
+    while (peek() === '+' || peek() === '-') { const op = s[i++]; const r = term(); v = op === '+' ? v + r : v - r; }
+    return v;
+  }
+  function term() {
+    let v = unary();
+    while (i < s.length && (peek() === '*' || peek() === '/' || /[a-z(]/.test(peek()))) {
+      let op = '*';
+      if (peek() === '*' || peek() === '/') op = s[i++];
+      const r = unary();
+      v = op === '*' ? v * r : v / r;
+    }
+    return v;
+  }
+  function unary() {
+    if (peek() === '-') { i++; return -unary(); }
+    if (peek() === '+') { i++; return unary(); }
+    return power();
+  }
+  function power() {
+    const b = postfix();
+    if (peek() === '^') { i++; return Math.pow(b, unary()); }
+    return b;
+  }
+  function postfix() {
+    let v = primary();
+    while (peek() === '°') { i++; v *= Math.PI / 180; }
+    return v;
+  }
+  function primary() {
+    const c = peek();
+    if (c === undefined) throw new Error('end');
+    if (c === '(') {
+      i++; const v = expr();
+      if (peek() !== ')') throw new Error('paren');
+      i++; return v;
+    }
+    if (/[0-9.]/.test(c)) {
+      const j = i;
+      while (i < s.length && /[0-9.]/.test(s[i])) i++;
+      const n = Number(s.slice(j, i));
+      if (!isFinite(n)) throw new Error('num');
+      return n;
+    }
+    if (/[a-z]/.test(c)) {
+      const j = i;
+      while (i < s.length && /[a-z]/.test(s[i])) i++;
+      const name = s.slice(j, i);
+      if (name === 'pi') return Math.PI;
+      if (fns[name]) { if (peek() !== '(') throw new Error('fn'); return fns[name](postfix()); }
+      throw new Error('name');
+    }
+    throw new Error('char');
+  }
+  const v = expr();
+  if (i !== s.length) throw new Error('trailing');
+  return v;
+}
+const isPlainNumber = (s) => /^\s*[-−]?\d*[.,]?\d+\s*$/.test(s);
+
+/* ---------- analysis of Q(x,y) = ax² + 2bxy + cy² ---------- */
+// λ1 ≤ λ2, v1 eigenvector of λ1 with angle in (−90°, 90°], v2 = v1 turned by +90°.
+function analyse(a, b, c) {
+  const scale = Math.max(1, Math.abs(a), Math.abs(b), Math.abs(c));
+  const tol = 1e-9 * scale;
+  const m = (a + c) / 2, r = Math.hypot((a - c) / 2, b);
+  let l1 = m - r, l2 = m + r;
+  if (Math.abs(l1) < tol) l1 = 0;
+  if (Math.abs(l2) < tol) l2 = 0;
+  const iso = r < tol;
+  // eigenvector for λ2 has angle ½·atan2(2b, a − c); v1 is perpendicular to it
+  let th = iso ? 0 : 0.5 * Math.atan2(2 * b, a - c) + Math.PI / 2;
+  while (th > Math.PI / 2 + 1e-12) th -= Math.PI;
+  while (th <= -Math.PI / 2 + 1e-12) th += Math.PI;
+  const v1 = [Math.cos(th), Math.sin(th)], v2 = [-Math.sin(th), Math.cos(th)];
+  let D = a * c - b * b;
+  if (Math.abs(D) < tol * scale) D = 0;
+  let cls;
+  if (l1 === 0 && l2 === 0) cls = 'zero';
+  else if (l1 > 0) cls = 'pd';
+  else if (l2 < 0) cls = 'nd';
+  else if (l1 < 0 && l2 > 0) cls = 'indef';
+  else if (l2 > 0) cls = 'psd';
+  else cls = 'nsd';
+  return { a, b, c, l1, l2, th, v1, v2, D, cls, iso };
+}
+const Qof = (F, x, y) => F.a * x * x + 2 * F.b * x * y + F.c * y * y;
+
+/* Level set Q = k as polylines reaching at least radius Rmax.
+   In principal coordinates (u along v1, v along v2): λ1 u² + λ2 v² = k. */
+function levelSet(F, k, Rmax) {
+  const out = { polys: [], point: false, all: false };
+  const { l1, l2, v1, v2 } = F;
+  const xy = (u, v) => [u * v1[0] + v * v2[0], u * v1[1] + v * v2[1]];
+  const kz = Math.abs(k) < 1e-12;
+  const line = (u0, v0, du, dv) => {
+    const n = Math.hypot(du, dv); du /= n; dv /= n;
+    const L = Rmax * 1.2 + Math.hypot(u0, v0), N = 48, pts = [];
+    for (let i = 0; i <= N; i++) { const s = -L + (2 * L * i) / N; pts.push(xy(u0 + du * s, v0 + dv * s)); }
+    out.polys.push(pts);
+  };
+  const hyper = (A, B, along) => { // along 'v': points (±A·sinh-free) branch vertices on the v-axis
+    const smax = Math.asinh((1.3 * Rmax) / Math.max(A, B)) + 0.3, N = 220;
+    for (const sg of [1, -1]) {
+      const pts = [];
+      for (let i = 0; i <= N; i++) {
+        const s = -smax + (2 * smax * i) / N;
+        pts.push(along === 'v' ? xy(A * Math.sinh(s), sg * B * Math.cosh(s)) : xy(sg * A * Math.cosh(s), B * Math.sinh(s)));
+      }
+      out.polys.push(pts);
+    }
+  };
+  switch (F.cls) {
+    case 'zero': if (kz) out.all = true; break;
+    case 'pd': case 'nd': {
+      if (kz) { out.point = true; break; }
+      if (k / l1 < 0) break;
+      const A = Math.sqrt(k / l1), B = Math.sqrt(k / l2), N = 200, pts = [];
+      for (let i = 0; i <= N; i++) { const t = (2 * Math.PI * i) / N; pts.push(xy(A * Math.cos(t), B * Math.sin(t))); }
+      out.polys.push(pts);
+      break;
+    }
+    case 'indef': {
+      if (kz) { const m = Math.sqrt(-l1 / l2); line(0, 0, 1, m); line(0, 0, 1, -m); break; }
+      if (k > 0) hyper(Math.sqrt(-k / l1), Math.sqrt(k / l2), 'v');
+      else hyper(Math.sqrt(k / l1), Math.sqrt(-k / l2), 'u');
+      break;
+    }
+    case 'psd': { // λ1 = 0: λ2 v² = k
+      if (kz) { line(0, 0, 1, 0); break; }
+      if (k < 0) break;
+      const d = Math.sqrt(k / l2); line(0, d, 1, 0); line(0, -d, 1, 0);
+      break;
+    }
+    case 'nsd': { // λ2 = 0: λ1 u² = k
+      if (kz) { line(0, 0, 0, 1); break; }
+      if (k > 0) break;
+      const d = Math.sqrt(k / l1); line(d, 0, 0, 1); line(-d, 0, 0, 1);
+      break;
+    }
+  }
+  return out;
+}
+function clipDisk(p, q, R) {
+  const R2 = R * R, ip = p[0] * p[0] + p[1] * p[1] <= R2, iq = q[0] * q[0] + q[1] * q[1] <= R2;
+  if (ip && iq) return [p, q];
+  const dx = q[0] - p[0], dy = q[1] - p[1];
+  const A = dx * dx + dy * dy, B = 2 * (p[0] * dx + p[1] * dy), Cc = p[0] * p[0] + p[1] * p[1] - R2;
+  const disc = B * B - 4 * A * Cc;
+  if (A === 0 || disc <= 0) return null;
+  const sq = Math.sqrt(disc);
+  const t0 = Math.max(0, (-B - sq) / (2 * A)), t1 = Math.min(1, (-B + sq) / (2 * A));
+  if (t0 >= t1) return null;
+  return [[p[0] + dx * t0, p[1] + dy * t0], [p[0] + dx * t1, p[1] + dy * t1]];
+}
+
+/* ---------- text builders ---------- */
+function formulaParts(a, b, c) {
+  const terms = [[a, 'x²'], [2 * b, 'xy'], [c, 'y²']];
+  const parts = [];
+  terms.forEach(([co, v]) => {
+    const r = Math.round(co * 1000) / 1000;
+    if (r === 0) return;
+    parts.push({ neg: r < 0, mag: Math.abs(r) === 1 ? '' : fmt(Math.abs(r)), v });
+  });
+  return parts;
+}
+function formulaText(a, b, c) {
+  const p = formulaParts(a, b, c);
+  if (!p.length) return '0';
+  return p.map((t, i) => (i ? (t.neg ? ' − ' : ' + ') : (t.neg ? '−' : '')) + t.mag + t.v).join('');
+}
+function formulaHTML(a, b, c) {
+  const p = formulaParts(a, b, c);
+  const varHTML = (v) => v.replace(/[xy]/g, '<i class="math">$&</i>');
+  if (!p.length) return '0';
+  return p.map((t, i) => (i ? (t.neg ? ' − ' : ' + ') : (t.neg ? '−' : '')) + t.mag + varHTML(t.v)).join('');
+}
+function diagHTML(l1, l2) {
+  const parts = [[l1, 'u'], [l2, 'v']].filter(([l]) => Math.round(l * 1000) !== 0)
+    .map(([l, v], i) => {
+      const r = Math.round(l * 1000) / 1000, mag = Math.abs(r) === 1 ? '' : fmt(Math.abs(r));
+      return (i ? (r < 0 ? ' − ' : ' + ') : (r < 0 ? '−' : '')) + mag + `<i class="math">${v}</i>²`;
+    });
+  return `<i class="math">Q</i> = ${parts.length ? parts.join('') : '0'}`;
+}
+const vecTxt = (v) => `(${fmt(v[0])}, ${fmt(v[1])})`;
+function miniMatrix(a, b, c) {
+  return `<span class="mini-matrix" role="img" aria-label="matrix with rows ${fmt(a)}, ${fmt(b)} and ${fmt(b)}, ${fmt(c)}"><span>${fmt(a)}</span><span>${fmt(b)}</span><span>${fmt(b)}</span><span>${fmt(c)}</span></span>`;
+}
+const CLASS_NAME = {
+  pd: 'Positive definite', nd: 'Negative definite', indef: 'Indefinite',
+  psd: 'Positive semidefinite', nsd: 'Negative semidefinite', zero: 'The zero form',
+};
+const CLASS_WHY = {
+  pd: 'Both eigenvalues are positive. Equivalently, <i class="math">a</i> &gt; 0 and det <i class="math">A</i> &gt; 0. So <i class="math">Q</i>(<i class="math">x</i>, <i class="math">y</i>) &gt; 0 at every point except the origin.',
+  nd: 'Both eigenvalues are negative. Equivalently, <i class="math">a</i> &lt; 0 and det <i class="math">A</i> &gt; 0. So <i class="math">Q</i>(<i class="math">x</i>, <i class="math">y</i>) &lt; 0 at every point except the origin.',
+  indef: 'One eigenvalue is positive and the other is negative, which happens exactly when det <i class="math">A</i> &lt; 0. <i class="math">Q</i> takes both positive and negative values.',
+  psd: 'One eigenvalue is positive and the other is 0, so det <i class="math">A</i> = 0. <i class="math">Q</i> ≥ 0 everywhere, and <i class="math">Q</i> = 0 along a whole line.',
+  nsd: 'One eigenvalue is negative and the other is 0, so det <i class="math">A</i> = 0. <i class="math">Q</i> ≤ 0 everywhere, and <i class="math">Q</i> = 0 along a whole line.',
+  zero: 'Both eigenvalues are 0: <i class="math">A</i> is the zero matrix and <i class="math">Q</i> = 0 everywhere.',
+};
+function graphText(F) {
+  const v1 = '<i class="math">v</i>₁', v2 = '<i class="math">v</i>₂';
+  switch (F.cls) {
+    case 'pd': return `<strong>Graph:</strong> ${F.iso ? 'a circular' : 'an elliptic'} paraboloid opening upwards (a bowl). Its lowest point is the origin, where <i class="math">Q</i> = 0.`;
+    case 'nd': return `<strong>Graph:</strong> ${F.iso ? 'a circular' : 'an elliptic'} paraboloid opening downwards (an upside-down bowl). Its highest point is the origin, where <i class="math">Q</i> = 0.`;
+    case 'indef': return `<strong>Graph:</strong> a hyperbolic paraboloid (a saddle). Along ${v2} it goes up, along ${v1} it goes down, so the origin is a saddle point.`;
+    case 'psd': return `<strong>Graph:</strong> a parabolic cylinder opening upwards (a trough). It touches the plane <i class="math">z</i> = 0 along the whole line through the origin in the direction of ${v1}.`;
+    case 'nsd': return `<strong>Graph:</strong> a parabolic cylinder opening downwards (a ridge). It touches the plane <i class="math">z</i> = 0 along the whole line through the origin in the direction of ${v2}.`;
+    default: return '<strong>Graph:</strong> the horizontal plane <i class="math">z</i> = 0.';
+  }
+}
+function levelsText(F) {
+  const k = '<i class="math">k</i>';
+  switch (F.cls) {
+    case 'pd': return `<strong>Level curves:</strong> for ${k} &gt; 0, <i class="math">Q</i> = ${k} is ${F.iso ? 'a circle' : 'an ellipse'} centred at the origin with axes along the principal axes. <i class="math">Q</i> = 0 is only the origin, and for ${k} &lt; 0 there are no points.`;
+    case 'nd': return `<strong>Level curves:</strong> for ${k} &lt; 0, <i class="math">Q</i> = ${k} is ${F.iso ? 'a circle' : 'an ellipse'} centred at the origin. <i class="math">Q</i> = 0 is only the origin, and for ${k} &gt; 0 there are no points.`;
+    case 'indef': return `<strong>Level curves:</strong> for ${k} ≠ 0, <i class="math">Q</i> = ${k} is a hyperbola. The branches for ${k} &gt; 0 and for ${k} &lt; 0 lie in opposite pairs of regions, separated by <i class="math">Q</i> = 0, which is two lines crossing at the origin.`;
+    case 'psd': return `<strong>Level curves:</strong> for ${k} &gt; 0, <i class="math">Q</i> = ${k} is a pair of parallel lines. <i class="math">Q</i> = 0 is a single line, and for ${k} &lt; 0 there are no points.`;
+    case 'nsd': return `<strong>Level curves:</strong> for ${k} &lt; 0, <i class="math">Q</i> = ${k} is a pair of parallel lines. <i class="math">Q</i> = 0 is a single line, and for ${k} &gt; 0 there are no points.`;
+    default: return `<strong>Level curves:</strong> <i class="math">Q</i> = 0 is the whole plane, and every other level is empty.`;
+  }
+}
+function curveDesc(F, k) {
+  const head = `<i class="math">Q</i>(<i class="math">x</i>, <i class="math">y</i>) = ${fmt(k)}`;
+  const kz = Math.abs(k) < 1e-12;
+  const v1 = '<i class="math">v</i>₁', v2 = '<i class="math">v</i>₂';
+  switch (F.cls) {
+    case 'zero': return kz ? `${head} is the whole plane.` : `${head} has no points, because <i class="math">Q</i> is always 0.`;
+    case 'pd': case 'nd':
+      if (kz) return `${head} is just the origin.`;
+      if (k / F.l1 < 0) return `${head} has no points: <i class="math">Q</i> is ${F.cls === 'pd' ? 'never negative' : 'never positive'}. The plane <i class="math">z</i> = ${fmt(k)} misses the graph.`;
+      if (F.iso) return `${head} is a circle of radius √(${fmt(k)} / ${fmt(F.l1)}) ≈ ${fmt(Math.sqrt(k / F.l1))}.`;
+      return `${head} is an ellipse with semi-axes √(<i class="math">k</i>/λ₁) ≈ ${fmt(Math.sqrt(k / F.l1))} along ${v1} and √(<i class="math">k</i>/λ₂) ≈ ${fmt(Math.sqrt(k / F.l2))} along ${v2}.`;
+    case 'indef':
+      if (kz) return `${head} is a pair of lines crossing at the origin, the asymptotes of all the hyperbolas.`;
+      return k > 0
+        ? `${head} is a hyperbola with vertices at distance √(<i class="math">k</i>/λ₂) ≈ ${fmt(Math.sqrt(k / F.l2))} from the origin along ${v2}.`
+        : `${head} is a hyperbola with vertices at distance √(<i class="math">k</i>/λ₁) ≈ ${fmt(Math.sqrt(k / F.l1))} from the origin along ${v1}.`;
+    case 'psd':
+      if (kz) return `${head} is the line through the origin in the direction of ${v1}.`;
+      if (k < 0) return `${head} has no points: <i class="math">Q</i> is never negative.`;
+      return `${head} is two lines parallel to ${v1}, at distance ≈ ${fmt(Math.sqrt(k / F.l2))} on each side of the origin.`;
+    case 'nsd':
+      if (kz) return `${head} is the line through the origin in the direction of ${v2}.`;
+      if (k > 0) return `${head} has no points: <i class="math">Q</i> is never positive.`;
+      return `${head} is two lines parallel to ${v2}, at distance ≈ ${fmt(Math.sqrt(k / F.l1))} on each side of the origin.`;
+  }
+  return '';
+}
+
+/* ================= presets ================= */
+const PRESETS = [
+  { g: 'Positive definite', label: 'x² + y² (circles)', v: ['1', '0', '1'] },
+  { g: 'Positive definite', label: '2x² + y²', v: ['2', '0', '1'] },
+  { g: 'Positive definite', label: 'x² + xy + y²', v: ['1', '1/2', '1'] },
+  { g: 'Positive definite', label: '5x² − 4xy + 8y² (lecture example)', v: ['5', '-2', '8'], k: 36 },
+  { g: 'Negative definite', label: '−x² − y²', v: ['-1', '0', '-1'], k: -1 },
+  { g: 'Negative definite', label: '−2x² + 2xy − 3y²', v: ['-2', '1', '-3'], k: -2 },
+  { g: 'Indefinite', label: 'x² − y²', v: ['1', '0', '-1'] },
+  { g: 'Indefinite', label: '2xy', v: ['0', '1', '0'] },
+  { g: 'Indefinite', label: '2x² + 6xy − 5y² (lecture example)', v: ['2', '3', '-5'], k: 4 },
+  { g: 'Indefinite', label: 'x² + 4xy + y²', v: ['1', '2', '1'] },
+  { g: 'Positive semidefinite', label: 'x²', v: ['1', '0', '0'] },
+  { g: 'Positive semidefinite', label: '(x + y)² = x² + 2xy + y²', v: ['1', '1', '1'] },
+  { g: 'Positive semidefinite', label: '(x − 2y)² = x² − 4xy + 4y²', v: ['1', '-2', '4'] },
+  { g: 'Negative semidefinite', label: '−y²', v: ['0', '0', '-1'], k: -1 },
+  { g: 'Negative semidefinite', label: '−(x − y)² = −x² + 2xy − y²', v: ['-1', '1', '-1'], k: -1 },
+  { g: 'Degenerate', label: 'The zero form 0', v: ['0', '0', '0'], k: 0 },
+];
+
+/* ================= state ================= */
+const exploreState = {
+  mode: 'explore', a: 5, b: -2, c: 8, k: 36, spacing: 'auto', R: 3,
+  showHeat: true, showLevels: true, showLabels: true, showHL: true, showAxes: true, showSurf: true, showMesh: true,
+};
+const chState = {
+  mode: 'challenge', a: 1, b: 0, c: 1, k: 1, spacing: 'auto', R: 2,
+  showHeat: true, showLevels: true, showLabels: true, showHL: false, showAxes: false, showSurf: true, showMesh: true,
+  key: '', checked: false, revealed: false, counted: false, solved: 0,
+};
+const views2 = { explore: { cx: 0, cy: 0, s: 0 }, challenge: { cx: 0, cy: 0, s: 0 } };
+const CAM0 = { az: -2.18, el: 0.5, zoom: 1 };
+const cams = { explore: { ...CAM0 }, challenge: { ...CAM0 } };
+let S = exploreState, v2 = views2.explore, cam = cams.explore;
+let F = analyse(S.a, S.b, S.c);
+let hover = null;
+const inChallenge = () => S.mode === 'challenge';
+
+/* ================= colours ================= */
+let C = {};
+function readColors() {
+  const cs = getComputedStyle(document.documentElement);
+  const g = (n) => cs.getPropertyValue(n).trim();
+  C = {
+    bg: g('--plane-bg'), minor: g('--plane-minor'), major: g('--plane-major'), axis: g('--plane-axis'), label: g('--plane-label'),
+    pos: g('--lvl-pos'), neg: g('--lvl-neg'), zero: g('--lvl-zero'), hl: g('--hl'), ax1: g('--ax1'), ax2: g('--ax2'),
+    heatPos: g('--heat-pos').split(',').map(Number), heatNeg: g('--heat-neg').split(',').map(Number),
+    heatMax: Number(g('--heat-max')) || 0.5, mesh: g('--mesh'), surfLine: g('--surf-line'),
+  };
+}
+const FONT = '"Montserrat", Arial, Helvetica, sans-serif';
+const SERIF = '"PT Serif", Georgia, "Times New Roman", serif';
+// diverging ramp for the surface: negative → orange, 0 → pale grey, positive → marine blue
+const STOPS = [[-1, [255, 92, 0]], [-0.5, [255, 178, 127]], [0, [236, 240, 244]], [0.5, [127, 208, 255]], [1, [0, 50, 160]]];
+function ramp(t) {
+  t = Math.max(-1, Math.min(1, t));
+  for (let i = 1; i < STOPS.length; i++) {
+    if (t <= STOPS[i][0]) {
+      const [t0, c0] = STOPS[i - 1], [t1, c1] = STOPS[i], u = (t - t0) / (t1 - t0);
+      return [0, 1, 2].map((j) => c0[j] + (c1[j] - c0[j]) * u);
+    }
+  }
+  return STOPS[STOPS.length - 1][1];
+}
+
+/* ================= canvases ================= */
+function makeCanvas(id, wrapId) {
+  const el = $(id);
+  return { el, wrap: $(wrapId), ctx: el.getContext('2d'), W: 0, H: 0, dpr: 1 };
+}
+const c2 = makeCanvas('#plane2d', '#wrap2d');
+const c3 = makeCanvas('#plane3d', '#wrap3d');
+function sizeCanvas(cv) {
+  const r = cv.wrap.getBoundingClientRect();
+  cv.W = Math.round(r.width); cv.H = Math.round(r.height);
+  cv.dpr = window.devicePixelRatio || 1;
+  if (cv.W > 1 && cv.H > 1) { cv.el.width = Math.round(cv.W * cv.dpr); cv.el.height = Math.round(cv.H * cv.dpr); }
+}
+function haloText(ctx, txt, X, Y, bg = C.bg) {
+  ctx.save();
+  ctx.lineWidth = 4; ctx.strokeStyle = bg; ctx.lineJoin = 'round';
+  ctx.strokeText(txt, X, Y); ctx.restore();
+  ctx.fillText(txt, X, Y);
+}
+
+/* ================= 2D: level curves ================= */
+const w2s = (x, y) => [c2.W / 2 + (x - v2.cx) * v2.s, c2.H / 2 - (y - v2.cy) * v2.s];
+const s2w = (X, Y) => [v2.cx + (X - c2.W / 2) / v2.s, v2.cy - (Y - c2.H / 2) / v2.s];
+function resetView2() { v2.cx = 0; v2.cy = 0; v2.s = Math.min(c2.W, c2.H) / 8.4; }
+function zoom2(f, X = c2.W / 2, Y = c2.H / 2) {
+  const [wx, wy] = s2w(X, Y);
+  v2.s = Math.min(1500, Math.max(6, v2.s * f));
+  v2.cx = wx - (X - c2.W / 2) / v2.s; v2.cy = wy + (Y - c2.H / 2) / v2.s;
+  requestDraw();
+}
+function gridStep() {
+  const target = 64 / v2.s, p = Math.pow(10, Math.floor(Math.log10(target))), n = target / p;
+  const m = n < 1.5 ? 1 : n < 3.5 ? 2 : n < 7.5 ? 5 : 10;
+  return { step: m * p, minor: (m * p) / (m === 2 ? 4 : 5) };
+}
+function visibleRange() { // approximate range of Q over the visible window
+  const W = c2.W, H = c2.H;
+  const corners = [s2w(0, 0), s2w(W, 0), s2w(0, H), s2w(W, H)];
+  const Rc = Math.max(...corners.map(([x, y]) => Math.hypot(x, y)));
+  const Ri = Math.max(0.5, Math.min(W, H) / 2 / v2.s + Math.hypot(v2.cx, v2.cy) * 0.5);
+  return { Rc, Ri, qmax: Math.max(F.l2, 0) * Rc * Rc, qmin: Math.min(F.l1, 0) * Rc * Rc,
+    qref: Math.max(Math.abs(F.l1), Math.abs(F.l2)) * Ri * Ri };
+}
+function levelStep2(vr) {
+  if (S.spacing !== 'auto') return Number(S.spacing);
+  return nice((vr.qref || 1) / 8);
+}
+const heat = { cv: document.createElement('canvas'), img: null };
+function drawHeat(ctx, qref) {
+  const f = 3, w = Math.ceil(c2.W / f), h = Math.ceil(c2.H / f);
+  const hctx = heat.cv.getContext('2d');
+  if (heat.cv.width !== w || heat.cv.height !== h || !heat.img) { heat.cv.width = w; heat.cv.height = h; heat.img = hctx.createImageData(w, h); }
+  const d = heat.img.data, P = C.heatPos, N = C.heatNeg, amax = C.heatMax * 255;
+  const x0 = v2.cx - c2.W / 2 / v2.s, y0 = v2.cy + c2.H / 2 / v2.s, dx = f / v2.s;
+  let o = 0;
+  for (let j = 0; j < h; j++) {
+    const y = y0 - (j + 0.5) * dx;
+    for (let i = 0; i < w; i++) {
+      const x = x0 + (i + 0.5) * dx;
+      let t = (F.a * x * x + 2 * F.b * x * y + F.c * y * y) / qref;
+      const col = t >= 0 ? P : N;
+      t = Math.min(1, Math.abs(t));
+      d[o] = col[0]; d[o + 1] = col[1]; d[o + 2] = col[2]; d[o + 3] = amax * Math.pow(t, 0.6);
+      o += 4;
+    }
+  }
+  hctx.putImageData(heat.img, 0, 0);
+  ctx.save(); ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
+  ctx.drawImage(heat.cv, 0, 0, w * f, h * f); ctx.restore();
+}
+function drawGrid2(ctx) {
+  const W = c2.W, H = c2.H;
+  const { step, minor } = gridStep();
+  const [xmin, ymax] = s2w(0, 0), [xmax, ymin] = s2w(W, H);
+  const lines = (st, color) => {
+    ctx.beginPath();
+    for (let k = Math.ceil(xmin / st); k * st <= xmax; k++) { const X = Math.round(w2s(k * st, 0)[0]) + 0.5; ctx.moveTo(X, 0); ctx.lineTo(X, H); }
+    for (let k = Math.ceil(ymin / st); k * st <= ymax; k++) { const Y = Math.round(w2s(0, k * st)[1]) + 0.5; ctx.moveTo(0, Y); ctx.lineTo(W, Y); }
+    ctx.strokeStyle = color; ctx.lineWidth = 1; ctx.stroke();
+  };
+  if (minor * v2.s >= 7) lines(minor, C.minor);
+  lines(step, C.major);
+  const [OX, OY] = w2s(0, 0);
+  ctx.beginPath();
+  ctx.moveTo(0, Math.round(OY) + 0.5); ctx.lineTo(W, Math.round(OY) + 0.5);
+  ctx.moveTo(Math.round(OX) + 0.5, 0); ctx.lineTo(Math.round(OX) + 0.5, H);
+  ctx.strokeStyle = C.axis; ctx.lineWidth = 1.25; ctx.stroke();
+
+  ctx.fillStyle = C.label; ctx.font = `500 12px ${FONT}`;
+  const dp = Math.max(0, -Math.floor(Math.log10(step)) + 1);
+  const ly = Math.min(Math.max(OY + 6, 4), H - 20);
+  ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+  for (let k = Math.ceil(xmin / step); k * step <= xmax; k++) {
+    if (k === 0) continue;
+    const X = w2s(k * step, 0)[0];
+    if (X < 14 || X > W - 14) continue;
+    haloText(ctx, fmt(k * step, dp), X, ly);
+  }
+  const lx = Math.min(Math.max(OX - 6, 34), W - 4);
+  ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+  for (let k = Math.ceil(ymin / step); k * step <= ymax; k++) {
+    if (k === 0) continue;
+    const Y = w2s(0, k * step)[1];
+    if (Y < 10 || Y > H - 10) continue;
+    haloText(ctx, fmt(k * step, dp), lx, Y);
+  }
+  ctx.font = `italic 400 18px ${SERIF}`;
+  ctx.textAlign = 'right'; ctx.textBaseline = 'bottom';
+  haloText(ctx, 'x', W - 8, Math.min(Math.max(OY - 4, 22), H - 4));
+  ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+  haloText(ctx, 'y', Math.min(Math.max(OX + 8, 4), W - 16), 6);
+}
+function strokePolys(ctx, polys) {
+  ctx.beginPath();
+  for (const pts of polys) pts.forEach(([x, y], i) => { const [X, Y] = w2s(x, y); if (i) ctx.lineTo(X, Y); else ctx.moveTo(X, Y); });
+  ctx.stroke();
+}
+function placeLabel(ctx, polys, text, boxes, color, weight = 600) {
+  const W = c2.W, H = c2.H, m = 22;
+  ctx.font = `${weight} 12px ${FONT}`;
+  const tw = ctx.measureText(text).width + 8, th = 18;
+  const fracs = [0.13, 0.38, 0.63, 0.88, 0.25, 0.5, 0.75, 0.05, 0.95];
+  for (const pts of polys) {
+    for (const fr of fracs) {
+      const [X, Y] = w2s(...pts[Math.floor(fr * (pts.length - 1))]);
+      if (X < m || X > W - m || Y < m || Y > H - m) continue;
+      const box = [X - tw / 2, Y - th / 2, X + tw / 2, Y + th / 2];
+      if (boxes.some((b) => box[0] < b[2] && box[2] > b[0] && box[1] < b[3] && box[3] > b[1])) continue;
+      boxes.push(box);
+      ctx.fillStyle = color; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      haloText(ctx, text, X, Y);
+      return true;
+    }
+  }
+  return false;
+}
+function arrow2(ctx, x, y, color, label) {
+  const [X0, Y0] = w2s(0, 0), [X1, Y1] = w2s(x, y);
+  const dx = X1 - X0, dy = Y1 - Y0, len = Math.hypot(dx, dy);
+  if (len < 4) return;
+  const ux = dx / len, uy = dy / len, hs = Math.min(12, len * 0.45);
+  ctx.save();
+  ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = 2.75; ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.moveTo(X0, Y0); ctx.lineTo(X1 - ux * hs * 0.8, Y1 - uy * hs * 0.8); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(X1, Y1);
+  ctx.lineTo(X1 - ux * hs - uy * hs * 0.5, Y1 - uy * hs + ux * hs * 0.5);
+  ctx.lineTo(X1 - ux * hs + uy * hs * 0.5, Y1 - uy * hs - ux * hs * 0.5);
+  ctx.closePath(); ctx.fill();
+  ctx.font = `600 14px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  haloText(ctx, label, X1 + ux * 22 + (Math.abs(ux) > 0.6 ? ux * ctx.measureText(label).width * 0.35 : 0), Y1 + uy * 18);
+  ctx.restore();
+}
+function draw2D() {
+  const cv = c2, ctx = cv.ctx, W = cv.W, H = cv.H;
+  if (W < 2 || H < 2) return;
+  ctx.setTransform(cv.dpr, 0, 0, cv.dpr, 0, 0);
+  ctx.fillStyle = C.bg; ctx.fillRect(0, 0, W, H);
+  const vr = visibleRange();
+  const qref = vr.qref > 0 ? vr.qref : 1;
+  if (S.showHeat && F.cls !== 'zero') drawHeat(ctx, qref);
+  drawGrid2(ctx);
+
+  const boxes = [];
+  const Rmax = vr.Rc * 1.05;
+  const labelQueue = [];
+  ctx.save(); ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+  if (S.showLevels && F.cls !== 'zero') {
+    let step = levelStep2(vr);
+    const nmin = Math.ceil(vr.qmin / step), nmax = Math.floor(vr.qmax / step);
+    const count = nmax - nmin + 1;
+    if (count > 160) step *= Math.ceil(count / 160);
+    for (let n = Math.ceil(vr.qmin / step); n * step <= vr.qmax + 1e-9; n++) {
+      if (n === 0) continue;
+      const k = n * step, L = levelSet(F, k, Rmax);
+      if (!L.polys.length) continue;
+      ctx.strokeStyle = k > 0 ? C.pos : C.neg; ctx.lineWidth = 1.5;
+      ctx.setLineDash(k > 0 ? [] : [7, 5]);
+      strokePolys(ctx, L.polys);
+      labelQueue.push([L.polys, fmt(k, 3), k > 0 ? C.pos : C.neg]);
+    }
+    ctx.setLineDash([]);
+    const L0 = levelSet(F, 0, Rmax);
+    if (L0.polys.length) {
+      ctx.strokeStyle = C.zero; ctx.lineWidth = 2.75; strokePolys(ctx, L0.polys);
+      labelQueue.unshift([L0.polys, '0', C.zero]);
+    }
+  }
+  // chosen level curve
+  let hlInfo = null;
+  if (S.showHL) {
+    const L = levelSet(F, S.k, Rmax);
+    hlInfo = L;
+    if (L.all) { ctx.fillStyle = C.hl; ctx.globalAlpha = 0.18; ctx.fillRect(0, 0, W, H); ctx.globalAlpha = 1; }
+    if (L.polys.length) { ctx.strokeStyle = C.hl; ctx.lineWidth = 4; strokePolys(ctx, L.polys); }
+    if (L.point) { const [X, Y] = w2s(0, 0); ctx.beginPath(); ctx.arc(X, Y, 7, 0, 2 * Math.PI); ctx.fillStyle = C.hl; ctx.fill(); }
+  }
+  ctx.restore();
+
+  // principal axes
+  if (S.showAxes && !inChallenge() && F.cls !== 'zero') {
+    ctx.save(); ctx.setLineDash([3, 5]); ctx.lineWidth = 1.25;
+    [[F.v1, C.ax1], [F.v2, C.ax2]].forEach(([v, col]) => {
+      const L = vr.Rc * 1.2; const [a1, b1] = w2s(-v[0] * L, -v[1] * L), [a2, b2] = w2s(v[0] * L, v[1] * L);
+      ctx.beginPath(); ctx.moveTo(a1, b1); ctx.lineTo(a2, b2); ctx.strokeStyle = col; ctx.stroke();
+    });
+    ctx.restore();
+    const len = Math.max(1, 70 / v2.s);
+    arrow2(ctx, F.v1[0] * len, F.v1[1] * len, C.ax1, `v₁ (λ₁ = ${fmt(F.l1, 2)})`);
+    arrow2(ctx, F.v2[0] * len, F.v2[1] * len, C.ax2, `v₂ (λ₂ = ${fmt(F.l2, 2)})`);
+  }
+
+  // labels: chosen level first, then the others
+  if (hlInfo && hlInfo.polys.length) placeLabel(ctx, hlInfo.polys, `Q = ${fmt(S.k, 3)}`, boxes, C.hl === C.zero ? C.zero : C.hl, 800);
+  if (S.showLabels && S.showLevels) for (const [polys, txt, col] of labelQueue) placeLabel(ctx, polys, txt, boxes, col);
+
+  // hover / origin
+  const [OX, OY] = w2s(0, 0);
+  ctx.beginPath(); ctx.arc(OX, OY, 3.5, 0, 2 * Math.PI); ctx.fillStyle = C.axis; ctx.fill();
+  if (hover) {
+    const [X, Y] = w2s(hover[0], hover[1]);
+    ctx.beginPath(); ctx.arc(X, Y, 5, 0, 2 * Math.PI); ctx.lineWidth = 2; ctx.strokeStyle = C.zero; ctx.stroke();
+  }
+
+  // message
+  const msg = $('#msg2d');
+  if (S.showHL && hlInfo && !hlInfo.polys.length && !hlInfo.point && !hlInfo.all) {
+    msg.innerHTML = `<i class="math">Q</i> = ${fmt(S.k)} has no points, so there is no chosen curve to draw.`;
+    msg.hidden = false;
+  } else msg.hidden = true;
+}
+
+/* ================= 3D: graph ================= */
+const L3 = (() => { const v = [-0.35, 0.75, -0.55], n = Math.hypot(...v); return v.map((t) => t / n); })();
+function draw3D() {
+  const cv = c3, ctx = cv.ctx, W = cv.W, H = cv.H;
+  if (W < 2 || H < 2) return;
+  ctx.setTransform(cv.dpr, 0, 0, cv.dpr, 0, 0);
+  ctx.fillStyle = C.bg; ctx.fillRect(0, 0, W, H);
+
+  const R = S.R;
+  const lam = Math.max(Math.abs(F.l1), Math.abs(F.l2));
+  const qMaxAbs = lam * R * R;
+  const zs = lam > 0 ? (0.85 * R) / qMaxAbs : 1;
+  const qLow = Math.min(F.l1, 0) * R * R, qHigh = Math.max(F.l2, 0) * R * R;
+  const zLow = qLow * zs, zHigh = qHigh * zs, zc = (zLow + zHigh) / 2;
+  const ca = Math.cos(cam.az), sa = Math.sin(cam.az), ce = Math.cos(cam.el), se = Math.sin(cam.el);
+  const Dp = 9 * R, Sc = (Math.min(W, H) / (3.3 * R)) * cam.zoom;
+  const P = (x, y, z) => {
+    const xr = x * ca - y * sa, yr = x * sa + y * ca;
+    const up = (z - zc) * ce + yr * se, dep = yr * ce - (z - zc) * se;
+    const f = Dp / (Dp + dep);
+    return [W / 2 + xr * Sc * f, H / 2 - up * Sc * f, dep, xr, up];
+  };
+  const prims = [];
+
+  // surface on the disc of radius R (polar mesh)
+  const nr = 26, ns = 72;
+  const G = [];
+  for (let i = 0; i <= nr; i++) {
+    const row = [], r = (R * i) / nr;
+    for (let j = 0; j <= ns; j++) {
+      const t = (2 * Math.PI * j) / ns, x = r * Math.cos(t), y = r * Math.sin(t), q = Qof(F, x, y);
+      row.push({ q, p: P(x, y, q * zs) });
+    }
+    G.push(row);
+  }
+  const norm = qMaxAbs > 0 ? qMaxAbs : 1;
+  for (let i = 0; i < nr; i++) for (let j = 0; j < ns; j++) {
+    const a = G[i][j], b = G[i + 1][j], c = G[i + 1][j + 1], d = G[i][j + 1];
+    const d1 = [c.p[3] - a.p[3], c.p[4] - a.p[4], c.p[2] - a.p[2]];
+    const d2 = [d.p[3] - b.p[3], d.p[4] - b.p[4], d.p[2] - b.p[2]];
+    const n = [d1[1] * d2[2] - d1[2] * d2[1], d1[2] * d2[0] - d1[0] * d2[2], d1[0] * d2[1] - d1[1] * d2[0]];
+    const nl = Math.hypot(...n) || 1;
+    const lit = 0.58 + 0.42 * Math.abs((n[0] * L3[0] + n[1] * L3[1] + n[2] * L3[2]) / nl);
+    const col = ramp((a.q + b.q + c.q + d.q) / 4 / norm).map((v) => Math.round(v * lit));
+    prims.push({ t: 0, d: (a.p[2] + b.p[2] + c.p[2] + d.p[2]) / 4, pts: [a.p, b.p, c.p, d.p], col: `rgb(${col[0]},${col[1]},${col[2]})` });
+  }
+  const bias = 0.035 * R;
+  const pushSeg = (p, q, col, w, extraBias = 0) => {
+    prims.push({ t: 1, d: (p[2] + q[2]) / 2 - bias - extraBias, p, q, col, w });
+  };
+  if (S.showMesh) {
+    for (let i = 4; i <= nr; i += 4) for (let j = 0; j < ns; j++) pushSeg(G[i][j].p, G[i][j + 1].p, C.mesh, 1);
+    for (let j = 0; j < ns; j += 6) for (let i = 0; i < nr; i++) pushSeg(G[i][j].p, G[i + 1][j].p, C.mesh, 1);
+  }
+  // level curves lifted onto the surface
+  const liftPolys = (k, col, w, extra) => {
+    const L = levelSet(F, k, R * 1.25);
+    for (const pts of L.polys) for (let i = 1; i < pts.length; i++) {
+      const s = clipDisk(pts[i - 1], pts[i], R);
+      if (!s) continue;
+      pushSeg(P(s[0][0], s[0][1], k * zs), P(s[1][0], s[1][1], k * zs), col, w, extra);
+    }
+    return L;
+  };
+  if (S.showSurf && lam > 0) {
+    const step = nice(qMaxAbs / 7);
+    for (let n = Math.ceil(qLow / step); n * step <= qHigh + 1e-9; n++) {
+      if (n === 0) continue;
+      liftPolys(n * step, C.surfLine, 1.2, 0);
+    }
+    liftPolys(0, C.surfLine, 2.4, 0);
+  }
+  // chosen level: plane z = k and the curve at height k
+  const msg = $('#msg3d');
+  msg.hidden = true;
+  if (S.showHL) {
+    const k = S.k, zk = k * zs;
+    const inRange = lam > 0 ? Math.abs(k) <= qMaxAbs * 1.4 : Math.abs(k) < 1e-12;
+    if (inRange) {
+      const pr = 12, ps = 48, Rp = R * 1.08, PG = [];
+      for (let i = 0; i <= pr; i++) {
+        const row = []; for (let j = 0; j <= ps; j++) { const r = (Rp * i) / pr, t = (2 * Math.PI * j) / ps; row.push(P(r * Math.cos(t), r * Math.sin(t), zk)); }
+        PG.push(row);
+      }
+      for (let i = 0; i < pr; i++) for (let j = 0; j < ps; j++) {
+        const pts = [PG[i][j], PG[i + 1][j], PG[i + 1][j + 1], PG[i][j + 1]];
+        prims.push({ t: 2, d: (pts[0][2] + pts[1][2] + pts[2][2] + pts[3][2]) / 4, pts });
+      }
+      liftPolys(k, C.hl, 3.5, 0.02 * R);
+      // outline of the plane (drawn on top for readability)
+      prims.push({ t: 3, pts: PG[pr] });
+    } else {
+      msg.innerHTML = `The plane <i class="math">z</i> = ${fmt(k)} is ${k > 0 ? 'above' : 'below'} the part of the graph shown. Make the disc larger to reach it.`;
+      msg.hidden = false;
+    }
+  }
+  // axes
+  const axisSeg = (a, b, n) => {
+    for (let i = 0; i < n; i++) {
+      const s0 = i / n, s1 = (i + 1) / n;
+      const p0 = a.map((v, j) => v + (b[j] - v) * s0), p1 = a.map((v, j) => v + (b[j] - v) * s1);
+      prims.push({ t: 1, d: (P(...p0)[2] + P(...p1)[2]) / 2 - 0.005 * R, p: P(...p0), q: P(...p1), col: C.axis, w: 1.6 });
+    }
+  };
+  const ax = 1.35 * R;
+  const zA0 = Math.min(zLow, -0.2 * R) - 0.1 * R, zA1 = Math.max(zHigh, 0.2 * R) + 0.3 * R;
+  axisSeg([-ax, 0, 0], [ax, 0, 0], 30);
+  axisSeg([0, -ax, 0], [0, ax, 0], 30);
+  axisSeg([0, 0, zA0], [0, 0, zA1], 24);
+
+  prims.sort((u, v) => v.d - u.d);
+  const hlRGB = C.hl;
+  for (const pr of prims) {
+    if (pr.t === 0) {
+      ctx.beginPath();
+      ctx.moveTo(pr.pts[0][0], pr.pts[0][1]);
+      for (let i = 1; i < 4; i++) ctx.lineTo(pr.pts[i][0], pr.pts[i][1]);
+      ctx.closePath();
+      ctx.fillStyle = pr.col; ctx.fill();
+      ctx.strokeStyle = pr.col; ctx.lineWidth = 0.7; ctx.stroke();
+    } else if (pr.t === 1) {
+      ctx.beginPath(); ctx.moveTo(pr.p[0], pr.p[1]); ctx.lineTo(pr.q[0], pr.q[1]);
+      ctx.strokeStyle = pr.col; ctx.lineWidth = pr.w; ctx.lineCap = 'round'; ctx.stroke();
+    } else if (pr.t === 2) {
+      ctx.beginPath();
+      ctx.moveTo(pr.pts[0][0], pr.pts[0][1]);
+      for (let i = 1; i < 4; i++) ctx.lineTo(pr.pts[i][0], pr.pts[i][1]);
+      ctx.closePath();
+      ctx.globalAlpha = 0.2; ctx.fillStyle = hlRGB; ctx.fill(); ctx.globalAlpha = 1;
+    }
+  }
+  const outline = prims.find((p) => p.t === 3);
+  if (outline) {
+    ctx.save(); ctx.beginPath();
+    outline.pts.forEach((p, i) => (i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])));
+    ctx.closePath(); ctx.setLineDash([6, 5]); ctx.strokeStyle = hlRGB; ctx.lineWidth = 1.5; ctx.stroke();
+    ctx.restore();
+  }
+
+  // axis labels and z ticks (on top)
+  ctx.save();
+  ctx.fillStyle = C.label; ctx.font = `italic 400 18px ${SERIF}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  const lab = (pt, txt) => { const p = P(...pt); haloText(ctx, txt, p[0], p[1]); };
+  lab([ax * 1.1, 0, 0], 'x'); lab([0, ax * 1.1, 0], 'y'); lab([0, 0, zA1 + 0.12 * R], 'z');
+  const tStep = nice(Math.max(qHigh - qLow, 1e-9) / 4);
+  ctx.font = `500 12px ${FONT}`; ctx.textAlign = 'right';
+  if (lam > 0) {
+    for (let n = Math.ceil(qLow / tStep); n * tStep <= qHigh + 1e-9; n++) {
+      const q = n * tStep; if (n === 0) continue;
+      const p = P(0, 0, q * zs);
+      ctx.beginPath(); ctx.moveTo(p[0] - 5, p[1]); ctx.lineTo(p[0] + 5, p[1]); ctx.strokeStyle = C.axis; ctx.lineWidth = 1.5; ctx.stroke();
+      haloText(ctx, fmt(q, 2), p[0] - 9, p[1]);
+    }
+  }
+  const o = P(0, 0, 0);
+  ctx.textAlign = 'left'; haloText(ctx, '0', o[0] + 8, o[1] + 10);
+  ctx.restore();
+
+  // marker linked to the pointer on the level-curve view
+  if (hover && Math.hypot(hover[0], hover[1]) <= R) {
+    const q = Qof(F, hover[0], hover[1]);
+    const top = P(hover[0], hover[1], q * zs), base = P(hover[0], hover[1], 0);
+    ctx.save();
+    ctx.setLineDash([4, 4]); ctx.strokeStyle = C.zero; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(base[0], base[1]); ctx.lineTo(top[0], top[1]); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.beginPath(); ctx.arc(base[0], base[1], 3.5, 0, 2 * Math.PI); ctx.fillStyle = C.zero; ctx.fill();
+    ctx.beginPath(); ctx.arc(top[0], top[1], 6, 0, 2 * Math.PI); ctx.fillStyle = C.zero; ctx.fill();
+    ctx.lineWidth = 2; ctx.strokeStyle = C.bg; ctx.stroke();
+    ctx.restore();
+  }
+}
+
+/* ================= draw scheduling ================= */
+let queued = false;
+function draw() { draw2D(); draw3D(); }
+function requestDraw() {
+  if (queued) return;
+  queued = true;
+  requestAnimationFrame(() => { queued = false; draw(); });
+}
+
+/* ================= explore: inputs ================= */
+const cellA = $('#qa'), cellB1 = $('#qb1'), cellB2 = $('#qb2'), cellC = $('#qc');
+const cellAll = [cellA, cellB1, cellB2, cellC];
+const approxOf = (inp) => $('#' + inp.id + '-approx');
+const sliders = { a: $('#sa'), b: $('#sb'), c: $('#sc') };
+const presetSel = $('#preset');
+(function buildPresets() {
+  const o0 = document.createElement('option'); o0.value = 'custom'; o0.textContent = 'Your own coefficients (typed in below)';
+  presetSel.appendChild(o0);
+  const groups = {};
+  PRESETS.forEach((p, i) => { (groups[p.g] = groups[p.g] || []).push([p, i]); });
+  Object.entries(groups).forEach(([g, list]) => {
+    const og = document.createElement('optgroup'); og.label = g;
+    list.forEach(([p, i]) => { const o = document.createElement('option'); o.value = String(i); o.textContent = p.label; og.appendChild(o); });
+    presetSel.appendChild(og);
+  });
+})();
+function syncSliders() {
+  ['a', 'b', 'c'].forEach((k) => {
+    sliders[k].value = String(exploreState[k]);
+    $('#s' + k + '-out').textContent = fmt(exploreState[k], 2);
+  });
+}
+function setCellsText(a, b, c) { cellA.value = a; cellB1.value = b; cellB2.value = b; cellC.value = c; }
+function readCells() {
+  const box = $('#matrix-error');
+  const names = { qa: 'the entry a', qb1: 'the entry b', qb2: 'the entry b', qc: 'the entry c' };
+  const vals = {}, bad = [];
+  [cellA, cellB1, cellC].forEach((inp) => {
+    try {
+      const v = parseExpr(inp.value);
+      if (!isFinite(v)) throw new Error('nan');
+      vals[inp.id] = v;
+      inp.removeAttribute('aria-invalid');
+      approxOf(inp).textContent = isPlainNumber(inp.value) ? '' : '≈ ' + fmt(v, 4);
+    } catch (e) {
+      inp.setAttribute('aria-invalid', 'true'); approxOf(inp).textContent = ''; bad.push(inp);
+    }
+  });
+  // the mirrored entry follows the state of b
+  if (cellB1.getAttribute('aria-invalid')) cellB2.setAttribute('aria-invalid', 'true'); else cellB2.removeAttribute('aria-invalid');
+  approxOf(cellB2).textContent = approxOf(cellB1).textContent;
+  if (bad.length) {
+    const where = bad.map((inp) => `${names[inp.id]} (“${inp.value.trim() || 'empty'}”)`).join(', ');
+    box.innerHTML = `<span class="ico" aria-hidden="true">⚠</span><span>Check ${where}. Each entry must be a number or an expression such as 0.5, 1/2 or sqrt(2). The pictures still show the last valid form.</span>`;
+    box.hidden = false;
+    return false;
+  }
+  box.hidden = true;
+  exploreState.a = vals.qa; exploreState.b = vals.qb1; exploreState.c = vals.qc;
+  return true;
+}
+let lastCls = null;
+function formChanged(announceIt = true) {
+  if (S !== exploreState) return;
+  F = analyse(S.a, S.b, S.c);
+  syncSliders();
+  updateInfo();
+  if (announceIt && lastCls && lastCls !== F.cls) announce(`Q is now ${CLASS_NAME[F.cls].toLowerCase()}.`);
+  lastCls = F.cls;
+  requestDraw();
+}
+function applyPreset() {
+  const p = PRESETS[Number(presetSel.value)];
+  if (!p) return;
+  setCellsText(...p.v);
+  if (readCells()) { formChanged(); setK(p.k !== undefined ? p.k : 1); }
+}
+presetSel.addEventListener('change', applyPreset);
+cellAll.forEach((inp) => inp.addEventListener('input', () => {
+  if (inp === cellB1) cellB2.value = cellB1.value;
+  if (inp === cellB2) cellB1.value = cellB2.value;
+  presetSel.value = 'custom';
+  if (readCells()) formChanged();
+}));
+Object.entries(sliders).forEach(([k, el]) => el.addEventListener('input', () => {
+  const v = Math.round(Number(el.value) * 10) / 10;
+  exploreState[k] = v;
+  const t = fmt(v, 2).replace('−', '-');
+  if (k === 'a') cellA.value = t; else if (k === 'c') cellC.value = t; else { cellB1.value = t; cellB2.value = t; }
+  presetSel.value = 'custom';
+  readCells();
+  formChanged();
+}));
+
+/* level k */
+const sk = $('#sk'), ik = $('#ik');
+function setK(k, fromText = false) {
+  S.k = k;
+  sk.value = String(Math.max(-10, Math.min(10, k)));
+  if (!fromText) ik.value = fmt(k, 3).replace('−', '-');
+  ik.removeAttribute('aria-invalid');
+  updateKDesc();
+  requestDraw();
+}
+sk.addEventListener('input', () => setK(Math.round(Number(sk.value) * 10) / 10));
+ik.addEventListener('input', () => {
+  try { const v = parseExpr(ik.value); if (!isFinite(v)) throw 0; setK(v, true); }
+  catch (e) { ik.setAttribute('aria-invalid', 'true'); }
+});
+function updateKDesc() {
+  if (S !== exploreState) return;
+  $('#k-desc').innerHTML = `<span class="ico" aria-hidden="true">ℹ</span><span>${curveDesc(F, S.k)}</span>`;
+}
+$('#spacing').addEventListener('change', (e) => { exploreState.spacing = e.target.value; requestDraw(); });
+$('#radius').addEventListener('input', (e) => { exploreState.R = Number(e.target.value); $('#radius-out').textContent = fmt(exploreState.R, 1); requestDraw(); });
+
+function updateInfo() {
+  if (S !== exploreState) return;
+  $('#formula').innerHTML = `<i class="math">Q</i>(<i class="math">x</i>, <i class="math">y</i>) = ${formulaHTML(S.a, S.b, S.c)}`;
+  $('#f-det').textContent = `${fmt(S.a)}·${fmt(S.c)} − (${fmt(S.b)})² = ${fmt(F.D)}`;
+  $('#f-eig').innerHTML = `λ₁ = ${fmt(F.l1)}, λ₂ = ${fmt(F.l2)}`;
+  $('#f-axes').innerHTML = F.cls === 'zero'
+    ? 'Every direction'
+    : F.iso
+      ? `Every direction is a principal axis (λ₁ = λ₂). We use <i class="math">v</i>₁ = (1, 0), <i class="math">v</i>₂ = (0, 1).`
+      : `<i class="math">v</i>₁ = ${vecTxt(F.v1)}, <i class="math">v</i>₂ = ${vecTxt(F.v2)}, turned ${fmt(deg(F.th), 2)}° from the axes`;
+  $('#f-diag').innerHTML = `${diagHTML(F.l1, F.l2)}, where <i class="math">u</i>, <i class="math">v</i> are coordinates along <i class="math">v</i>₁, <i class="math">v</i>₂`;
+  $('#f-class').innerHTML = `<span class="ico" aria-hidden="true">ℹ</span><span><span class="class-name">${CLASS_NAME[F.cls]}</span>${CLASS_WHY[F.cls]}</span>`;
+  $('#f-graph').innerHTML = graphText(F);
+  $('#f-levels').innerHTML = levelsText(F);
+  updateKDesc();
+  const ft = formulaText(S.a, S.b, S.c);
+  c2.el.setAttribute('aria-label', `Level curves of Q(x, y) = ${ft}, which is ${CLASS_NAME[F.cls].toLowerCase()}. ${F.cls === 'zero' ? '' : 'Positive levels are solid, negative levels dashed.'}`);
+  c3.el.setAttribute('aria-label', `Graph z = Q(x, y) of ${ft} over a disc of radius ${fmt(S.R)}.`);
+}
+function announce(msg) { const l = $('#live'); l.textContent = ''; setTimeout(() => { l.textContent = msg; }, 30); }
+
+/* ================= display toggles ================= */
+[['#show-heat', 'showHeat'], ['#show-levels', 'showLevels'], ['#show-labels', 'showLabels'], ['#show-hl', 'showHL'],
+ ['#show-axes', 'showAxes'], ['#show-surf', 'showSurf'], ['#show-mesh', 'showMesh']].forEach(([sel, key]) => {
+  $(sel).addEventListener('change', (e) => { exploreState[key] = e.target.checked; updateLegend(); requestDraw(); });
+});
+[['#ch-heat', 'showHeat'], ['#ch-labels', 'showLabels'], ['#ch-surf', 'showSurf'], ['#ch-mesh', 'showMesh']].forEach(([sel, key]) => {
+  $(sel).addEventListener('change', (e) => { chState[key] = e.target.checked; requestDraw(); });
+});
+function updateLegend() {
+  $('#lg-hl').hidden = !S.showHL;
+  $('#lg-ax').hidden = !S.showAxes || inChallenge();
+}
+
+/* view mode */
+$$('.seg button').forEach((btn) => btn.addEventListener('click', () => {
+  $$('.seg button').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+  $('#views').className = 'views mode-' + btn.dataset.mode;
+}));
+
+/* ================= 2D interaction ================= */
+const local = (cv, e) => { const r = cv.el.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
+let drag2 = null;
+c2.el.addEventListener('pointerdown', (e) => {
+  if (e.button !== 0) return;
+  c2.el.setPointerCapture(e.pointerId);
+  const [X, Y] = local(c2, e);
+  drag2 = { x0: X, y0: Y, lx: X, ly: Y, moved: false };
+});
+c2.el.addEventListener('pointermove', (e) => {
+  const [X, Y] = local(c2, e);
+  const [x, y] = s2w(X, Y);
+  hover = [x, y];
+  $('#readout2d').innerHTML = `<i class="math">Q</i>(${fmt(x, 2)}, ${fmt(y, 2)}) = ${fmt(Qof(F, x, y), 3)}`;
+  if (drag2) {
+    if (Math.hypot(X - drag2.x0, Y - drag2.y0) > 4) drag2.moved = true;
+    if (drag2.moved) { v2.cx -= (X - drag2.lx) / v2.s; v2.cy += (Y - drag2.ly) / v2.s; c2.el.style.cursor = 'grabbing'; }
+    drag2.lx = X; drag2.ly = Y;
+  }
+  requestDraw();
+});
+function end2(e) {
+  if (!drag2) return;
+  const d = drag2; drag2 = null; c2.el.style.cursor = '';
+  if (!d.moved && e.type === 'pointerup' && !inChallenge()) {
+    const [X, Y] = local(c2, e), [x, y] = s2w(X, Y);
+    if (!S.showHL) { S.showHL = true; $('#show-hl').checked = true; updateLegend(); }
+    setK(Math.round(Qof(F, x, y) * 1000) / 1000);
+    announce(`Chosen level curve: Q = ${fmt(S.k)}.`);
+  }
+}
+c2.el.addEventListener('pointerup', end2);
+c2.el.addEventListener('pointercancel', end2);
+c2.el.addEventListener('pointerleave', () => {
+  if (drag2) return;
+  hover = null;
+  $('#readout2d').innerHTML = 'Point at the plane to read <span class="math">Q</span>(<span class="math">x</span>, <span class="math">y</span>).';
+  requestDraw();
+});
+c2.el.addEventListener('wheel', (e) => { e.preventDefault(); const [X, Y] = local(c2, e); zoom2(Math.exp(-e.deltaY * 0.0015), X, Y); }, { passive: false });
+c2.el.addEventListener('keydown', (e) => {
+  const st = 40 / v2.s;
+  const mv = { ArrowLeft: [-st, 0], ArrowRight: [st, 0], ArrowUp: [0, st], ArrowDown: [0, -st] }[e.key];
+  if (mv) { e.preventDefault(); v2.cx += mv[0]; v2.cy += mv[1]; requestDraw(); return; }
+  if (e.key === '+' || e.key === '=') { e.preventDefault(); zoom2(1.25); }
+  else if (e.key === '-' || e.key === '_') { e.preventDefault(); zoom2(0.8); }
+  else if (e.key === '0') { e.preventDefault(); resetView2(); requestDraw(); }
+});
+$('#z2-in').addEventListener('click', () => zoom2(1.25));
+$('#z2-out').addEventListener('click', () => zoom2(0.8));
+$('#z2-reset').addEventListener('click', () => { resetView2(); requestDraw(); });
+
+/* ================= 3D interaction ================= */
+const EL_MIN = -0.35, EL_MAX = Math.PI / 2;
+let drag3 = null;
+c3.el.addEventListener('pointerdown', (e) => {
+  if (e.button !== 0) return;
+  c3.el.setPointerCapture(e.pointerId);
+  const [X, Y] = local(c3, e);
+  drag3 = { lx: X, ly: Y };
+  c3.el.classList.add('grabbing');
+});
+c3.el.addEventListener('pointermove', (e) => {
+  if (!drag3) return;
+  const [X, Y] = local(c3, e);
+  cam.az -= (X - drag3.lx) * 0.009;
+  cam.el = Math.max(EL_MIN, Math.min(EL_MAX, cam.el + (Y - drag3.ly) * 0.008));
+  drag3.lx = X; drag3.ly = Y;
+  requestDraw();
+});
+const end3 = () => { drag3 = null; c3.el.classList.remove('grabbing'); };
+c3.el.addEventListener('pointerup', end3);
+c3.el.addEventListener('pointercancel', end3);
+c3.el.addEventListener('wheel', (e) => {
+  e.preventDefault();
+  cam.zoom = Math.max(0.35, Math.min(4, cam.zoom * Math.exp(-e.deltaY * 0.0015)));
+  requestDraw();
+}, { passive: false });
+c3.el.addEventListener('keydown', (e) => {
+  const st = Math.PI / 36;
+  if (e.key === 'ArrowLeft') cam.az += st;
+  else if (e.key === 'ArrowRight') cam.az -= st;
+  else if (e.key === 'ArrowUp') cam.el = Math.min(EL_MAX, cam.el + st);
+  else if (e.key === 'ArrowDown') cam.el = Math.max(EL_MIN, cam.el - st);
+  else if (e.key === '+' || e.key === '=') cam.zoom = Math.min(4, cam.zoom * 1.2);
+  else if (e.key === '-' || e.key === '_') cam.zoom = Math.max(0.35, cam.zoom / 1.2);
+  else if (e.key === '0') Object.assign(cam, CAM0);
+  else return;
+  e.preventDefault(); requestDraw();
+});
+$('#z3-in').addEventListener('click', () => { cam.zoom = Math.min(4, cam.zoom * 1.2); requestDraw(); });
+$('#z3-out').addEventListener('click', () => { cam.zoom = Math.max(0.35, cam.zoom / 1.2); requestDraw(); });
+$('#z3-reset').addEventListener('click', () => { Object.assign(cam, CAM0); requestDraw(); });
+$('#z3-top').addEventListener('click', () => { cam.az = 0; cam.el = EL_MAX; requestDraw(); });
+
+/* ================= challenge ================= */
+const ri = (lo, hi) => lo + Math.floor(Math.random() * (hi - lo + 1));
+const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+function genMystery() {
+  for (let tries = 0; tries < 200; tries++) {
+    const kind = pick(['pd', 'nd', 'indef', 'psd', 'nsd']);
+    let a, b, c;
+    if (kind === 'pd' || kind === 'nd') {
+      a = ri(1, 3); c = ri(1, 3);
+      const bs = [-2, -1, 0, 1, 2].filter((t) => t * t < a * c);
+      b = pick(bs);
+      if (kind === 'nd') { a = -a; b = -b; c = -c; }
+    } else if (kind === 'indef') {
+      a = ri(-3, 3); c = ri(-3, 3);
+      const bs = [-3, -2, -1, 0, 1, 2, 3].filter((t) => t * t > a * c);
+      b = pick(bs);
+    } else {
+      let p, q;
+      do { p = ri(-2, 2); q = ri(-2, 2); } while ((p === 0 && q === 0) || (Math.abs(p) === 2 && Math.abs(q) === 2));
+      a = p * p; b = p * q; c = q * q;
+      if (kind === 'nsd') { a = -a; b = -b; c = -c; }
+    }
+    a += 0; b += 0; c += 0;
+    const key = `${a},${b},${c}`;
+    if (key !== chState.key) return { a, b, c, key };
+  }
+  return { a: 1, b: 0, c: 1, key: '1,0,1' };
+}
+const CURVE1 = { pd: 'ellipse', nd: 'empty', indef: 'hyperbola', psd: 'lines', nsd: 'empty' };
+const CURVE_NAME = { ellipse: 'an ellipse', hyperbola: 'a hyperbola', lines: 'two parallel lines', empty: 'empty' };
+const CH_WHY = {
+  pd: 'Every drawn level has a positive value, the level curves are ellipses around the origin, and <i class="math">Q</i> = 0 only at the origin. The graph is a bowl.',
+  nd: 'Every drawn level has a negative value, the level curves are ellipses around the origin, and <i class="math">Q</i> = 0 only at the origin. The graph is an upside-down bowl.',
+  indef: 'There are both positive and negative levels, and the level <i class="math">Q</i> = 0 is two lines crossing at the origin. The graph is a saddle.',
+  psd: 'All levels are ≥ 0, the level curves are parallel lines, and <i class="math">Q</i> = 0 along a whole line. The graph is a trough.',
+  nsd: 'All levels are ≤ 0, the level curves are parallel lines, and <i class="math">Q</i> = 0 along a whole line. The graph is a ridge.',
+};
+const CH_CURVE_WHY = {
+  ellipse: 'Since <i class="math">Q</i> &gt; 0 away from the origin, <i class="math">Q</i> = 1 is an ellipse.',
+  hyperbola: 'For an indefinite form every level <i class="math">k</i> ≠ 0 is a hyperbola, so <i class="math">Q</i> = 1 is a hyperbola.',
+  lines: 'For a positive semidefinite form, <i class="math">Q</i> = 1 is two lines parallel to the line where <i class="math">Q</i> = 0.',
+  empty: '<i class="math">Q</i> never reaches positive values, so <i class="math">Q</i> = 1 has no points.',
+};
+function newMystery() {
+  const m = genMystery();
+  Object.assign(chState, { a: m.a, b: m.b, c: m.c, key: m.key, checked: false, revealed: false, counted: false });
+  $$('input[name="q1"], input[name="q2"]').forEach((r) => { r.checked = false; });
+  $('#ch-feedback').innerHTML = '';
+  if (inChallenge()) {
+    F = analyse(chState.a, chState.b, chState.c);
+    c2.el.setAttribute('aria-label', 'Level curves of the mystery quadratic form. Positive levels are solid, negative levels dashed, and each curve is labelled with its value.');
+    c3.el.setAttribute('aria-label', 'Graph of the mystery quadratic form over a disc of radius 2.');
+    requestDraw();
+  }
+}
+function feedbackBlock(kind, html) {
+  const ico = kind === 'success' ? '✓' : kind === 'error' ? '✗' : 'ℹ';
+  return `<div class="msg msg-${kind}"><span class="ico" aria-hidden="true">${ico}</span><span>${html}</span></div>`;
+}
+$('#ch-check').addEventListener('click', () => {
+  const a1 = ($('input[name="q1"]:checked') || {}).value, a2 = ($('input[name="q2"]:checked') || {}).value;
+  const Fm = analyse(chState.a, chState.b, chState.c);
+  const out = [];
+  if (!a1 || !a2) {
+    $('#ch-feedback').innerHTML = feedbackBlock('error', `Choose an answer for ${!a1 && !a2 ? 'both questions' : !a1 ? 'question 1' : 'question 2'} first.`);
+    return;
+  }
+  const ok1 = a1 === Fm.cls, ok2 = a2 === CURVE1[Fm.cls];
+  out.push(feedbackBlock(ok1 ? 'success' : 'error',
+    `<strong>Question 1: ${ok1 ? 'correct' : 'not quite'}.</strong> ${ok1 ? '' : `The form is ${CLASS_NAME[Fm.cls].toLowerCase()}. `}${CH_WHY[Fm.cls]}`));
+  out.push(feedbackBlock(ok2 ? 'success' : 'error',
+    `<strong>Question 2: ${ok2 ? 'correct' : 'not quite'}.</strong> ${ok2 ? '' : `The curve <i class="math">Q</i> = 1 is ${CURVE_NAME[CURVE1[Fm.cls]]}. `}${CH_CURVE_WHY[CURVE1[Fm.cls]]}`));
+  if (ok1 && ok2 && !chState.counted && !chState.revealed) { chState.counted = true; chState.solved++; }
+  if (ok1 && ok2) out.push(feedbackBlock('info', 'Select <strong>Reveal <i class="math">Q</i></strong> to see the formula, or <strong>New form</strong> to try another one.'));
+  $('#ch-feedback').innerHTML = out.join('');
+  $('#ch-score').textContent = `Forms classified correctly this session: ${chState.solved}`;
+});
+$('#ch-reveal').addEventListener('click', () => {
+  chState.revealed = true;
+  const Fm = analyse(chState.a, chState.b, chState.c);
+  $('#ch-feedback').innerHTML = feedbackBlock('info',
+    `<i class="math">Q</i>(<i class="math">x</i>, <i class="math">y</i>) = ${formulaHTML(chState.a, chState.b, chState.c)}, with <i class="math">A</i> = ${miniMatrix(chState.a, chState.b, chState.c)}. det <i class="math">A</i> = ${fmt(Fm.D)}, eigenvalues ${fmt(Fm.l1)} and ${fmt(Fm.l2)}: ${CLASS_NAME[Fm.cls].toLowerCase()}. The curve <i class="math">Q</i> = 1 is ${CURVE_NAME[CURVE1[Fm.cls]]}.`);
+});
+$('#ch-new').addEventListener('click', () => { newMystery(); announce('New mystery form. Your answers have been cleared.'); });
+
+/* ================= tabs ================= */
+const tabs = [$('#tab-explore'), $('#tab-challenge')];
+function switchTab(mode) {
+  const toCh = mode === 'challenge';
+  tabs.forEach((t) => { const on = (t.id === 'tab-challenge') === toCh; t.setAttribute('aria-selected', String(on)); t.tabIndex = on ? 0 : -1; });
+  $('#panel-explore').hidden = toCh; $('#panel-challenge').hidden = !toCh;
+  S = toCh ? chState : exploreState;
+  v2 = toCh ? views2.challenge : views2.explore;
+  cam = toCh ? cams.challenge : cams.explore;
+  if (!v2.s) resetView2();
+  if (toCh && !chState.key) newMystery();
+  F = analyse(S.a, S.b, S.c);
+  hover = null;
+  $('#help2d').textContent = toCh
+    ? 'Level curves: drag to pan and scroll to zoom. Point at the plane to read the value of Q. With the plane focused, arrow keys pan and the + and − keys zoom.'
+    : 'Level curves: drag to pan, scroll to zoom, and click a point to choose the level curve through it. With the plane focused, arrow keys pan and the + and − keys zoom.';
+  if (toCh) newMysteryLabels(); else updateInfo();
+  updateLegend();
+  requestDraw();
+}
+function newMysteryLabels() {
+  c2.el.setAttribute('aria-label', 'Level curves of the mystery quadratic form. Positive levels are solid, negative levels dashed, and each curve is labelled with its value.');
+  c3.el.setAttribute('aria-label', 'Graph of the mystery quadratic form over a disc of radius 2.');
+}
+tabs.forEach((t, i) => {
+  t.addEventListener('click', () => switchTab(i ? 'challenge' : 'explore'));
+  t.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); const j = 1 - i; tabs[j].focus(); switchTab(j ? 'challenge' : 'explore'); }
+  });
+});
+
+/* ================= start ================= */
+readColors();
+const mq = window.matchMedia('(prefers-color-scheme: dark)');
+(mq.addEventListener ? mq.addEventListener('change', () => { readColors(); requestDraw(); }) : mq.addListener(() => { readColors(); requestDraw(); }));
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => requestDraw());
+presetSel.value = '3';
+setCellsText(...PRESETS[3].v);
+readCells();
+F = analyse(S.a, S.b, S.c);
+lastCls = F.cls;
+setK(36);
+syncSliders();
+updateInfo();
+updateLegend();
+const ro = new ResizeObserver(() => {
+  sizeCanvas(c2); sizeCanvas(c3);
+  if (!views2.explore.s && c2.W > 1) { const keep = v2; v2 = views2.explore; resetView2(); v2 = keep; }
+  draw();
+});
+ro.observe(c2.wrap); ro.observe(c3.wrap);
+})();
+</script>
+</body>
+</html>
